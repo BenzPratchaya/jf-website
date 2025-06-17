@@ -1,121 +1,129 @@
+// components/Navbar.tsx
 "use client"
 
 import Link from "next/link"
 import Image from "next/image"
-import { slideBottom } from "@/utility/animation"
-import { motion } from "framer-motion"
+import { slideBottom } from "@/utility/animation" // Assuming this utility exists
+import { motion, AnimatePresence } from "framer-motion"
+
+import { FaBars, FaTimes } from 'react-icons/fa';
+import React from "react"
 
 const Navbar = () => {
-
   const Logo = "/images/LOGO-JF.png"
 
   const MotionLink = motion(Link);
 
-  return (
-    <nav className="h-20 sm:h-24 md:h-28 w-screen flex items-center justify-center relative z-20 bg-black bg-opacity-5 backdrop-blur-xs">
-      <div className="container flex items-center justify-around w-full h-full md:text-lg lg-text-2xl">
+  const [isOpen, setIsOpen] = React.useState(false);
 
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+    document.body.style.overflow = isOpen ? 'auto' : 'hidden';
+  };
+
+  // navItemClasses: Applied to each desktop navigation link
+  // Added whitespace-nowrap to prevent text wrapping
+  // Adjusted font sizes for better fit on smaller desktop breakpoints if needed
+  const navItemClasses = "whitespace-nowrap hover:underline text-base md:text-sm lg:text-md p-2"; // KEY CHANGE: whitespace-nowrap, adjusted base text size
+
+  // Animation variants for the mobile menu itself (slide from right)
+  const menuVariants = {
+    hidden: { x: "100%" },
+    visible: { x: 0, transition: { type: "tween", duration: 0.3 } },
+    exit: { x: "100%", transition: { type: "tween", duration: 0.3 } }
+  };
+
+  // Animation variants for menu items (staggered fade-in)
+  const listItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+  };
+
+  return (
+    <nav className="container h-16 sm:h-18 md:h-20 w-screen flex items-center justify-center relative z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+      <div className="container flex items-center justify-between w-full h-full px-4">
+        {/* Logo Section (Left Side) */}
         <MotionLink
-          variants={slideBottom(0)}
+          variants={slideBottom(0.1)}
           initial="hidden"
           animate="visible"
           whileHover={{
-            scale: 1.2,
+            scale: 1.05,
             transition: { duration: 0.3, ease: "easeInOut" }
           }}
-          className="hover:underline"
-          href={"#"}
-        >
-          Home
-        </MotionLink>
-        <MotionLink
-          variants={slideBottom(0.2)}
-          initial="hidden"
-          animate="visible"
-          whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3, ease: "easeInOut" }
-          }}
-          className="hover:underline"
-          href={"#"}
-        >
-          About Us
-        </MotionLink>
-        <MotionLink
-          variants={slideBottom(0.5)}
-          initial="hidden"
-          animate="visible"
-          whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3, ease: "easeInOut" }
-          }}
-          className="hover:underline"
-          href={"#"}
-        >
-          Services
-        </MotionLink>
-        <MotionLink
-          variants={slideBottom(0.4)}
-          initial="hidden"
-          animate="visible"
-          whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3, ease: "easeInOut" }
-          }}
-          rel="preload"
-          as="image"
-          href={"#"}
+          href={"/"}
+          onClick={() => setIsOpen(false)} // Close menu on logo click
         >
           <Image
-            className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px]"
-            priority={false}
+            className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
+            priority={true}
             src={Logo}
-            alt="Logo center"
-            width={100}
-            height={100}
+            alt="J.F.Advance Med Co.,Ltd. Logo"
+            width={150}
+            height={50}
           ></Image>
         </MotionLink>
-        <MotionLink
-          variants={slideBottom(0.6)}
-          initial="hidden"
-          animate="visible"
-          whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3, ease: "easeInOut" }
-          }}
-          className="hover:underline"
-          href={"#"}
-        >
-          Product
-        </MotionLink>
-        <MotionLink
-          variants={slideBottom(0.6)}
-          initial="hidden"
-          animate="visible"
-          whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3, ease: "easeInOut" }
-          }}
-          className="hover:underline"
-          href={"#"}
-        >
-          Solution
-        </MotionLink>
-        <MotionLink
-          variants={slideBottom(0.6)}
-          initial="hidden"
-          animate="visible"
-          whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3, ease: "easeInOut" }
-          }}
-          className="hover:underline"
-          href={"#"}
-        >
-          Contact
-        </MotionLink>
 
+        {/* Desktop Navigation Links Section (Right Side) */}
+        {/* KEY CHANGE: Adjusted gap to be smaller on md screens */}
+        <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
+          <MotionLink /* variants={slideBottom(0.2)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/"}>Home</MotionLink> {/* Home to root */}
+          <MotionLink /* variants={slideBottom(0.3)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#about"}>About Us</MotionLink> {/* Updated href */}
+          <MotionLink /* variants={slideBottom(0.4)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#services"}>Services</MotionLink> {/* Updated href */}
+          <MotionLink /* variants={slideBottom(0.5)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#products"}>Product</MotionLink> {/* Product to /products page */}
+          <MotionLink /* variants={slideBottom(0.6)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#solution"}>Solution</MotionLink> {/* Updated href */}
+          <MotionLink /* variants={slideBottom(0.7)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#contact"}>Contact</MotionLink> {/* Updated href */}
+        </div>
+
+        {/* Mobile Menu Button (Hamburger Icon / Close Icon) */}
+        <div className="md:hidden z-50">
+          <button onClick={toggleMenu} className={`text-3xl focus:outline-none ${isOpen ? 'text-white' : 'text-gray-800'}`}>
+            {isOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Side Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed top-0 left-0 h-screen w-screen bg-blue-950 bg-opacity-90 flex flex-col items-center justify-center space-y-8 z-40 md:hidden"
+          >
+            <motion.ul className="space-y-6 text-2xl font-bold"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.1,
+                    delayChildren: 0.2
+                  }
+                }
+              }}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              {[
+                { name: "Home", href: "/" },
+                { name: "About Us", href: "/#about" },
+                { name: "Services", href: "#" },
+                { name: "Product", href: "/#products" },
+                { name: "Solution", href: "#" },
+                { name: "Contact", href: "/#contact" },
+              ].map((item, index) => (
+                <motion.li key={item.name} variants={listItemVariants} onClick={toggleMenu}>
+                  <Link href={item.href} className="block text-center text-white hover:text-gray-300 transition-colors">
+                    {item.name}
+                  </Link>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   )
 }

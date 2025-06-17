@@ -1,8 +1,10 @@
+// components/LogoHospital.tsx
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image" // Best practice to use Next.js Image component for optimization
 
-const Footer = () => {
+const LogoHospital = () => {
 
   const techStack = [
     { imageUrl: "/images/logo/chula_logo.png", alt: "Chulalongkorn University Logo" },
@@ -29,35 +31,45 @@ const Footer = () => {
 
   return (
     <>
-      <motion.footer
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-gradient-to-b from-white to-gray-100 dark:from-gray-900/90 dark:to-gray-800"
+        className="bg-gradient-to-b from-white to-gray-100" 
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <motion.h2
+          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 100 }}
+          transition={{ duration: 1.2 }}
+          className="text-center text-3xl sm:text-4xl mt-12 mb-8 uppercase text-gray-800" 
+        >
+          our clients
+        </motion.h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"> 
 
           {/* icon zone */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="my-12 overflow-hidden relative" // เพิ่ม relative
+            className="my-8 sm:my-12 overflow-hidden relative py-4" // Adjusted my- for mobile, added py-4 for vertical space
           >
             {/* Div สำหรับการเลื่อนต่อเนื่อง */}
             <div
-              className="flex whitespace-nowrap animate-scroll-left" // เพิ่มคลาส animate-scroll-left
-              style={{ animationDuration: '60s' }} // ปรับความเร็วตามต้องการ
+              className="flex whitespace-nowrap animate-scroll-left"
+              style={{ animationDuration: '60s' }}
             >
-              {[...techStack, ...techStack].map((item, index) => ( // ทำซ้ำ array 2 ครั้ง
+              {[...techStack, ...techStack].map((item, index) => (
                 <div
-                  className="inline-flex items-center justify-center mx-4 flex-shrink-0" // ใช้ inline-flex และ mx-4 แทน gap-8
+                  // Adjusted size and margins for responsiveness
+                  className="inline-flex items-center justify-center flex-shrink-0 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] mx-2 sm:mx-4"
                   key={index}
-                  style={{ width: '120px', height: '120px' }} // กำหนดขนาดที่แน่นอน
                 >
-                  <img
+                  <Image // Changed <img> to Next.js <Image>
                     src={item.imageUrl}
-                    alt={item.alt || `Logo ${index}`} // เพิ่ม alt attribute
-                    className="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300" // ปรับขนาดและ transition
+                    alt={item.alt || `Logo ${index}`}
+                    width={120} // Provide original width for optimization
+                    height={120} // Provide original height for optimization
+                    className="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               ))}
@@ -66,9 +78,9 @@ const Footer = () => {
           </motion.div>
 
         </div>
-      </motion.footer>
+      </motion.div>
     </>
   )
 }
 
-export default Footer
+export default LogoHospital

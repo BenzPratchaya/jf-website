@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
         className={`${kanit.variable} antialiased`}
       >
         {children}
+        <ScrollToTopButton />
       </body>
     </html>
   );

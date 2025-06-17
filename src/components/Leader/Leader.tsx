@@ -8,10 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Leader = () => {
 
-  const Img1 = "/images/avatar/portrait-beautiful-young-woman-standing-grey-wall.jpg"
-  const Img2 = "/images/avatar/portrait-young-beautiful-woman-gesticulating.jpg"
-  const Img3 = "/images/avatar/studio-portrait-emotional-happy-funny.jpg"
-  const Img4 = "/images/avatar/portrait-young-redhead-bearded-male.jpg"
+  const Img1 = "/images/avatar/lead1.jpg"
+  const Img2 = "/images/avatar/lead2.jpg"
+  const Img3 = "/images/avatar/lead3.jpg"
+  const Img4 = "/images/avatar/lead4.jpg"
 
   interface SocialLink {
     icon: IconDefinition;
@@ -86,17 +86,14 @@ const Leader = () => {
     <>
       <section className="container py-8 space-y-6" id="explore">
         {/* header section */}
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{
-            delay: 1,
-            duration: 0.5
-          }}
-          className="text-center md:max-w-[650px] mx-auto space-y-4"
+        <motion.h2
+          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 100 }}
+          transition={{ duration: 1.2 }}
+          className="text-center text-4xl my-12 uppercase text-gray-800"
         >
-          <h1 className="text-2xl md:text-4xl">TEAM LEADERS</h1>
-        </motion.div>
+          Team Leaders
+        </motion.h2>
 
         {/* card section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-4 xl:px-14">
@@ -124,21 +121,39 @@ const Leader = () => {
               <div className="absolute w-full bottom-0 inset-0 bg-brandDark/15">
                 <div className="h-full space-y-1 flex flex-col justify-end items-center">
                   <div className="flex flex-col items-center bg-black p-2 bg-opacity-50 backdrop-blur-sm w-full">
-                    <h3 className="text-white text-2xl tracking-wider">{item.title}</h3>
-                    <h3 className="text-white uppercase tracking-wider">{item.place}</h3>
+                    <motion.h3
+                      initial={{ opacity: 0, x: 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.2,
+                        duration: 0.6
+                      }}
+                      className="text-white text-2xl tracking-wider">{item.title}
+                    </motion.h3>
+                    <motion.h3
+                      initial={{ opacity: 0, x: -50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.2,
+                        duration: 0.6
+                      }}
+                      className="text-white uppercase tracking-wider">{item.place}</motion.h3>
                     <div className="flex space-x-3 mt-2"> {/* เพิ่ม flex และ space-x เพื่อจัดเรียงไอคอน */}
                       {item.url.map((social, index) => (
-                        <a
+                        <motion.a
                           key={index}
                           href={social.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          initial={{ opacity: 0, y: 50 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
                           className="text-white hover:text-blue-400 text-xl"
                         >
                           <FontAwesomeIcon
                             icon={social.icon}
                             className="bg-white/20 rounded-full p-2 w-5 h-4 flex items-center justify-center"/>
-                        </a>
+                        </motion.a>
                       ))}
                     </div>
                   </div>
