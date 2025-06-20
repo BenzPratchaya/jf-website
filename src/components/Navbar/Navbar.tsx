@@ -60,12 +60,10 @@ const Navbar = () => {
         {/* Desktop Navigation Links Section (Right Side) */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
           <MotionLink variants={slideBottom(0.2)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/"}>Home</MotionLink>
-          <MotionLink variants={slideBottom(0.3)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#about"}>About</MotionLink> {/* Updated href */}
-          <MotionLink variants={slideBottom(0.4)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#services"}>Services</MotionLink> {/* Updated href */}
-          <MotionLink variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#products"}>Products</MotionLink> {/* Product to /products page */}
-          <MotionLink variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/partner"}>Partner</MotionLink> {/* Partner to /partner page */}
-          <MotionLink variants={slideBottom(0.6)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#solution"}>Solution</MotionLink> {/* Updated href */}
-          <MotionLink variants={slideBottom(0.7)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#contact"}>Contact</MotionLink> {/* Updated href */}
+          <MotionLink variants={slideBottom(0.3)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#about"}>About</MotionLink> 
+          <MotionLink variants={slideBottom(0.4)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#services"}>Services</MotionLink> 
+          <MotionLink variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/products"}>Products</MotionLink>
+          <MotionLink variants={slideBottom(0.7)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#contact"}>Contact</MotionLink> 
         </div>
 
         {/* Mobile Menu Button (Hamburger Icon / Close Icon) */}

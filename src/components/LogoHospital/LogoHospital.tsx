@@ -35,13 +35,13 @@ const LogoHospital = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-gradient-to-b from-white to-gray-100" 
+        className="bg-gradient-to-b from-white to-gray-300" 
       >
         <motion.h2
           whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 100 }}
           transition={{ duration: 1.2 }}
-          className="text-center text-3xl sm:text-4xl mt-12 mb-8 uppercase text-gray-800" 
+          className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-gray-800" 
         >
           our clients
         </motion.h2>
@@ -69,7 +69,7 @@ const LogoHospital = () => {
                     alt={item.alt || `Logo ${index}`}
                     width={120} // Provide original width for optimization
                     height={120} // Provide original height for optimization
-                    className="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300"
+                    className="max-w-full max-h-full object-contain hover:scale-125 transition-transform duration-300"
                   />
                 </div>
               ))}

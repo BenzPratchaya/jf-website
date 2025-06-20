@@ -6,10 +6,9 @@ import { motion } from "framer-motion"
 const About = () => {
   return (
     <>
-      <section id="about" className="container py-20 mt-20">
-
+      <section id="about" className="container py-20 mt-10">
       {/* header section */}
-      <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 p-4 shadow-sm">
+      <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 p-4">
         {/* ฝั่งซ้าย: Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }} 

@@ -34,7 +34,7 @@ const Leader = () => {
       title: "Kajohn Uamsiri",
       place: "Managing Director",
       url: [
-      { icon: faTwitter, url: "https://twitter.com/kajohn" }, // <-- กำหนดเป็นอ็อบเจกต์ไอคอนที่ import มา
+      { icon: faTwitter, url: "https://twitter.com/kajohn" }, 
       { icon: faFacebookF, url: "https://facebook.com/kajohn" },
       { icon: faInstagram, url: "https://instagram.com/kajohn" },
       { icon: faLinkedinIn, url: "https://linkedin.com/in/kajohn" },
@@ -44,10 +44,10 @@ const Leader = () => {
     {
       id: 2,
       img: Img2,
-      title: "Asorn Taprig",
+      title: "Adisorn Taprig",
       place: "General Manager",
       url: [
-      { icon: faTwitter, url: "https://twitter.com/kajohn" }, // <-- กำหนดเป็นอ็อบเจกต์ไอคอนที่ import มา
+      { icon: faTwitter, url: "https://twitter.com/kajohn" },
       { icon: faFacebookF, url: "https://facebook.com/kajohn" },
       { icon: faInstagram, url: "https://instagram.com/kajohn" },
       { icon: faLinkedinIn, url: "https://linkedin.com/in/kajohn" },
@@ -60,7 +60,7 @@ const Leader = () => {
       title: "Warong Tocharoenchai",
       place: "Services Manager",
       url: [
-      { icon: faTwitter, url: "https://twitter.com/kajohn" }, // <-- กำหนดเป็นอ็อบเจกต์ไอคอนที่ import มา
+      { icon: faTwitter, url: "https://twitter.com/kajohn" }, 
       { icon: faFacebookF, url: "https://facebook.com/kajohn" },
       { icon: faInstagram, url: "https://instagram.com/kajohn" },
       { icon: faLinkedinIn, url: "https://linkedin.com/in/kajohn" },
@@ -73,7 +73,7 @@ const Leader = () => {
       title: "Navarat Bunnag",
       place: "Sales Manager",
       url: [
-      { icon: faTwitter, url: "https://twitter.com/kajohn" }, // <-- กำหนดเป็นอ็อบเจกต์ไอคอนที่ import มา
+      { icon: faTwitter, url: "https://twitter.com/kajohn" }, 
       { icon: faFacebookF, url: "https://facebook.com/kajohn" },
       { icon: faInstagram, url: "https://instagram.com/kajohn" },
       { icon: faLinkedinIn, url: "https://linkedin.com/in/kajohn" },

@@ -8,18 +8,17 @@ import Product from "@/components/Product/Product";
 import Contact from "@/components/Contact/Contact";
 import { Footer } from "@/components/Footer/Footer";
 import { products } from "@/data/products";
+import LatestProduct from "@/components/Product/LatestProduct";
 
 export default function Home() {
-
-
   return (
     <>
       <div className="overflow-x-hidden text-gray-800">
         <Navbar />
         <Hero />
         <About />
-        <LogoPartner /> 
-        <Product productsToShow={products} />
+        <LogoPartner />
+        <LatestProduct productsToShow={products} />
         <LogoHospital />
         <Leader />
         <Contact />

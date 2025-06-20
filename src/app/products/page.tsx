@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion'; 
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
 import Product from '@/components/Product/Product';
@@ -15,9 +14,8 @@ export default function PartnerPage() {
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [displayedPartners, setDisplayedPartners] = useState<PartnerType[]>([]); 
 
-  // **KEY CHANGE:** กำหนด Style สำหรับ Background Image
   const partnersBgImageStyle: React.CSSProperties = {
-    backgroundImage: "url('/images/hero/hero_bg1.jpg')", // **เปลี่ยน Path นี้เป็นรูปภาพของคุณ**
+    backgroundImage: "url('/images/hero/hero_bg1.jpg')",
   };
 
   useEffect(() => {
@@ -53,15 +51,17 @@ export default function PartnerPage() {
       <Navbar />
 
       <main>
-        <section className="text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={partnersBgImageStyle}>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-200">Choose our partners</h1>
-            <p className="text-lg text-gray-300 mt-2">Click on the partner logo to view related products.</p>
+        <section className="container text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={partnersBgImageStyle}>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-200">Our Products</h1>
+            <p className="text-lg text-gray-300 mt-2">JF Med is a manufacturer and suppliers of a wide range of high quality medical, surgical and hospital products. Our products 
+            are ISO 9001 and CE certified and we have been recognized as Star Export House by Government of Thailand. We supply our 
+            products in more than 80 countries worldwide.</p>
         </section>
 
         {/* ส่วนเลือก Category */}
         <section className="py-8 bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Main categories</h2>
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Categories</h2>
             <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
               {categories.map((category: CategoryType) => (
                 <button
@@ -84,7 +84,6 @@ export default function PartnerPage() {
         {/* ส่วนเลือก Partner */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-8">Filter By Partner</h2>
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
               {/* KEY CHANGE: Simplified conditional rendering for Partner blocks */}
               {displayedPartners.map((partner: PartnerType) => {
@@ -92,28 +91,22 @@ export default function PartnerPage() {
 
                 if (partner.id === 'all') { // ถ้าเป็น Partner "all" เสมอ --> ให้เป็นปุ่ม
                   return (
-                    <motion.button 
+                    <button 
                       key={partner.id}
-                      initial={{ opacity: 0, y: 10 }} // ใช้ animation แบบปุ่ม Category
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2 }}
                       onClick={() => setSelectedPartner(partner.id)}
-                      className={`px-6 py-3 rounded-full border-2 transition-all duration-200 ease-in-out
-                                 ${isPartnerSelected ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
+                      className={`px-6 py-3 rounded-full border-2 transition-all duration-200 ease-in-out hover:scale-110
+                                 ${isPartnerSelected ? 'border-blue-600 shadow-md bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
                     >
                       {partner.name}
-                    </motion.button>
+                    </button>
                   );
                 } else { // สำหรับ Partner อื่นๆ ทั้งหมด --> เป็นบล็อกโลโก้ (แบบเดิม)
                   return (
-                    <motion.div
+                    <div
                       key={partner.id}
-                      initial={{ opacity: 0, y: 20 }} // ใช้ animation แบบบล็อกโลโก้
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
                       onClick={() => setSelectedPartner(partner.id)}
-                      className={`cursor-pointer p-3 md:p-4 rounded-lg border-2 transition-all duration-200 ease-in-out
-                                 ${isPartnerSelected ? 'border-blue-600 shadow-md bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
+                      className={`cursor-pointer p-3 md:p-4 rounded-lg border-2 transition-all duration-200 ease-in-out hover:scale-110
+                                 ${isPartnerSelected ? 'border-blue-600 shadow-2xl bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
                                  w-28 h-28 flex flex-col items-center justify-center text-center overflow-hidden`}
                     >
                       <Image
@@ -121,9 +114,9 @@ export default function PartnerPage() {
                         alt={partner.name + ' Logo'}
                         width={80} 
                         height={80}
-                        className="object-contain mb-1"
+                        className="object-contain"
                       />
-                    </motion.div>
+                    </div>
                   );
                 }
               })}
@@ -136,7 +129,7 @@ export default function PartnerPage() {
             <Product productsToShow={filteredProducts} />
         ) : (
             <section className="py-12 bg-gray-50 text-center">
-                <p className="text-xl text-gray-600">ไม่พบสินค้าในหมวดหมู่หรือพันธมิตรที่เลือก</p>
+                <p className="text-xl text-gray-600">Product Not found</p>
             </section>
         )}
         
