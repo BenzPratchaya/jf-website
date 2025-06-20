@@ -1,30 +1,18 @@
-// components/Navbar.tsx
+// components/Navbar/Navbar.tsx
 "use client"
 
 import Link from "next/link"
 import Image from "next/image"
-import { slideBottom } from "@/utility/animation" // Assuming this utility exists
+import { slideBottom } from "@/utility/animation"
 import { motion, AnimatePresence } from "framer-motion"
-
 import { FaBars, FaTimes } from 'react-icons/fa';
 import React from "react"
 
 const Navbar = () => {
-  const Logo = "/images/LOGO-JF.png"
-
-  const MotionLink = motion(Link);
-
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    document.body.style.overflow = isOpen ? 'auto' : 'hidden';
-  };
-
-  // navItemClasses: Applied to each desktop navigation link
-  // Added whitespace-nowrap to prevent text wrapping
-  // Adjusted font sizes for better fit on smaller desktop breakpoints if needed
-  const navItemClasses = "whitespace-nowrap hover:underline text-base md:text-sm lg:text-md p-2"; // KEY CHANGE: whitespace-nowrap, adjusted base text size
+  const MotionLink = motion(Link);
+  const companyLogo = "/images/LOGO-JF.png"
+  const navItemClasses = "whitespace-nowrap hover:underline text-base md:text-lg lg:text-xl p-2 font-light";
 
   // Animation variants for the mobile menu itself (slide from right)
   const menuVariants = {
@@ -37,6 +25,11 @@ const Navbar = () => {
   const listItemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+    document.body.style.overflow = isOpen ? 'auto' : 'hidden';
   };
 
   return (
@@ -57,7 +50,7 @@ const Navbar = () => {
           <Image
             className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
             priority={true}
-            src={Logo}
+            src={companyLogo}
             alt="J.F.Advance Med Co.,Ltd. Logo"
             width={150}
             height={50}
@@ -65,14 +58,14 @@ const Navbar = () => {
         </MotionLink>
 
         {/* Desktop Navigation Links Section (Right Side) */}
-        {/* KEY CHANGE: Adjusted gap to be smaller on md screens */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
-          <MotionLink /* variants={slideBottom(0.2)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/"}>Home</MotionLink> {/* Home to root */}
-          <MotionLink /* variants={slideBottom(0.3)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#about"}>About Us</MotionLink> {/* Updated href */}
-          <MotionLink /* variants={slideBottom(0.4)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#services"}>Services</MotionLink> {/* Updated href */}
-          <MotionLink /* variants={slideBottom(0.5)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#products"}>Product</MotionLink> {/* Product to /products page */}
-          <MotionLink /* variants={slideBottom(0.6)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#solution"}>Solution</MotionLink> {/* Updated href */}
-          <MotionLink /* variants={slideBottom(0.7)} */ initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#contact"}>Contact</MotionLink> {/* Updated href */}
+          <MotionLink variants={slideBottom(0.2)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/"}>Home</MotionLink>
+          <MotionLink variants={slideBottom(0.3)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#about"}>About</MotionLink> {/* Updated href */}
+          <MotionLink variants={slideBottom(0.4)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#services"}>Services</MotionLink> {/* Updated href */}
+          <MotionLink variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#products"}>Products</MotionLink> {/* Product to /products page */}
+          <MotionLink variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/partner"}>Partner</MotionLink> {/* Partner to /partner page */}
+          <MotionLink variants={slideBottom(0.6)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#solution"}>Solution</MotionLink> {/* Updated href */}
+          <MotionLink variants={slideBottom(0.7)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#contact"}>Contact</MotionLink> {/* Updated href */}
         </div>
 
         {/* Mobile Menu Button (Hamburger Icon / Close Icon) */}
@@ -93,7 +86,7 @@ const Navbar = () => {
             exit="exit"
             className="fixed top-0 left-0 h-screen w-screen bg-blue-950 bg-opacity-90 flex flex-col items-center justify-center space-y-8 z-40 md:hidden"
           >
-            <motion.ul className="space-y-6 text-2xl font-bold"
+            <motion.ul className="space-y-6 text-2xl"
               variants={{
                 visible: {
                   transition: {
@@ -108,10 +101,10 @@ const Navbar = () => {
             >
               {[
                 { name: "Home", href: "/" },
-                { name: "About Us", href: "/#about" },
-                { name: "Services", href: "#" },
+                { name: "About", href: "/#about" },
+                { name: "Services", href: "/#services" },
                 { name: "Product", href: "/#products" },
-                { name: "Solution", href: "#" },
+                { name: "Solution", href: "/#solution" },
                 { name: "Contact", href: "/#contact" },
               ].map((item, index) => (
                 <motion.li key={item.name} variants={listItemVariants} onClick={toggleMenu}>

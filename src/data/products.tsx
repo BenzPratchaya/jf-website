@@ -16,11 +16,7 @@ export type ProductDetails = {
   overview?: string; // ภาพรวมสินค้า
   keyFeatures?: string[]; // คุณสมบัติหลัก (รายการ)
   applications?: string[]; // การใช้งาน (รายการ)
-  
-  // Renamed to sectionsContent to match actual data key
   sectionsContent?: ProductDetailSection[]; // ส่วนรายละเอียดเพิ่มเติมแบบยืดหยุ่น
-
-  // Project Information for the right column (required for details page)
   category: string;
   client: string;
   projectDate: string;
@@ -36,16 +32,31 @@ export type ProductType = {
   description: string; // คำอธิบายสั้นๆ (สำหรับหน้า Products List)
   link: string; // Full URL path (e.g., '/products/ge-oec-c-arm') - This will be derived from 'id' in practice
   details: ProductDetails; // details is now REQUIRED and typed as ProductDetails
+  partnerId: string; // **KEY CHANGE: เพิ่ม partnerId เข้ามา**
+  categoryId: string; // **KEY CHANGE: เพิ่ม categoryId เข้ามา**
 };
 
-// ******** นี่คือ products array แบบเต็มพร้อม details ********
+// --- Definition of PartnerType ---
+export type PartnerType = {
+    id: string; // Slug ID for the partner (e.g., 'fujifilm', 'vinno')
+    name: string; // Full name of the partner
+    logo: string; // Path to partner's logo
+};
+
+// --- Definition of CategoryType ---
+export type CategoryType = {
+    id: string; // Slug ID for the category (e.g., 'radiology', 'it-solutions')
+    name: string; // Full name of the category
+};
+
+// ******** นี่คือ products array แบบเต็มพร้อม details และ partnerId ********
 export const products: ProductType[] = [
   {
-    id: 'ge-oec-c-arm', // Corrected slug
+    id: 'ge-oec-c-arm',
     name: 'Digital Radiography (DR) - GE C-Arm',
     image: '/images/products/2-GE-C ARM.jpg',
     description: 'ระบบเอกซเรย์ดิจิทัลคุณภาพสูง เพื่อความคมชัดของภาพที่เหนือกว่าและขั้นตอนการทำงานที่รวดเร็วยิ่งขึ้น.',
-    link: '/products/ge-oec-c-arm', // Corrected path
+    link: '/products/ge-oec-c-arm',
     details: {
       overview: 'ระบบ Digital Radiography ของเรานำเสนอเทคโนโลยีที่ล้ำสมัยเพื่อความคมชัดของภาพที่เหนือกว่าและขั้นตอนการทำงานที่มีประสิทธิภาพในสถานพยาบาลที่ทันสมัย.',
       keyFeatures: [
@@ -68,11 +79,6 @@ export const products: ProductType[] = [
           content: 'ระบบ DR ปฏิวัติการถ่ายภาพเอกซเรย์ด้วยความสามารถดิจิทัลขั้นสูง ให้การวินิจฉัยที่รวดเร็วและแม่นยำ.',
         },
         {
-          title: 'การถ่ายภาพประสิทธิภาพสูง',
-          type: 'image',
-          altText: 'ระบบ DR กำลังใช้งาน',
-        },
-        {
           title: 'ข้อมูลติดต่อ',
           type: 'paragraph',
           content: 'ติดต่อเราเพื่อขอคำปรึกษาโดยละเอียดและใบเสนอราคาที่ปรับให้เหมาะกับคุณ.',
@@ -84,13 +90,15 @@ export const products: ProductType[] = [
       projectUrl: 'https://www.gehealthcare.com/oec-c-arm',
       longDescription: 'GE OEC C-Arm คือระบบเอกซเรย์ฟลูออโรสโคปีแบบเคลื่อนที่ที่ทรงพลังและอเนกประสงค์ ให้ภาพวินิจฉัยคุณภาพสูงแบบเรียลไทม์ เหมาะสำหรับขั้นตอนการผ่าตัดและหัตถการที่หลากหลาย ด้วยการออกแบบที่กะทัดรัดและใช้งานง่าย ช่วยเพิ่มประสิทธิภาพการทำงานในสภาพแวดล้อมทางคลินิก',
     },
+    partnerId: 'fujifilm',
+    categoryId: 'radiology',
   },
   {
-    id: 'vinno-ultimus-9v', // Corrected slug
-    name: 'Computed Tomography (CT) - Vinno Ultimus 9V', // Adjust name if it's ultrasound
+    id: 'vinno-ultimus-9v',
+    name: 'VINNO Ultimus 9V Ultrasound System',
     image: '/images/products/3-Vinno-9V.jpg',
-    description: 'เครื่องสแกน CT ขั้นสูงที่ให้ภาพตัดขวางที่มีรายละเอียดสำหรับการวินิจฉัยที่แม่นยำ.',
-    link: '/products/vinno-ultimus-9v', // Corrected path
+    description: 'เทคโนโลยีอัลตราซาวด์ล้ำสมัยเพื่อภาพที่เหนือกว่าและความมั่นใจในการวินิจฉัย.',
+    link: '/products/vinno-ultimus-9v',
     details: {
       overview: 'เครื่องสแกน CT ของเรามอบความสามารถในการถ่ายภาพขั้นสูง โดยให้ภาพตัดขวางความละเอียดสูงเพื่อการวินิจฉัยที่แม่นยำและมั่นใจ.',
       keyFeatures: [
@@ -100,26 +108,22 @@ export const products: ProductType[] = [
         'การใช้งานทางคลินิกที่ครอบคลุม เช่น หทัยวิทยา, ประสาทวิทยา และมะเร็งวิทยา.',
       ],
       applications: [],
-      sectionsContent: [
-        {
-          title: 'ภาพสแกน CT โดยละเอียด',
-          type: 'image',
-          altText: 'ตัวอย่างเครื่องสแกน CT',
-        }
-      ],
+      sectionsContent: [],
       category: 'เครื่องสแกน CT',
       client: 'โรงพยาบาลเอกชน',
       projectDate: '10 เมษายน 2568',
-      projectUrl: 'https://www.vinno.com/ultimus-9v', // Example URL
+      projectUrl: 'https://www.vinno.com/ultimus-9v',
       longDescription: 'Vinno Ultimus 9V เป็นเครื่องอัลตราซาวด์ประสิทธิภาพสูง (ตามชื่อไฟล์ Vinno-9V.jpg) ที่มอบคุณภาพภาพที่ยอดเยี่ยมและคุณสมบัติขั้นสูงสำหรับการวินิจฉัยที่แม่นยำ',
     },
+    partnerId: 'mbits',
+    categoryId: 'radiology',
   },
   {
-    id: 'mri-system', // Corrected slug
+    id: 'mri-system',
     name: 'Magnetic Resonance Imaging (MRI)',
     image: '/images/products/4-VIVIX-1717.jpg',
     description: 'เครื่อง MRI ล้ำสมัยที่ให้ภาพความละเอียดสูงของเนื้อเยื่ออ่อนและอวัยวะต่างๆ.',
-    link: '/products/mri-system', // Corrected path
+    link: '/products/mri-system',
     details: {
       overview: 'สัมผัสประสบการณ์ความคมชัดในการวินิจฉัยที่ไม่มีใครเทียบได้ด้วยเครื่อง MRI ล้ำสมัยของเรา ซึ่งออกแบบมาสำหรับการถ่ายภาพเนื้อเยื่ออ่อนและอวัยวะที่มีรายละเอียดโดยไม่ต้องสัมผัสรังสี.',
       keyFeatures: [
@@ -129,26 +133,22 @@ export const products: ProductType[] = [
         'คอยล์ที่หลากหลายสำหรับการศึกษาทางกายวิภาคต่างๆ.',
       ],
       applications: [],
-      sectionsContent: [
-        {
-          title: 'ความสามารถของ MRI',
-          type: 'image',
-          altText: 'เครื่อง MRI',
-        }
-      ],
+      sectionsContent: [],
       category: 'เครื่อง MRI',
       client: 'ศูนย์วินิจฉัยทางการแพทย์',
       projectDate: '01 พฤษภาคม 2568',
-      projectUrl: 'https://www.example.com/mri', // Example URL
+      projectUrl: 'https://www.example.com/mri',
       longDescription: 'เครื่อง MRI ล้ำสมัยนี้ช่วยให้แพทย์สามารถวินิจฉัยโรคได้แม่นยำยิ่งขึ้นด้วยภาพที่มีรายละเอียดสูงของเนื้อเยื่ออ่อนและอวัยวะต่างๆ โดยไม่มีการสัมผัสรังสี ทำให้เป็นเครื่องมือที่มีคุณค่าในการดูแลผู้ป่วย',
     },
+    partnerId: 'mindray',
+    categoryId: 'radiology',
   },
   {
-    id: 'ultrasound-system', // Corrected slug
+    id: 'ultrasound-system',
     name: 'Ultrasound Systems - VIVIX 1417',
     image: '/images/products/5-VIVIX-1417.jpg',
     description: 'อุปกรณ์อัลตราซาวด์อเนกประสงค์สำหรับการถ่ายภาพแบบเรียลไทม์ในความเชี่ยวชาญทางการแพทย์ต่างๆ.',
-    link: '/products/ultrasound-system', // Corrected path
+    link: '/products/ultrasound-system',
     details: {
       overview: 'ระบบอัลตราซาวด์อเนกประสงค์ของเรานำเสนอโซลูชันการถ่ายภาพแบบเรียลไทม์สำหรับการแพทย์ที่หลากหลาย ตั้งแต่การถ่ายภาพทั่วไปไปจนถึงหทัยวิทยาและสูติศาสตร์.',
       keyFeatures: [
@@ -158,26 +158,22 @@ export const products: ProductType[] = [
         'โหมด Doppler ขั้นสูงสำหรับการประเมินหลอดเลือดที่ครอบคลุม.',
       ],
       applications: [],
-      sectionsContent: [
-        {
-          title: 'การถ่ายภาพอเนกประสงค์',
-          type: 'image',
-          altText: 'ระบบอัลตราซาวด์',
-        }
-      ],
+      sectionsContent: [],
       category: 'ระบบอัลตราซาวด์',
       client: 'คลินิกและโรงพยาบาล',
       projectDate: '20 เมษายน 2568',
-      projectUrl: 'https://www.example.com/ultrasound', // Example URL
+      projectUrl: 'https://www.example.com/ultrasound',
       longDescription: 'ระบบอัลตราซาวด์อเนกประสงค์นี้ช่วยให้แพทย์สามารถถ่ายภาพแบบเรียลไทม์ได้อย่างแม่นยำในหลากหลายความเชี่ยวชาญทางการแพทย์ ตั้งแต่การวินิจฉัยทั่วไปไปจนถึงการใช้งานที่ซับซ้อน ช่วยเพิ่มประสิทธิภาพการดูแลผู้ป่วย',
     },
+    partnerId: 'ge',
+    categoryId: 'radiology',
   },
   {
-    id: 'endoscopy-equipment', // Corrected slug
+    id: 'endoscopy-equipment',
     name: 'Endoscopy Equipment - Octave',
     image: '/images/products/6-Octave.jpg',
     description: 'เครื่องมือส่องกล้องที่มีความแม่นยำสำหรับขั้นตอนการผ่าตัดแบบรุกล้ำน้อยที่สุดและการมองเห็นภายในที่แม่นยำ.',
-    link: '/products/endoscopy-equipment', // Corrected path
+    link: '/products/endoscopy-equipment',
     details: {
       overview: 'เครื่องมือส่องกล้องที่มีความแม่นยำของเราได้รับการออกแบบมาเพื่ออำนวยความสะดวกในขั้นตอนการผ่าตัดแบบรุกล้ำน้อยที่สุด ให้การมองเห็นภายในที่แม่นยำเพื่อผลการวินิจฉัยและการรักษาที่เหนือกว่า.',
       keyFeatures: [
@@ -187,26 +183,22 @@ export const products: ProductType[] = [
         'การออกแบบที่ถูกหลักสรีรศาสตร์เพื่อความสะดวกสบายของแพทย์ในระหว่างขั้นตอนที่ยาวนาน.',
       ],
       applications: [],
-      sectionsContent: [
-        {
-          title: 'ความแม่นยำของการส่องกล้อง',
-          type: 'image',
-          altText: 'อุปกรณ์ส่องกล้อง',
-        }
-      ],
+      sectionsContent: [],
       category: 'อุปกรณ์ส่องกล้อง',
       client: 'คลินิกเฉพาะทาง',
       projectDate: '01 มีนาคม 2568',
-      projectUrl: 'https://www.example.com/endoscopy', // Example URL
+      projectUrl: 'https://www.example.com/endoscopy',
       longDescription: 'อุปกรณ์ส่องกล้องนี้ให้การมองเห็นภายในร่างกายที่แม่นยำและเครื่องมือที่จำเป็นสำหรับการวินิจฉัยและการรักษาที่รวดเร็วและมีประสิทธิภาพ ช่วยลดการรุกรานและเพิ่มความสะดวกสบายให้กับผู้ป่วยและแพทย์',
     },
+    partnerId: 'vieworks',
+    categoryId: 'radiology',
   },
   {
-    id: 'vinno-d650', // Corrected slug
+    id: 'vinno-d650',
     name: 'Vinno D650 Ultrasound System',
     image: '/images/products/7-Vinno-D650.jpg',
     description: 'ระบบอัลตราซาวด์แบบเข็นระดับพรีเมียมสำหรับการถ่ายภาพวินิจฉัยที่ครอบคลุม.',
-    link: '/products/vinno-d650', // Corrected path
+    link: '/products/vinno-d650',
     details: {
       overview: 'Vinno D650 เป็นระบบอัลตราซาวด์แบบเข็นระดับพรีเมียมที่ออกแบบมาสำหรับการถ่ายภาพวินิจฉัยที่ครอบคลุม ให้คุณภาพของภาพที่ยอดเยี่ยมและคุณสมบัติขั้นสูงสำหรับการใช้งานทางคลินิกที่หลากหลาย.',
       keyFeatures: [
@@ -243,11 +235,6 @@ export const products: ProductType[] = [
           ],
         },
         {
-          title: 'การแสดงภาพ',
-          type: 'image',
-          altText: 'คุณสมบัติขั้นสูงของ Vinno D650',
-        },
-        {
           title: 'สรุป',
           type: 'paragraph',
           content: 'Vinno D650 เป็นตัวเลือกที่เหมาะสำหรับแผนกที่มีงานยุ่งที่ต้องการโซลูชันอัลตราซาวด์ที่มีประสิทธิภาพสูงและเชื่อถือได้.',
@@ -259,6 +246,8 @@ export const products: ProductType[] = [
       projectUrl: 'https://www.vinno.com/d650',
       longDescription: 'VINNO D650 เป็นระบบอัลตราซาวด์แบบรถเข็นที่ออกแบบมาเพื่อมอบประสิทธิภาพที่เหนือกว่าและคุณสมบัติขั้นสูงสำหรับการวินิจฉัยที่ครอบคลุม ด้วยแพลตฟอร์มที่ยืดหยุ่นและอินเทอร์เฟซที่ใช้งานง่าย จึงเหมาะสำหรับแผนกต่างๆ เช่น สูติศาสตร์, รังสีวิทยา, และโรคหัวใจ',
     },
+    partnerId: 'synapse',
+    categoryId: 'it-solutions',
   },
   {
     id: 'vinno-v5', // Corrected slug
@@ -277,11 +266,6 @@ export const products: ProductType[] = [
       applications: [],
       sectionsContent: [
         {
-          title: 'Vinno V5 ในการใช้งานจริง',
-          type: 'image',
-          altText: 'การใช้งาน Vinno V5',
-        },
-        {
           title: 'ประสิทธิภาพและการทำงาน',
           type: 'paragraph',
           content: 'ค้นพบประสิทธิภาพและการทำงานของ Vinno V5 สำหรับการปฏิบัติงานของคุณ.',
@@ -293,6 +277,8 @@ export const products: ProductType[] = [
       projectUrl: 'https://www.vinno.com/v5',
       longDescription: 'VINNO V5 เป็นเครื่องอัลตราซาวด์แบบพกพาที่ผสมผสานประสิทธิภาพเข้ากับการออกแบบที่กะทัดรัด เหมาะสำหรับสถานการณ์ที่ต้องการความคล่องตัวสูง เช่น การตรวจนอกสถานที่ หรือในพื้นที่จำกัด มอบภาพคุณภาพสูงและฟังก์ชันที่จำเป็นสำหรับการวินิจฉัยที่แม่นยำ',
     },
+    partnerId: 'samsung',
+    categoryId: 'it-solutions',
   },
   {
     id: 'vinno-e20', // Corrected slug
@@ -311,11 +297,6 @@ export const products: ProductType[] = [
       applications: [],
       sectionsContent: [
         {
-          title: 'อินเทอร์เฟซขั้นสูง',
-          type: 'image',
-          altText: 'อินเทอร์เฟซขั้นสูงของ Vinno E20',
-        },
-        {
           title: 'การกำหนดมาตรฐานใหม่',
           type: 'paragraph',
           content: 'Vinno E20 กำหนดมาตรฐานใหม่สำหรับการวินิจฉัยด้วยอัลตราซาวด์ที่มีประสิทธิภาพและแม่นยำ.',
@@ -327,6 +308,8 @@ export const products: ProductType[] = [
       projectUrl: 'https://www.vinno.com/e20',
       longDescription: 'VINNO E20 เป็นระบบอัลตราซาวด์ที่ล้ำสมัยซึ่งโดดเด่นด้วยการผสมผสานประสิทธิภาพที่แข็งแกร่งเข้ากับอินเทอร์เฟซที่ใช้งานง่าย มอบภาพวินิจฉัยคุณภาพสูงและฟังก์ชันที่หลากหลายเพื่อตอบสนองความต้องการที่เปลี่ยนแปลงไปของเวชปฏิบัติสมัยใหม่',
     },
+    partnerId: 'ge',
+    categoryId: 'it-solutions',
   },
   {
     id: 'vinno-d300', // Corrected slug
@@ -345,11 +328,6 @@ export const products: ProductType[] = [
       applications: [],
       sectionsContent: [
         {
-          title: 'ความเรียบง่ายและความน่าเชื่อถือ',
-          type: 'image',
-          altText: 'ความเรียบง่ายของ Vinno D300',
-        },
-        {
           title: 'โซลูชันที่เชื่อถือได้',
           type: 'paragraph',
           content: 'สำหรับโซลูชันอัลตราซาวด์ที่เชื่อถือได้และให้ผลลัพธ์ที่สม่ำเสมอ เลือก Vinno D300.',
@@ -361,5 +339,29 @@ export const products: ProductType[] = [
       projectUrl: 'https://www.vinno.com/d300',
       longDescription: 'VINNO D300 เป็นระบบอัลตราซาวด์ที่ออกแบบมาเพื่อความน่าเชื่อถือและประสิทธิภาพในการวินิจฉัยประจำวัน มอบภาพคุณภาพสูงและฟังก์ชันการใช้งานที่จำเป็นในแพ็คเกจที่ใช้งานง่าย เหมาะสำหรับคลินิกและโรงพยาบาลที่ต้องการโซลูชั่นอัลตราซาวด์ที่คุ้มค่า',
     },
+    partnerId: 'vinno',
+    categoryId: 'it-solutions',
   },
+];
+
+// ******** นี่คือ partners array ********
+export const partners = [
+    { id: 'all', name: 'ทั้งหมด', logo: '/images/logos_partner/all_logo.png' }, // สำหรับแสดงทั้งหมด
+    { id: 'fujifilm', name: 'Fujifilm', logo: '/images/logos_partner/fujifilm_logo.png' },
+    { id: 'mbits', name: 'Mbits', logo: '/images/logos_partner/mbits_logo.png' },
+    { id: 'mindray', name: 'Mindray', logo: '/images/logos_partner/mindray_logo.png' },
+    { id: 'samsung', name: 'Samsung', logo: '/images/logos_partner/samsung_logo.png' },
+    { id: 'synapse', name: 'Synapse', logo: '/images/logos_partner/synapse_logo.png' },
+    { id: 'vieworks', name: 'Vieworks', logo: '/images/logos_partner/vieworks_logo.png' },
+    { id: 'vinno', name: 'VINNO Healthcare', logo: '/images/logos_partner/vinno_logo.png' }, // เพิ่ม VINNO
+    { id: 'ge', name: 'GE Healthcare', logo: '/images/logos_partner/ge_logo.png' }, // เพิ่ม GE
+    // เพิ่ม partner อื่นๆ ที่คุณมี
+];
+
+// ******** นี่คือ categories array ********
+export const categories: CategoryType[] = [
+    { id: 'all', name: 'ทั้งหมด' },
+    { id: 'radiology', name: 'Radiology & Imaging Systems' },
+    { id: 'it-solutions', name: 'Health Care IT Solutions' },
+    // เพิ่มหมวดหมู่อื่นๆ ที่คุณมี
 ];

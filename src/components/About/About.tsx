@@ -1,3 +1,4 @@
+// components/About/About.tsx
 "use client"
 
 import { motion } from "framer-motion"
@@ -19,9 +20,9 @@ const About = () => {
           }}
           className="text-center md:text-left md:w-1/2 space-y-4 mb-8 md:mb-0"
         >
-          <h1 className="text-2xl md:text-4xl">WHY JF ADVANCE MED</h1>
+          <h1 className="text-2xl md:text-4xl font-medium">WHY JF ADVANCE MED</h1>
           <p>J.F. Advanced caused by the appreciation of the benefits and opportunities. Business Medical At the time the company was established (in the year.. 2537) there is no company that is. Thailand is a leading supplier Nationality And medical services for the X-ray department and the Company is a major change in the year.. Since 2544</p>
-          <a href="#" className="text-blue-600 hover:underline"> Read More</a>
+          <a href="#" className="text-blue-600 hover:underline">Read More</a>
         </motion.div>
 
         {/* ฝั่งขวา: Image */}

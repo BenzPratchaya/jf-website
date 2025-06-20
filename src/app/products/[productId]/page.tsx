@@ -171,7 +171,7 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
 
         {/* NEW SECTION: Related Products Slider Component */}
         <div className="container mx-auto px-4"> {/* Ensure container matches general page container */}
-            <RelatedProductsSlider products={relatedProducts} />
+             <RelatedProductsSlider products={relatedProducts} />
         </div>
       </section>
       <Footer />

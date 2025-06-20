@@ -8,10 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Leader = () => {
 
-  const Img1 = "/images/avatar/lead1.jpg"
-  const Img2 = "/images/avatar/lead2.jpg"
-  const Img3 = "/images/avatar/lead3.jpg"
-  const Img4 = "/images/avatar/lead4.jpg"
+  const Img1 = "/images/leads/lead1.jpg"
+  const Img2 = "/images/leads/lead2.jpg"
+  const Img3 = "/images/leads/lead3.jpg"
+  const Img4 = "/images/leads/lead4.jpg"
 
   interface SocialLink {
     icon: IconDefinition;

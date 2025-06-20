@@ -4,10 +4,15 @@ import React from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 
-// ******** Import จากไฟล์ data ใหม่ ********
-import { products, ProductType } from '@/data/products'; // ปรับ Path ตามที่คุณสร้าง
+// Import ProductType เท่านั้น
+import { ProductType } from '@/data/products';
 
-const Product = () => {
+// KEY CHANGE: คอมโพเนนต์ Product จะรับ productsToShow เป็น prop
+interface ProductProps {
+  productsToShow: ProductType[]; // รับ array ของสินค้าที่จะแสดง
+}
+
+const Product = ({ productsToShow }: ProductProps) => { // รับ prop productsToShow
   return (
     <section id="products" className="py-24 bg-white" >
       <motion.h2
@@ -21,14 +26,8 @@ const Product = () => {
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-          {products.map((product: ProductType, index: number) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-whiterounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col"
-            >
+          {productsToShow.map((product: ProductType, index: number) => (
+            <div key={index} className="bg-whiterounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col">
               <Link href={`/products/${product.id}`} className="flex-grow flex flex-col">
                 <div className="relative w-full flex justify-center items-center p-4">
                   <img
@@ -49,7 +48,7 @@ const Product = () => {
                   </span>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

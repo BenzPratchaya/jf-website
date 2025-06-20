@@ -8,8 +8,16 @@ const kanit = Kanit({
   subsets: ["latin"],
   variable: "--font-kanit",
   display: "swap",
-  weight: "400"
+  weight: ["100", "200", "300", "400", "500", "600", "700"]
 });
+
+// font-thin = 100;
+// font-extralight = 200;
+// font-light = 300;
+// font-normal = 400;
+// font-medium = 500;
+// font-semibold = 600;
+// font-bold = 700;
 
 export const metadata: Metadata = {
   title: "Create Next App",

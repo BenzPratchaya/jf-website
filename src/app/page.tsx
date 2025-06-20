@@ -1,34 +1,25 @@
 import Navbar from "@/components/Navbar/Navbar";
 import Hero from "@/components/Hero/Hero";
-import Leader from "@/components/Leader/Leader";
 import About from "@/components/About/About";
-import LogoHospital from "@/components/LogoHospital/LogoHospital";
 import LogoPartner from "@/components/LogoPartner/LogoPartner";
+import LogoHospital from "@/components/LogoHospital/LogoHospital";
+import Leader from "@/components/Leader/Leader";
 import Product from "@/components/Product/Product";
-import { Footer } from "@/components/Footer/Footer";
 import Contact from "@/components/Contact/Contact";
+import { Footer } from "@/components/Footer/Footer";
+import { products } from "@/data/products";
 
 export default function Home() {
 
-  const bgImage: React.CSSProperties = {
-    backgroundImage: "url('/images/slides/hero-bg.jpg')",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    position: "relative",
-  }
 
   return (
     <>
-      <div className="overflow-x-hidden bg-branDark text-gray-800">
-        {/* foreground Content */}
+      <div className="overflow-x-hidden text-gray-800">
         <Navbar />
-        <div style={bgImage}>
-          <Hero />
-        </div> 
+        <Hero />
         <About />
         <LogoPartner /> 
-        <Product />
+        <Product productsToShow={products} />
         <LogoHospital />
         <Leader />
         <Contact />

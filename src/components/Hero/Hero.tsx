@@ -1,12 +1,22 @@
+// components/Hero/Hero.tsx
 "use client"
 
 import { motion } from "framer-motion"
 
+ const bgImage: React.CSSProperties = {
+    backgroundImage: "url('/images/slides/hero-bg.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    position: "relative",
+    backgroundAttachment: "fixed",
+  }
+
+
 const Hero = () => {
   return (
     <>
-      <section className="min-h-[900px] flex justify-center items-center">
-        {/* radial gradient section */}
+      <section style={bgImage} className="min-h-[600px] md:min-h-[700px] lg:min-h-[900px] flex justify-center items-center bg-fixed" >
+        {/* Overlay ไล่สีดำโปร่งแสง */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10" />
 
         {/* hero text section */}

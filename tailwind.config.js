@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         brandDark: "#0b0b0d",
-        bandBlue: "#125795"
+        brandBlue: "#125795"
       },
       container: {
         center: true,
