@@ -1,4 +1,4 @@
-// components/LogoPartner.tsx
+// components/LogoSlide/LogoPartner.tsx
 "use client"
 
 import React from "react"

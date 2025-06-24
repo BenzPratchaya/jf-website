@@ -1,4 +1,4 @@
-// components/LogoHospital.tsx
+// components/LogoSlide/LogoHospital.tsx
 "use client"
 
 import { motion } from "framer-motion"

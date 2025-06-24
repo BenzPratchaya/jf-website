@@ -1,23 +1,15 @@
-// src/components/Product/RelatedProductsSlider.tsx
-"use client"; // นี่คือ Client Component
+// components/Product/RelatedProductsSlider.tsx
+"use client";
 
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/navigation'; // ถ้าใช้ Navigation (ลูกศร)
-import 'swiper/css/pagination'; // ถ้าใช้ Pagination (จุด)
-
-// Import required modules (ถ้าใช้)
+import 'swiper/css/navigation'; // Navigation (ลูกศร)
+import 'swiper/css/pagination'; // Pagination (จุด)
 import { Navigation, Pagination, A11y } from 'swiper/modules';
-
-// Import ProductType
-import { ProductType } from '@/data/products'; // ตรวจสอบ Path ให้ถูกต้อง
+import { ProductType } from '@/data/products';
 
 interface RelatedProductsSliderProps {
   products: ProductType[]; // รับ array ของสินค้าที่เกี่ยวข้องเข้ามา

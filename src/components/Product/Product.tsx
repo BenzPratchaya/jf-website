@@ -1,8 +1,9 @@
+// components/Product/Product.tsx
 "use client"
 
 import React from "react"
-import { motion } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image";
 
 // Import ProductType เท่านั้น
 import { ProductType } from '@/data/products';
@@ -20,12 +21,14 @@ const Product = ({ productsToShow }: ProductProps) => { // รับ prop produc
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
           {productsToShow.map((product: ProductType, index: number) => (
-            <div key={index} className="bg-whiterounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col">
+            <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col">
               <Link href={`/products/${product.id}`} className="flex-grow flex flex-col">
                 <div className="relative w-full flex justify-center items-center p-4">
-                  <img
+                  <Image
                     src={product.image}
                     alt={product.name}
+                    width={400}
+                    height={300}
                     className="max-w-xs h-auto object-contain mx-auto"
                   />
                 </div>

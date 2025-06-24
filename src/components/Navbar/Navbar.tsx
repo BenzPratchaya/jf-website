@@ -10,7 +10,6 @@ import React from "react"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const MotionLink = motion(Link);
   const companyLogo = "/images/LOGO-JF.png"
   const navItemClasses = "whitespace-nowrap hover:underline text-base md:text-lg lg:text-xl p-2 font-light";
 
@@ -36,34 +35,50 @@ const Navbar = () => {
     <nav className="container h-16 sm:h-18 md:h-20 w-screen flex items-center justify-center relative z-50 bg-white bg-opacity-90 backdrop-blur-sm">
       <div className="container flex items-center justify-between w-full h-full px-4">
         {/* Logo Section (Left Side) */}
-        <MotionLink
-          variants={slideBottom(0.1)}
+        <motion.div
+          variants={slideBottom(0.1)} // ย้าย variants มาที่ motion.div
           initial="hidden"
           animate="visible"
           whileHover={{
             scale: 1.05,
             transition: { duration: 0.3, ease: "easeInOut" }
           }}
-          href={"/"}
-          onClick={() => setIsOpen(false)} // Close menu on logo click
         >
-          <Image
-            className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
-            priority={true}
-            src={companyLogo}
-            alt="J.F.Advance Med Co.,Ltd. Logo"
-            width={150}
-            height={50}
-          ></Image>
-        </MotionLink>
+          <Link href={"/"} onClick={() => setIsOpen(false)}> {/* Link อยู่ข้างใน */}
+            <Image
+              className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
+              priority={true}
+              src={companyLogo}
+              alt="J.F.Advance Med Co.,Ltd. Logo"
+              width={150}
+              height={50}
+            ></Image>
+          </Link>
+        </motion.div>
 
         {/* Desktop Navigation Links Section (Right Side) */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
-          <MotionLink variants={slideBottom(0.2)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/"}>Home</MotionLink>
-          <MotionLink variants={slideBottom(0.3)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#about"}>About</MotionLink> 
-          <MotionLink variants={slideBottom(0.4)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#services"}>Services</MotionLink> 
-          <MotionLink variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/products"}>Products</MotionLink>
-          <MotionLink variants={slideBottom(0.7)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses} href={"/#contact"}>Contact</MotionLink> 
+          <motion.div variants={slideBottom(0.2)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/"}>Home</Link>
+          </motion.div>
+          <motion.div variants={slideBottom(0.3)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/#about"}>About</Link>
+          </motion.div>
+          <motion.div variants={slideBottom(0.4)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/#services"}>Services</Link>
+          </motion.div>
+          <motion.div variants={slideBottom(0.5)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/products"}>Products</Link>
+          </motion.div>
+          <motion.div variants={slideBottom(0.6)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/#solution"}>Solution</Link>
+          </motion.div>
+          <motion.div variants={slideBottom(0.6)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/news"}>News</Link>
+          </motion.div>
+          <motion.div variants={slideBottom(0.7)} initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+            <Link href={"/#contact"}>Contact</Link>
+          </motion.div>
         </div>
 
         {/* Mobile Menu Button (Hamburger Icon / Close Icon) */}
@@ -101,8 +116,9 @@ const Navbar = () => {
                 { name: "Home", href: "/" },
                 { name: "About", href: "/#about" },
                 { name: "Services", href: "/#services" },
-                { name: "Product", href: "/#products" },
+                { name: "Product", href: "/products" },
                 { name: "Solution", href: "/#solution" },
+                { name: "News", href: "/news" },
                 { name: "Contact", href: "/#contact" },
               ].map((item, index) => (
                 <motion.li key={item.name} variants={listItemVariants} onClick={toggleMenu}>

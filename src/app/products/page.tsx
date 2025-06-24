@@ -1,4 +1,4 @@
-// src/app/partner/page.tsx
+// src/app/products/page.tsx
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer/Footer';
 import Product from '@/components/Product/Product';
 import { products, ProductType, partners, PartnerType, categories, CategoryType } from '@/data/products';
 
-export default function PartnerPage() {
+export default function ProductPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPartner, setSelectedPartner] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);

@@ -119,12 +119,12 @@ const Contact = () => {
                 <input
                   type="text"
                   placeholder="Subject"
-                  className="w-full p-3 border border-gray-300rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent"
                 />
                 <textarea
                   placeholder="Message"
                   rows={5}
-                  className="w-full p-3 border border-gray-300rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent resize-y"
+                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent resize-y"
                 ></textarea>
                 <button
                   type="submit"
