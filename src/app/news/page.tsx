@@ -61,12 +61,12 @@ export default function NewsPage() {
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             {newsItems.length === 0 ? (
-                <p className="text-center text-xl text-gray-600">ไม่พบข่าวสารในขณะนี้</p>
+                <p className="text-center text-xl text-gray-600">No news found at this time.</p>
             ) : (
                 // **KEY CHANGE: กำหนด ref ให้กับ div ที่เป็น Grid Container**
-                <div ref={newsGridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <div ref={newsGridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
                 {currentNewsItems.map((item: NewsItemType) => (
-                  <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group">
+                  <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-105">
                     {/* News Image */}
                     <div className="relative w-full h-48 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
                       <Image
@@ -74,7 +74,7 @@ export default function NewsPage() {
                         alt={item.title}
                         width={400} 
                         height={200}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300"
                       />
                     </div>
 
