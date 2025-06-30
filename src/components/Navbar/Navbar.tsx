@@ -97,7 +97,7 @@ const Navbar = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed top-0 left-0 h-screen w-screen bg-blue-950 bg-opacity-90 flex flex-col items-center justify-center space-y-8 z-40 md:hidden"
+            className="fixed top-0 h-screen w-screen bg-blue-950 bg-opacity-90 flex flex-col items-center justify-center space-y-8 z-40 md:hidden"
           >
             <motion.ul className="space-y-6 text-2xl"
               variants={{
