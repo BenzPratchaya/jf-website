@@ -1,0 +1,33 @@
+// backend/models/NewsItem.js
+
+import mongoose from 'mongoose';
+
+const NewsContentBlockSchema = new mongoose.Schema({
+  ncb_title: { type: String, required: false }, // ตรงกับ ncb_title
+  ncb_type: { type: String, enum: ['paragraph', 'list', 'image', 'heading'], required: true }, // ตรงกับ ncb_type
+  ncb_content: { type: String, required: false }, // ตรงกับ ncb_content
+  ncb_imageUrl: { type: String, required: false }, // ตรงกับ ncb_imageUrl
+  ncb_items: { type: [String], required: false }, // ตรงกับ ncb_items
+  ncb_level: { type: String, enum: ['h2', 'h3'], required: false }, // ตรงกับ ncb_level
+}, { _id: false }); // ไม่สร้าง _id สำหรับ sub-document block
+
+
+const NewsItemDetailsSchema = new mongoose.Schema({
+  nid_contentBlocks: { type: [NewsContentBlockSchema], required: true }, 
+  nid_author: { type: String, required: false }, 
+  nid_relatedLinks: { type: [{ text: String, url: String }], required: false }, 
+}, { _id: false }); // _id: false สำหรับ Nested Schema
+
+
+const NewsSchema = new mongoose.Schema({
+  nit_id: { type: String, required: true, unique: true }, 
+  nit_image: { type: String, required: true }, 
+  nit_category: { type: String, required: true }, 
+  nit_date: { type: String, required: true }, 
+  nit_title: { type: String, required: true }, 
+  nit_description: { type: String, required: true }, 
+  nit_link: { type: String, required: true }, 
+  nit_details: { type: NewsItemDetailsSchema, required: true }, 
+}, { timestamps: true });
+
+export default mongoose.model('News', NewsSchema);
