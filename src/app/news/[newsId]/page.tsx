@@ -17,30 +17,30 @@ interface NewsDetailPageProps {
 
 const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
   const { newsId } = params;
-  const newsItem = newsItems.find(item => item.id === newsId);
+  const newsItem = newsItems.find(item => item.nit_id === newsId);
 
-  if (!newsItem || !newsItem.details) {
+  if (!newsItem || !newsItem.nit_details) {
     notFound();
   }
 
-  const newsDetails: NewsItemDetails = newsItem.details;
+  const newsDetails: NewsItemDetails = newsItem.nit_details;
 
   // Helper Function สำหรับ Render แต่ละ Content Block
   const renderContentBlock = (block: NewsContentBlock, blockIndex: number) => {
-    switch (block.type) {
+    switch (block.ncb_type) {
       case 'paragraph':
         return (
           <p key={blockIndex} className={`text-gray-700 leading-relaxed mb-4 `}>
-            {block.content && <span dangerouslySetInnerHTML={{ __html: block.content }} />}
+            {block.ncb_content && <span dangerouslySetInnerHTML={{ __html: block.ncb_content }} />}
           </p>
         );
       case 'image':
         return (
           <div key={blockIndex} className={`my-6 flex justify-center`}>
-            {block.imageUrl && (
+            {block.ncb_image && (
               <Image
-                src={block.imageUrl}
-                alt={newsItem.title}
+                src={block.ncb_image}
+                alt={newsItem.nit_title}
                 width={800}
                 height={500}
                 className="rounded-lg shadow-md max-w-full h-auto object-cover"
@@ -49,17 +49,17 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
           </div>
         );
       case 'heading':
-        if (block.level === 'h2') {
-          return <h2 key={blockIndex} className={`text-2xl md:text-3xl font-bold text-gray-900 mt-8 mb-4`}>{block.content}</h2>;
-        } else if (block.level === 'h3') {
+        if (block.ncb_level === 'h2') {
+          return <h2 key={blockIndex} className={`text-2xl md:text-3xl font-bold text-gray-900 mt-8 mb-4`}>{block.ncb_content}</h2>;
+        } else if (block.ncb_level === 'h3') {
 
-          return <h3 key={blockIndex} className={`text-xl md:text-2xl font-semibold text-gray-900 mt-6 mb-3`}>{block.content}</h3>;
+          return <h3 key={blockIndex} className={`text-xl md:text-2xl font-semibold text-gray-900 mt-6 mb-3`}>{block.ncb_content}</h3>;
         }
         return null;
       case 'list':
         return (
           <ul key={blockIndex} className={`list-disc list-inside space-y-2 text-gray-700 mb-4`}>
-            {block.items?.map((item, i) => (
+            {block.ncb_items?.map((item, i) => (
               <li key={i}>{item}</li>
             ))}
           </ul>
@@ -86,7 +86,7 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
                 <span className="mx-2">/</span>
               </li>
               <li className="text-gray-800 font-semibold line-clamp-1 max-w-xs sm:max-w-md">
-                {newsItem.title}
+                {newsItem.nit_title}
               </li>
             </ol>
           </nav>
@@ -96,8 +96,8 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
             {/* Main Image */}
             <div className="mb-8 flex justify-center">
               <Image
-                src={newsItem.imageUrl}
-                alt={newsItem.title}
+                src={newsItem.nit_image}
+                alt={newsItem.nit_title}
                 width={1000}
                 height={600}
                 className="rounded-lg object-cover w-full h-auto max-h-[600px]"
@@ -107,12 +107,12 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
 
             {/* Title and Meta Info (Author/Date/Category) */}
             <h1 className="text-2xl md:text-3xl text-gray-900 mb-4 leading-tight">
-              {newsItem.title}
+              {newsItem.nit_title}
             </h1>
             <div className="flex justify-between items-start text-sm text-gray-500 mb-6 border-b pb-4">
               {/* Left Side: Author (with Logo) and Date */}
               <div className="flex flex-col items-start">
-                {newsDetails.author && (
+                {newsDetails.nid_author && (
                   <div className="flex items-center gap-2 mb-1">
                     <Image
                       src={JF_LOGO_PATH}
@@ -121,41 +121,24 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
                       height={72}
                       className="rounded-full object-cover"
                     />
-                    <span className="text-gray-600 font-medium">{newsDetails.author}</span>
+                    <span className="text-gray-600 font-medium">{newsDetails.nid_author}</span>
                   </div>
                 )}
-                <span className="text-gray-500 text-xs md:text-sm">{newsItem.date}</span>
+                <span className="text-gray-500 text-xs md:text-sm">{newsItem.nit_date}</span>
               </div>
 
               {/* Right Side: Category Tag */}
               <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-semibold self-start">
-                {newsItem.category}
+                {newsItem.nit_category}
               </span>
             </div>
 
             {/* Full Content using contentBlocks */}
             <div className="text-gray-700 leading-relaxed">
-              {newsDetails.contentBlocks.map((block, index) => (
+              {newsDetails.nid_contentBlocks.map((block, index) => (
                 renderContentBlock(block, index)
               ))}
-            </div>
-            
-
-            {/* Related Links (Optional) */}
-            {newsDetails.relatedLinks && newsDetails.relatedLinks.length > 0 && (
-              <div className="mt-8 pt-4 border-t border-gray-200">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">Related links:</h3>
-                <ul className="list-disc list-inside space-y-1 text-gray-700">
-                  {newsDetails.relatedLinks.map((link, index) => (
-                    <li key={index}>
-                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                        {link.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            </div>           
           </div>
         </div>
       </main>

@@ -50,13 +50,13 @@ const RelatedProductsSlider = ({ products }: RelatedProductsSliderProps) => {
           className="mySwiper pb-10" // Add some padding for pagination dots
         >
           {products.map((p, idx) => (
-            <SwiperSlide key={p.id || idx}> {/* ใช้ p.id เป็น key */}
-              <Link href={p.link} className="block group">
+            <SwiperSlide key={p.pdt_id || idx}> {/* ใช้ p.id เป็น key */}
+              <Link href={p.pdt_link} className="block group">
                 <div className="bg-white mb-10 rounded-lg shadow-md overflow-hidden transition-transform duration-300 group-hover:scale-105 flex flex-col h-full">
                   <div className="relative w-full flex justify-center items-center p-4">
                     <Image
-                      src={p.image}
-                      alt={p.name}
+                      src={p.pdt_image}
+                      alt={p.pdt_name}
                       width={200} // Adjust based on common related product image size
                       height={200} // Adjust based on common related product image size
                       className="max-w-xs h-auto object-contain mx-auto"
@@ -64,7 +64,7 @@ const RelatedProductsSlider = ({ products }: RelatedProductsSliderProps) => {
                   </div>
                   <div className="p-4 flex flex-col flex-grow">
                     <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                      {p.name}
+                      {p.pdt_name}
                     </h3>
                   </div>
                 </div>

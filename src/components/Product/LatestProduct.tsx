@@ -29,11 +29,11 @@ const LatestProduct = ({ productsToShow }: ProductProps) => { // รับ prop 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
           {latestProducts.map((product: ProductType, index: number) => (
             <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col">
-              <Link href={`/products/${product.id}`} className="flex-grow flex flex-col">
+              <Link href={`/products/${product.pdt_id}`} className="flex-grow flex flex-col">
                 <div className="relative w-full flex justify-center items-center p-4">
                   <Image
-                    src={product.image}
-                    alt={product.name}
+                    src={product.pdt_image}
+                    alt={product.pdt_name}
                     width={400}
                     height={300}
                     className="max-w-xs h-auto object-contain mx-auto"
@@ -41,11 +41,11 @@ const LatestProduct = ({ productsToShow }: ProductProps) => { // รับ prop 
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                    {product.name}
+                    {product.pdt_name}
                   </h3>
                   {/* แสดง description ไม่เกิน 3 บรรทัด หรือตามที่คุณต้องการ */}
                   <p className="text-gray-600 text-sm mb-auto line-clamp-3">
-                    {product.description}
+                    {product.pdt_description}
                   </p>
                   <span className="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">
                     Learn More &rarr;

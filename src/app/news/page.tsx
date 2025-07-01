@@ -66,12 +66,12 @@ export default function NewsPage() {
                 // **KEY CHANGE: กำหนด ref ให้กับ div ที่เป็น Grid Container**
                 <div ref={newsGridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
                 {currentNewsItems.map((item: NewsItemType) => (
-                  <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-105">
+                  <div key={item.nit_id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-105">
                     {/* News Image */}
                     <div className="relative w-full h-48 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
                       <Image
-                        src={item.imageUrl}
-                        alt={item.title}
+                        src={item.nit_image}
+                        alt={item.nit_title}
                         width={400} 
                         height={200}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-300"
@@ -81,18 +81,18 @@ export default function NewsPage() {
                     {/* News Content */}
                     <div className="p-4 flex flex-col flex-grow">
                       <div className="flex justify-between items-center text-xs font-semibold text-gray-500 mb-2">
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{item.category}</span>
-                        <span>{item.date}</span>
+                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{item.nit_category}</span>
+                        <span>{item.nit_date}</span>
                       </div>
                       
                       <h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                        {item.title}
+                        {item.nit_title}
                       </h2>
                       <p className="text-sm text-gray-600 mb-4 flex-grow line-clamp-3">
-                        {item.description}
+                        {item.nit_description}
                       </p>
                       
-                      <Link href={item.link} className="text-blue-600 font-medium text-sm hover:underline mt-auto">
+                      <Link href={item.nit_link} className="text-blue-600 font-medium text-sm hover:underline mt-auto">
                         Read more
                       </Link>
                     </div>

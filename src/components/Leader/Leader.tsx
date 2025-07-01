@@ -2,7 +2,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { slideUp } from "@/utility/animation"
 import Image from "next/image"
 import { IconDefinition, faTwitter, faFacebookF, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -100,7 +99,6 @@ const Leader = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-4 xl:px-14">
           {leaderData.map((item) => (
             <motion.div
-              variants={slideUp(item.delay)}
               initial="hidden"
               animate="visible"
               whileHover={{

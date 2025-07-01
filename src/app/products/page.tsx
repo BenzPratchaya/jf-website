@@ -1,61 +1,152 @@
 // src/app/products/page.tsx
-"use client";
+"use client"; // Client Component เพราะมี State และ Interaction
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
-import Product from '@/components/Product/Product';
-import { products, ProductType, partners, PartnerType, categories, CategoryType } from '@/data/products';
 
-export default function ProductPage() {
+import Product from '@/components/Product/Product';
+
+// **KEY CHANGE: Import แค่ Type Definitions จาก src/data/products.ts**
+// ไม่ต้อง Import products, partners, categories array แล้ว
+import { ProductType, PartnerType, CategoryType } from '@/data/products'; 
+
+export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPartner, setSelectedPartner] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [displayedPartners, setDisplayedPartners] = useState<PartnerType[]>([]); 
 
-  const partnersBgImageStyle: React.CSSProperties = {
-    backgroundImage: "url('/images/hero/hero_bg1.jpg')",
+  // **KEY CHANGE: State สำหรับข้อมูลที่ดึงมาจาก Backend**
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
+  const [allPartners, setAllPartners] = useState<PartnerType[]>([]);
+  const [allCategories, setAllCategories] = useState<CategoryType[]>([]);
+
+  // **KEY CHANGE: State สำหรับ Loading และ Error**
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Style สำหรับ Background Image ของส่วนหัว Products Page
+  const productsPageBgImageStyle: React.CSSProperties = { // เปลี่ยนชื่อตัวแปรให้เหมาะสมขึ้น
+    backgroundImage: "url('/images/hero/hero_bg1.jpg')", // Path รูปภาพ
   };
 
+  // **KEY CHANGE: useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        // Fetch Products
+        const productsRes = await fetch('http://localhost:5000/api/products');
+        if (!productsRes.ok) throw new Error(`Failed to fetch products: ${productsRes.statusText}`);
+        const productsData: ProductType[] = await productsRes.json();
+        setAllProducts(productsData);
+
+        // Fetch Partners
+        const partnersRes = await fetch('http://localhost:5000/api/partners');
+        if (!partnersRes.ok) throw new Error(`Failed to fetch partners: ${partnersRes.statusText}`);
+        const partnersData: PartnerType[] = await partnersRes.json();
+        setAllPartners(partnersData);
+
+        // Fetch Categories
+        const categoriesRes = await fetch('http://localhost:5000/api/categories');
+        if (!categoriesRes.ok) throw new Error(`Failed to fetch categories: ${categoriesRes.statusText}`);
+        const categoriesData: CategoryType[] = await categoriesRes.json();
+        setAllCategories(categoriesData);
+
+      } catch (err) {
+        console.error("Error fetching data from backend:", err);
+        setError("Failed to load products. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
+
+  // **KEY CHANGE: useEffect สำหรับ Logic การกรอง (ใช้ allProducts, allPartners, allCategories)**
+  useEffect(() => {
+    if (isLoading || error) return; // ไม่กรองถ้ายังโหลดอยู่หรือมี Error
+
     console.log('Filtering Logic triggered:', { selectedCategory, selectedPartner });
     
-    let currentFilteredProducts: ProductType[] = products;
+    let currentFilteredProducts: ProductType[] = allProducts; // ใช้ allProducts ที่ดึงมา
     let relevantPartnerIds: Set<string> = new Set(); 
 
+    // 1. กรองสินค้าตาม Category ก่อน
     if (selectedCategory !== 'all') {
-      currentFilteredProducts = currentFilteredProducts.filter(product => product.categoryId === selectedCategory);
+      currentFilteredProducts = currentFilteredProducts.filter(product => product.pdt_categoryId === selectedCategory);
     }
 
+    // 2. ดึง Partner ID ที่เกี่ยวข้องจากสินค้าที่ถูกกรองแล้ว
     currentFilteredProducts.forEach(product => {
-      relevantPartnerIds.add(product.partnerId);
+      relevantPartnerIds.add(product.pdt_partnerId);
     });
 
-    // KEY CHANGE: displayedPartners จะต้องรวม 'all' เสมอ (ไม่ว่าจะเลือก Category ไหน)
-    // และกรอง Partner อื่นๆ ตาม relevantPartnerIds
-    const filteredPartnersForDisplay = partners.filter(p => relevantPartnerIds.has(p.id) || p.id === 'all');
+    // 3. กรองรายชื่อ Partner ที่จะแสดงผล
+    // ต้องรวม 'all' partner เข้ามาเสมอ
+    const filteredPartnersForDisplay = allPartners.filter(p => relevantPartnerIds.has(p.pnt_id) || p.pnt_id === 'all');
     setDisplayedPartners(filteredPartnersForDisplay);
 
+    // 4. กรองสินค้าอีกครั้งด้วย Partner ที่ถูกเลือก (จาก currentFilteredProducts)
     if (selectedPartner !== 'all') {
-      currentFilteredProducts = currentFilteredProducts.filter(product => product.partnerId === selectedPartner);
+      currentFilteredProducts = currentFilteredProducts.filter(product => product.pdt_partnerId === selectedPartner);
     }
 
     setFilteredProducts(currentFilteredProducts);
     console.log('Filtering Result: Filtered products count =', currentFilteredProducts.length);
     
-  }, [selectedCategory, selectedPartner, products]);
+  }, [selectedCategory, selectedPartner, allProducts, allPartners, allCategories, isLoading, error]); // Dependencies อัปเดต
+
+
+  // **KEY CHANGE: แสดง Loading/Error State**
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main className="bg-gray-100 py-24 text-center min-h-screen">
+          <h1 className="text-4xl font-bold text-gray-800">กำลังโหลดสินค้า...</h1>
+          <p className="text-lg text-gray-600 mt-4">กรุณารอสักครู่</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <main className="bg-red-100 py-24 text-center min-h-screen">
+          <h1 className="text-4xl font-bold text-red-800">เกิดข้อผิดพลาดในการโหลดข้อมูล</h1>
+          <p className="text-lg text-red-600 mt-4">{error}</p>
+          <p className="text-md text-red-500 mt-2">โปรดตรวจสอบว่า Backend Server ทำงานอยู่</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
 
   return (
     <>
       <Navbar />
 
       <main>
-        <section className="container text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={partnersBgImageStyle}>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-200">Our Products</h1>
-            <p className="text-lg text-gray-300 mt-2">JF Med is a manufacturer and suppliers of a wide range of high quality medical, surgical and hospital products. Our products 
-            are ISO 9001 and CE certified and we have been recognized as Star Export House by Government of Thailand. We supply our 
-            products in more than 80 countries worldwide.</p>
+        {/* ส่วนหัวข้อหน้า Products - มี Background Image แบบ Fixed */}
+        <section className="container text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={productsPageBgImageStyle}>
+            {/* Overlay สีดำโปร่งแสง (เพื่อให้ข้อความอ่านง่าย) */}
+            <div className="absolute inset-0 bg-black opacity-50 z-0"></div> 
+            {/* ข้อความอยู่เหนือ Overlay */}
+            <div className="relative z-10">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-200">Our Products</h1>
+              <p className="text-lg text-gray-300 mt-2">JF Med is a manufacturer and suppliers of a wide range of high quality medical, surgical and hospital products. Our products 
+              are ISO 9001 and CE certified and we have been recognized as Star Export House by Government of Thailand. We supply our 
+              products in more than 80 countries worldwide.</p>
+            </div>
         </section>
 
         {/* ส่วนเลือก Category */}
@@ -63,17 +154,18 @@ export default function ProductPage() {
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Categories</h2>
             <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-              {categories.map((category: CategoryType) => (
+              {/* ใช้ allCategories ที่ดึงมาจาก Backend */}
+              {allCategories.map((category: CategoryType) => (
                 <button
-                  key={category.id}
+                  key={category.cgt_id}
                   onClick={() => {
-                    setSelectedCategory(category.id);
+                    setSelectedCategory(category.cgt_id);
                     setSelectedPartner('all'); // Reset partner selection when category changes
                   }}
                   className={`px-6 py-3 rounded-full border-2 transition-all duration-200 hover:scale-110 ease-in-out
-                             ${selectedCategory === category.id ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
+                             ${selectedCategory === category.cgt_id ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
                 >
-                  {category.name}
+                  {category.cgt_name}
                 </button>
               ))}
             </div>
@@ -84,38 +176,41 @@ export default function ProductPage() {
         {/* ส่วนเลือก Partner */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-8">Filter By Partner</h2>
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
-              {/* KEY CHANGE: Simplified conditional rendering for Partner blocks */}
               {displayedPartners.map((partner: PartnerType) => {
-                const isPartnerSelected = selectedPartner === partner.id;
+                const isPartnerSelected = selectedPartner === partner.pnt_id;
 
-                if (partner.id === 'all') { // ถ้าเป็น Partner "all" เสมอ --> ให้เป็นปุ่ม
+                if (partner.pnt_id === 'all') {
                   return (
                     <button 
-                      key={partner.id}
-                      onClick={() => setSelectedPartner(partner.id)}
+                      key={partner.pnt_id}
+                      onClick={() => setSelectedPartner(partner.pnt_id)}
                       className={`px-6 py-3 rounded-full border-2 transition-all duration-200 ease-in-out hover:scale-110
-                                 ${isPartnerSelected ? 'border-blue-600 shadow-md bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
+                                 ${isPartnerSelected ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
                     >
-                      {partner.name}
+                      {partner.pnt_name}
                     </button>
                   );
-                } else { // สำหรับ Partner อื่นๆ ทั้งหมด --> เป็นบล็อกโลโก้ (แบบเดิม)
+                } else {
                   return (
                     <div
-                      key={partner.id}
-                      onClick={() => setSelectedPartner(partner.id)}
+                      key={partner.pnt_id}
+                      onClick={() => setSelectedPartner(partner.pnt_id)}
                       className={`cursor-pointer p-3 md:p-4 rounded-lg border-2 transition-all duration-200 ease-in-out hover:scale-110
                                  ${isPartnerSelected ? 'border-blue-600 shadow-2xl bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
                                  w-28 h-28 flex flex-col items-center justify-center text-center overflow-hidden`}
                     >
                       <Image
-                        src={partner.logo}
-                        alt={partner.name + ' Logo'}
+                        src={partner.pnt_logo}
+                        alt={partner.pnt_name + ' Logo'}
                         width={80} 
                         height={80}
                         className="object-contain"
                       />
+                      <p className={`text-sm font-medium text-gray-700 text-center mt-2 ${isPartnerSelected ? 'font-semibold text-blue-800' : ''}`}>
+                        {partner.pnt_name}
+                      </p>
                     </div>
                   );
                 }

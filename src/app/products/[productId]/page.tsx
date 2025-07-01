@@ -24,31 +24,31 @@ interface ProductDetailPageProps {
 
 const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
   const productId = params.productId;
-  const product = products.find(p => p.id === productId);
+  const product = products.find(p => p.pdt_id === productId);
 
-  if (!product || !product.details) {
+  if (!product || !product.pdt_details) {
     console.error(`Error: ไม่พบสินค้าที่มี ID '${productId}' หรือข้อมูล details ไม่สมบูรณ์`);
     notFound();
   }
 
-  const productDetails: ProductDetails = product.details; 
+  const productDetails: ProductDetails = product.pdt_details; 
 
   // Helper function to render each section of the details (NO DARK MODE)
   const renderDetailSection = (section: ProductDetailSection, index: number) => {
-    switch (section.type) {
+    switch (section.pds_type) {
       case 'paragraph':
         return (
           <div key={index} className="mb-4">
-            {section.title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.title}</h3>}
-            <p className="text-gray-700 leading-relaxed">{section.content}</p>
+            {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
+            <p className="text-gray-700 leading-relaxed">{section.pds_content}</p>
           </div>
         );
       case 'list':
         return (
           <div key={index} className="mb-4">
-            {section.title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.title}</h3>}
+            {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
             <ul className="list-disc list-inside space-y-2 text-gray-700">
-              {section.items?.map((item, i) => (
+              {section.pds_items?.map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
             </ul>
@@ -57,15 +57,15 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
       case 'image':
         return (
           <div key={index} className="mb-6 flex justify-center">
-            {section.title && <h3 className="sr-only">{section.title}</h3>}
+            {section.pds_title && <h3 className="sr-only">{section.pds_title}</h3>}
           </div>
         );
       case 'grid':
         return (
           <div key={index} className="mb-6">
-            {section.title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.title}</h3>}
+            {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              {section.gridItems?.map((gridItem, i) => (
+              {section.pds_grid?.map((gridItem, i) => (
                 <div key={i} className="bg-gray-50 p-4 rounded-lg shadow-sm">
                   <h4 className="text-xl font-semibold mb-2 text-gray-800">{gridItem.title}</h4>
                   <ul className="list-disc list-inside space-y-1 text-gray-700">
@@ -85,7 +85,7 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
 
 
   // กรองสินค้าที่เกี่ยวข้อง (ไม่รวมสินค้าปัจจุบัน)
-  const relatedProducts = products.filter(p => p.id !== productId && p.details);
+  const relatedProducts = products.filter(p => p.pdt_id !== productId && p.pdt_details);
 
   return (
     <>
@@ -98,8 +98,8 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
               {/* Product Image Section */}
               <div>
                 <Image
-                  src={product.image}
-                  alt={product.name}
+                  src={product.pdt_image}
+                  alt={product.pdt_name}
                   width={800}
                   height={600}
                   className="max-w-full h-auto object-contain rounded-lg"
@@ -110,20 +110,20 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
               {/* Product Information Section (Right Side on large screens) */}
               <div>
                 <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
-                  {product.name}
+                  {product.pdt_name}
                 </h1>
                 <p className="text-lg text-gray-700 mb-6">
-                  {product.description}
+                  {product.pdt_description}
                 </p>
 
                 {/* Project Information Box */}
                 <div className="bg-gray-50 p-6 rounded-lg shadow-sm mb-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">Project Information</h3>
                   <ul className="text-gray-700 text-base space-y-2">
-                    <li><strong>Category:</strong> {productDetails.category}</li>
-                    <li><strong>Client:</strong> {productDetails.client}</li>
-                    <li><strong>Project date:</strong> {productDetails.projectDate}</li>
-                    <li><strong>Project URL:</strong> <a href={productDetails.projectUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{productDetails.projectUrl.replace(/(^\w+:|^)\/\//, '')}</a></li>
+                    <li><strong>Category:</strong> {productDetails.pdd_category}</li>
+                    <li><strong>Client:</strong> {productDetails.pdd_client}</li>
+                    <li><strong>Project date:</strong> {productDetails.pdd_projectDate}</li>
+                    <li><strong>Project URL:</strong> <a href={productDetails.pdd_projectUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{productDetails.pdd_projectUrl.replace(/(^\w+:|^)\/\//, '')}</a></li>
                   </ul>
                 </div>
 
@@ -131,36 +131,36 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
                 <div className="bg-blue-100 p-4 rounded-lg text-blue-800 font-medium">
                   <p>This is an example of portfolio detail</p>
                   <p className="text-sm mt-2">
-                    {productDetails.longDescription}
+                    {productDetails.pdd_longDescription}
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Product Details Sections (Below main image/info on large screens) */}
-            {productDetails.overview && (
+            {productDetails.pdd_overview && (
               <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-3xl font-bold mb-4 text-gray-900">Overview</h2>
-                <p className="text-gray-700 leading-relaxed">{productDetails.overview}</p>
+                <p className="text-gray-700 leading-relaxed">{productDetails.pdd_overview}</p>
               </div>
             )}
 
-            {productDetails.keyFeatures && productDetails.keyFeatures.length > 0 && (
+            {productDetails.pdd_keyFeatures && productDetails.pdd_keyFeatures.length > 0 && (
               <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-2xl font-semibold mb-4 text-gray-800">Key Features:</h3>
                 <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  {productDetails.keyFeatures.map((feature, index) => (
+                  {productDetails.pdd_keyFeatures.map((feature, index) => (
                     <li key={index}>{feature}</li>
                   ))}
                 </ul>
               </div>
             )}
 
-            {productDetails.applications && productDetails.applications.length > 0 && (
+            {productDetails.pdd_applications && productDetails.pdd_applications.length > 0 && (
               <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-2xl font-semibold mb-4 text-gray-800">Applications:</h3>
                 <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  {productDetails.applications.map((app, index) => (
+                  {productDetails.pdd_applications.map((app, index) => (
                     <li key={index}>{app}</li>
                   ))}
                 </ul>
