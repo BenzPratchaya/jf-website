@@ -1,7 +1,10 @@
 // backend/config/db.js
 
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'; // ใช้ mongoose สำหรับการเชื่อมต่อกับ MongoDB
 
+// เชื่อมต่อกับ MongoDB โดยใช้ Mongoose
+// ฟังก์ชันนี้จะถูกเรียกใช้ในไฟล์ server.js เพื่อเชื่อมต่อกับฐานข้อมูล
+// ถ้าไม่สามารถเชื่อมต่อได้ จะมีการแสดงข้อความผิดพลาด
 const connectDB = async () => {
     try {
         const mongoUri = process.env.MONGO_URI;

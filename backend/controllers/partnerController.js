@@ -2,7 +2,9 @@
 
 import Partner from '../models/Partner.js'; 
 
-// Get all partners
+// @desc    Get all partners
+// @route   GET /api/partners
+// @access  Public
 export const getAllPartners = async (req, res) => {
     try {
         const partners = await Partner.find({});

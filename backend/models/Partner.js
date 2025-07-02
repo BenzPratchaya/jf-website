@@ -2,6 +2,8 @@
 
 import mongoose from 'mongoose';
 
+// --- Partner Schema ---
+// ใช้สำหรับเก็บข้อมูลพันธมิตร เช่น รหัสชื่อ โลโก้
 const PartnerSchema = new mongoose.Schema({
   pnt_id:   { type: String, required: true, unique: true }, // ใช้เป็น slug
   pnt_name: { type: String, required: true },

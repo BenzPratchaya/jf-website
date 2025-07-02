@@ -2,7 +2,9 @@
 
 import Category from '../models/Category.js'; 
 
-// Get all categories
+// @desc    Get all categories
+// @route   GET /api/categories
+// @access  Public
 export const getAllCategories = async (req, res) => {
     try {
         const categories = await Category.find({});

@@ -3,7 +3,9 @@
 // **KEY FIX: เปลี่ยนชื่อตัวแปร import ให้เป็น News**
 import News from '../models/News.js'; 
 
-// Get all news items (with pagination if needed)
+// @desc    Get all news items
+// @route   GET /api/news
+// @access  Public
 export const getAllNews = async (req, res) => {
     try {
         const news = await News.find({}); // **KEY FIX: ใช้ News.find**
