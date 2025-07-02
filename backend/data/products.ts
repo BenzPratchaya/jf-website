@@ -14,9 +14,6 @@ export type ProductDetailSection = {
 
 // --- Definition of ProductDetails ---
 export type ProductDetails = {
-  pdd_overview?: string; // ภาพรวมสินค้า
-  pdd_keyFeatures?: string[]; // คุณสมบัติหลัก (รายการ)
-  pdd_applications?: string[]; // การใช้งาน (รายการ)
   pdd_sectionsContent?: ProductDetailSection[]; // ส่วนรายละเอียดเพิ่มเติมแบบยืดหยุ่น
   pdd_category: string;
   pdd_client: string;
@@ -59,9 +56,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบเอกซเรย์ดิจิทัลคุณภาพสูง.',
     pdt_link: '/products/ge-oec-c-arm',
     pdt_details: {
-      pdd_overview: 'ระบบ Digital Radiography.',
-      pdd_keyFeatures: ['เครื่องตรวจจับดิจิทัลความละเอียดสูง'],
-      pdd_applications: ['รังสีวิทยาทั่วไป'],
       pdd_sectionsContent: [
         { pds_type: 'paragraph', pds_content: 'ภาพรวมระบบ DR ปฏิวัติการถ่ายภาพเอกซเรย์...' },
         { pds_type: 'image', pds_image: '/images/products/2-GE-C ARM.jpg', pds_alt: 'ระบบ DR กำลังใช้งาน' },
@@ -82,9 +76,6 @@ export const products: ProductType[] = [
     pdt_description: 'เทคโนโลยีอัลตราซาวด์.',
     pdt_link: '/products/vinno-ultimus-9v',
     pdt_details: {
-      pdd_overview: 'เครื่องสแกน CT.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่องสแกน CT',
       pdd_client: 'โรงพยาบาลเอกชน',
@@ -100,11 +91,8 @@ export const products: ProductType[] = [
     pdt_name: 'VIVIX 1717',
     pdt_image: '/images/products/4-VIVIX-1717.jpg',
     pdt_description: 'เครื่อง MRI ล้ำสมัย.',
-    pdt_link: '/products/mri-system',
+    pdt_link: '/products/vivix-1717',
     pdt_details: {
-      pdd_overview: 'เครื่อง MRI',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่อง MRI',
       pdd_client: 'ศูนย์วินิจฉัยทางการแพทย์',
@@ -120,11 +108,8 @@ export const products: ProductType[] = [
     pdt_name: 'VIVIX 1417',
     pdt_image: '/images/products/5-VIVIX-1417.jpg',
     pdt_description: 'อุปกรณ์อัลตราซาวด์.',
-    pdt_link: '/products/ultrasound-system',
+    pdt_link: '/products/vivix-1417',
     pdt_details: {
-      pdd_overview: 'ระบบอัลตราซาวด์.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบอัลตราซาวด์',
       pdd_client: 'คลินิกและโรงพยาบาล',
@@ -140,11 +125,8 @@ export const products: ProductType[] = [
     pdt_name: 'VR10X-40K',
     pdt_image: '/images/products/6-Octave.jpg',
     pdt_description: 'เครื่องมือส่องกล้อง.',
-    pdt_link: '/products/endoscopy-equipment',
+    pdt_link: '/products/vr10x-40k',
     pdt_details: {
-      pdd_overview: 'เครื่องมือส่องกล้องที่มีความแม่นยำ.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'อุปกรณ์ส่องกล้อง',
       pdd_client: 'คลินิกเฉพาะทาง',
@@ -162,9 +144,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบอัลตราซาวด์.',
     pdt_link: '/products/vinno-d650',
     pdt_details: {
-      pdd_overview: 'Vinno D650 เป็นระบบอัลตราซาวด์.',
-      pdd_keyFeatures: [],
-      pdd_applications: ['ช่องท้อง', 'สูติกรรม & นรีเวชวิทยา', 'หัวใจ', 'ส่วนเล็กๆ', 'หลอดเลือด'],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบอัลตราซาวด์',
       pdd_client: 'โรงพยาบาลขนาดกลาง',
@@ -182,9 +161,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่องอัลตราซาวด์กะทัดรัดและอเนกประสงค์.',
     pdt_link: '/products/vinno-v5',
     pdt_details: {
-      pdd_overview: 'Vinno V5 เป็นระบบอัลตราซาวด์.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบอัลตราซาวด์พกพา',
       pdd_client: 'คลินิกขนาดเล็ก',
@@ -202,9 +178,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบอัลตราซาวด์ขั้นสูง.',
     pdt_link: '/products/vinno-e20',
     pdt_details: {
-      pdd_overview: 'Vinno E20 เป็นระบบอัลตราซาวด์.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบอัลตราซาวด์',
       pdd_client: 'โรงพยาบาลและคลินิก',
@@ -222,9 +195,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบอัลตราซาวด์ที่เชื่อถือได้.',
     pdt_link: '/products/vinno-d300',
     pdt_details: {
-      pdd_overview: 'Vinno D300 เป็นระบบอัลตราซาวด์ที่เชื่อถือได้.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบอัลตราซาวด์',
       pdd_client: 'คลินิกทั่วไป',
@@ -242,9 +212,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบอัลตราซาวด์ที่เชื่อถือได้.',
     pdt_link: '/products/vinno-d550',
     pdt_details: {
-      pdd_overview: 'Vinno D550 เป็นระบบอัลตราซาวด์ที่เชื่อถือได้.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบอัลตราซาวด์',
       pdd_client: 'คลินิกทั่วไป',
@@ -262,9 +229,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบ X-ray ที่เชื่อถือได้.',
     pdt_link: '/products/poskom-pxm',
     pdt_details: {
-      pdd_overview: 'Poskom-PXM X-ray System.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบ X-ray',
       pdd_client: 'คลินิกทั่วไป',
@@ -282,9 +246,6 @@ export const products: ProductType[] = [
     pdt_description: 'ระบบ X-ray ที่เชื่อถือได้.',
     pdt_link: '/products/poskom-air-ray',
     pdt_details: {
-      pdd_overview: 'Poskom-PXM X-ray System.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'ระบบ X-ray',
       pdd_client: 'คลินิกทั่วไป',
@@ -302,9 +263,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่อง CT ที่เชื่อถือได้.',
     pdt_link: '/products/ge-act',
     pdt_details: {
-      pdd_overview: 'เครื่อง CT ที่เชื่อถือได้.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่อง CT',
       pdd_client: 'คลินิกทั่วไป',
@@ -322,9 +280,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่อง MRI ที่เชื่อถือได้.',
     pdt_link: '/products/ge-signa-prime',
     pdt_details: {
-      pdd_overview: 'เครื่อง MRI ที่เชื่อถือได้.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่อง MRI',
       pdd_client: 'คลินิกทั่วไป',
@@ -342,9 +297,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่อง Dry Chemistry.',
     pdt_link: '/products/nx700',
     pdt_details: {
-      pdd_overview: 'เครื่อง Dry Chemistry.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่อง Dry Chemistry',
       pdd_client: 'คลินิกทั่วไป',
@@ -362,9 +314,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่อง Dry Chemistry.',
     pdt_link: '/products/nx600',
     pdt_details: {
-      pdd_overview: 'เครื่อง Dry Chemistry.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่อง Dry Chemistry',
       pdd_client: 'คลินิกทั่วไป',
@@ -382,9 +331,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่อง Dry Chemistry.',
     pdt_link: '/products/au10',
     pdt_details: {
-      pdd_overview: 'เครื่อง Dry Chemistry.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่อง Dry Chemistry',
       pdd_client: 'คลินิกทั่วไป',
@@ -402,9 +348,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่องตรวจนับเม็ดเลือดอัตโนมัติ.',
     pdt_link: '/products/urit-5160',
     pdt_details: {
-      pdd_overview: 'เครื่องตรวจนับเม็ดเลือดอัตโนมัติ.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่องตรวจนับเม็ดเลือดอัตโนมัติ',
       pdd_client: 'คลินิกทั่วไป',
@@ -422,9 +365,6 @@ export const products: ProductType[] = [
     pdt_description: 'เครื่องตรวจนับเม็ดเลือดอัตโนมัติ.',
     pdt_link: '/products/urit-2900',
     pdt_details: {
-      pdd_overview: 'เครื่องตรวจนับเม็ดเลือดอัตโนมัติ.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
       pdd_sectionsContent: [],
       pdd_category: 'เครื่องตรวจนับเม็ดเลือดอัตโนมัติ',
       pdd_client: 'คลินิกทั่วไป',

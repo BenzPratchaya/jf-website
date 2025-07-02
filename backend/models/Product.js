@@ -16,9 +16,6 @@ const ProductDetailSectionSchema = new mongoose.Schema({ // **เปลี่ย
 
 // --- ProductDetails Schema (Nested Schema) ---
 const ProductDetailsSchema = new mongoose.Schema({
-  pdd_overview: { type: String, required: false },
-  pdd_keyFeatures: { type: [String], required: false },
-  pdd_applications: { type: [String], required: false },
   pdd_sectionsContent: { type: [ProductDetailSectionSchema], required: false }, // **KEY FIX: ใช้ ProductDetailSectionSchema**
   pdd_category: { type: String, required: true },
   pdd_client: { type: String, required: true },

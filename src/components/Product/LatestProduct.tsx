@@ -9,7 +9,7 @@ import Image from "next/image";
 // Import ProductType เท่านั้น
 import { ProductType } from '@/data/products'; // ตรวจสอบ Path ให้ถูกต้อง
 
-const LatestProduct = () => { // รับ prop productsToShow
+const LatestProduct = () => {
   // State สำหรับข้อมูลและสถานะการโหลด
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);

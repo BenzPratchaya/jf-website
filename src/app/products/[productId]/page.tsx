@@ -1,20 +1,15 @@
 // src/app/products/[productId]/page.tsx
-// นี่คือ Server Component
+// Server Component
 
 import React from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-
-// *** Import Navbar และ Footer ***
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
-
-// ******** Import Product related types and data from src/data/products.ts ********
-import { products, ProductType, ProductDetails, ProductDetailSection } from '@/data/products';
-
-// *** Import RelatedProductsSlider (Client Component) ***
-import RelatedProductsSlider from '@/components/Product/RelatedProductsSlider'; // ตรวจสอบ Path ให้ถูกต้อง
+import { ProductType, ProductDetails, ProductDetailSection } from '@/data/products';
+// Client Component
+import RelatedProductsSlider from '@/components/Product/RelatedProductsSlider';
 
 interface ProductDetailPageProps {
   params: {
@@ -22,13 +17,39 @@ interface ProductDetailPageProps {
   };
 }
 
-const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
-  const productId = params.productId;
-  const product = products.find(p => p.pdt_id === productId);
+const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
+  const { productId } = await params;
 
-  if (!product || !product.pdt_details) {
-    console.error(`Error: ไม่พบสินค้าที่มี ID '${productId}' หรือข้อมูล details ไม่สมบูรณ์`);
-    notFound();
+  let product: ProductType | undefined;
+  let allProducts: ProductType[] = []; // สำหรับ Related Products
+
+  try {
+    // **นี่คือส่วนที่ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend**
+    const productRes = await fetch(`http://localhost:5000/api/products/${productId}`, { cache: 'no-store' }); 
+    if (!productRes.ok) {
+      if (productRes.status === 404) {
+        console.error(`Product not found with ID: ${productId}`);
+        notFound(); 
+      }
+      throw new Error(`Failed to fetch product ${productId}: ${productRes.statusText}`);
+    }
+    product = await productRes.json();
+
+    // **นี่คือส่วนที่ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)**
+    const allProductsRes = await fetch('http://localhost:5000/api/products', { cache: 'no-store' });
+    if (!allProductsRes.ok) {
+      throw new Error(`Failed to fetch all products for related section: ${allProductsRes.statusText}`);
+    }
+    allProducts = await allProductsRes.json();
+
+  } catch (error: any) {
+    console.error('Error fetching product data for ProductDetailPage:', error);
+    notFound(); // ถ้า fetch ไม่สำเร็จ ก็ไปหน้า 404
+  }
+
+  // ตรวจสอบความถูกต้องของข้อมูลที่ดึงมา
+  if (!product || !product.pdt_details) { 
+    notFound(); 
   }
 
   const productDetails: ProductDetails = product.pdt_details; 
@@ -85,7 +106,7 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
 
 
   // กรองสินค้าที่เกี่ยวข้อง (ไม่รวมสินค้าปัจจุบัน)
-  const relatedProducts = products.filter(p => p.pdt_id !== productId && p.pdt_details);
+  const relatedProducts = allProducts.filter(p => p.pdt_id !== productId && p.pdt_details);
 
   return (
     <>
@@ -137,35 +158,15 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
               </div>
             </div>
 
-            {/* Product Details Sections (Below main image/info on large screens) */}
-            {productDetails.pdd_overview && (
-              <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-3xl font-bold mb-4 text-gray-900">Overview</h2>
-                <p className="text-gray-700 leading-relaxed">{productDetails.pdd_overview}</p>
+            {/* Full Content using contentBlocks */}
+            <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-3xl font-bold mb-4 text-gray-900">Details</h2>
+              <div className="text-gray-700 leading-relaxed">
+                {productDetails.pdd_sectionsContent && productDetails.pdd_sectionsContent.map((block, index) => (
+                  renderDetailSection(block, index)
+                ))}
               </div>
-            )}
-
-            {productDetails.pdd_keyFeatures && productDetails.pdd_keyFeatures.length > 0 && (
-              <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800">Key Features:</h3>
-                <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  {productDetails.pdd_keyFeatures.map((feature, index) => (
-                    <li key={index}>{feature}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {productDetails.pdd_applications && productDetails.pdd_applications.length > 0 && (
-              <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800">Applications:</h3>
-                <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  {productDetails.pdd_applications.map((app, index) => (
-                    <li key={index}>{app}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            </div>   
           </div>
         </div>
 
