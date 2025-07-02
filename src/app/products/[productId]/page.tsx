@@ -56,13 +56,12 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
 
   // Helper function to render each section of the details (NO DARK MODE)
   const renderDetailSection = (section: ProductDetailSection, index: number) => {
-    switch (section.pds_type) {
+   switch (section.pds_type) {
       case 'paragraph':
         return (
-          <div key={index} className="mb-4">
-            {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
-            <p className="text-gray-700 leading-relaxed">{section.pds_content}</p>
-          </div>
+          <p key={index} className={`text-gray-700 leading-relaxed mb-4`}>
+            {section.pds_content && <span dangerouslySetInnerHTML={{ __html: section.pds_content }} />}
+          </p>
         );
       case 'list':
         return (
@@ -75,15 +74,9 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
             </ul>
           </div>
         );
-      case 'image':
-        return (
-          <div key={index} className="mb-6 flex justify-center">
-            {section.pds_title && <h3 className="sr-only">{section.pds_title}</h3>}
-          </div>
-        );
       case 'grid':
         return (
-          <div key={index} className="mb-6">
+          <div key={index} className={`mb-6`}>
             {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
               {section.pds_grid?.map((gridItem, i) => (
@@ -99,6 +92,13 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
             </div>
           </div>
         );
+      case 'heading':
+        if (section.pds_level === 'h2') {
+          return <h2 key={index} className={`text-2xl md:text-3xl font-bold text-gray-900 mt-8 mb-4`}>{section.pds_content}</h2>; 
+        } else if (section.pds_level === 'h3') {
+          return <h3 key={index} className={`text-xl md:text-2xl font-semibold text-gray-900 mt-6 mb-3`}>{section.pds_content}</h3>; 
+        }
+        return null;
       default:
         return null;
     }

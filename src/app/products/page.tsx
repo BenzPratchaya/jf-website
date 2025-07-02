@@ -208,9 +208,6 @@ export default function ProductsPage() {
                         height={80}
                         className="object-contain"
                       />
-                      <p className={`text-sm font-medium text-gray-700 text-center mt-2 ${isPartnerSelected ? 'font-semibold text-blue-800' : ''}`}>
-                        {partner.pnt_name}
-                      </p>
                     </div>
                   );
                 }

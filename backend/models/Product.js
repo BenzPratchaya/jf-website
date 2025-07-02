@@ -8,8 +8,6 @@ const ProductDetailSectionSchema = new mongoose.Schema({ // **เปลี่ย
   pds_type: { type: String, enum: ['paragraph', 'list', 'image', 'grid', 'heading'], required: true }, // **มี 'heading' ด้วย**
   pds_content: { type: String, required: false },
   pds_items: { type: [String], required: false },
-  pds_image: { type: String, required: false },
-  pds_alt: { type: String, required: false }, // **มี altText**
   pds_grid: { type: [{ title: String, items: [String] }], required: false },
   pds_level: { type: String, enum: ['h2', 'h3'], required: false },
 });
