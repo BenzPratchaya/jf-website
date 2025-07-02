@@ -1,29 +1,56 @@
 // src/app/news/page.tsx
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react'; // **KEY CHANGE: เพิ่ม useRef**
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-// Import Navbar และ Footer
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
-
-// Import ข้อมูลข่าวสาร
-import { newsItems, NewsItemType } from '@/data/news';
+import { NewsItemType } from '../../../backend/data/news';
 
 export default function NewsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; 
 
-  // **KEY CHANGE: สร้าง ref สำหรับ news grid container**
+ 
+  const [allNewsItems, setAllNewsItems] = useState<NewsItemType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+   // **KEY CHANGE: สร้าง ref สำหรับ news grid container**
   const newsGridRef = useRef<HTMLDivElement>(null); 
 
+  // **KEY CHANGE: useEffect สำหรับ Fetch Data จาก Backend**
+  useEffect(() => {
+    const fetchNews = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('http://localhost:5000/api/news', { cache: 'no-store' }); // ดึงจาก Backend API
+        if (!res.ok) {
+          throw new Error(`Failed to fetch news: ${res.statusText}`);
+        }
+        const data: NewsItemType[] = await res.json();
+        setAllNewsItems(data);
+      } catch (err: any) {
+        console.error("Error fetching news:", err);
+        setError("Failed to load news. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
+
+
+    // คำนวณ Index ของข่าวที่จะแสดงในหน้าปัจจุบัน (ใช้ allNewsItems)
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentNewsItems = newsItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentNewsItems = allNewsItems.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(newsItems.length / itemsPerPage);
+  // คำนวณจำนวนหน้าทั้งหมด (ใช้ allNewsItems)
+  const totalPages = Math.ceil(allNewsItems.length / itemsPerPage);
 
   const goToPreviousPage = () => {
     setCurrentPage(prevPage => Math.max(1, prevPage - 1));
@@ -47,6 +74,36 @@ export default function NewsPage() {
       backgroundImage: "url('/images/hero/hero_bg1.jpg')",
     };
 
+  // **KEY CHANGE: แสดง Loading/Error State**
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <main className="bg-gray-100 py-24 text-center min-h-screen">
+          <h1 className="text-4xl font-bold text-gray-800">กำลังโหลดข่าวสาร...</h1>
+          <p className="text-lg text-gray-600 mt-4">กรุณารอสักครู่</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <main className="bg-red-100 py-24 text-center min-h-screen">
+          <h1 className="text-4xl font-bold text-red-800">เกิดข้อผิดพลาดในการโหลดข่าวสาร</h1>
+          <p className="text-lg text-red-600 mt-4">{error}</p>
+          <p className="text-md text-red-500 mt-2">โปรดตรวจสอบว่า Backend Server ทำงานอยู่</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+
+
   return (
     <>
       <Navbar />
@@ -60,7 +117,7 @@ export default function NewsPage() {
         {/* ส่วนแสดง Grid ข่าวสาร */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
-            {newsItems.length === 0 ? (
+            {allNewsItems.length === 0 ? (
                 <p className="text-center text-xl text-gray-600">No news found at this time.</p>
             ) : (
                 // **KEY CHANGE: กำหนด ref ให้กับ div ที่เป็น Grid Container**

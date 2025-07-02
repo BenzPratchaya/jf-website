@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { notFound } from 'next/navigation';
-import Image from 'next/image'; // ใช้ Next.js Image component
-import Link from 'next/link';   // ใช้ Next.js Link component
+import Image from 'next/image'; 
+import Link from 'next/link'; 
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
-import { newsItems, NewsItemType, NewsItemDetails, NewsContentBlock } from '@/data/news';
+import { NewsItemType, NewsItemDetails, NewsContentBlock } from '@/data/news'; 
 const JF_LOGO_PATH = "/images/LOGO-JF.png";
 
 interface NewsDetailPageProps {
@@ -16,14 +16,33 @@ interface NewsDetailPageProps {
 }
 
 const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
-  const { newsId } = params;
-  const newsItem = newsItems.find(item => item.nit_id === newsId);
+  const { newsId } = await params;
+  
+  let newsItem: NewsItemType | undefined;
 
-  if (!newsItem || !newsItem.nit_details) {
-    notFound();
+  try {
+    // **KEY CHANGE: ดึงข้อมูลข่าวสารชิ้นเดียวจาก Backend**
+    const newsRes = await fetch(`http://localhost:5000/api/news/${newsId}`, { cache: 'no-store' }); // cache: 'no-store' สำหรับ dev
+    if (!newsRes.ok) {
+      if (newsRes.status === 404) {
+        console.error(`News item not found with ID: ${newsId}`);
+        notFound(); // แสดงหน้า 404 ถ้าข่าวไม่พบ
+      }
+      throw new Error(`Failed to fetch news item ${newsId}: ${newsRes.statusText}`);
+    }
+    newsItem = await newsRes.json();
+
+  } catch (error: any) {
+    console.error('Error fetching news data for NewsDetailPage:', error);
+    notFound(); // ในกรณีที่ Fetch ล้มเหลว (เช่น Backend Server ไม่ทำงาน), ให้แสดงหน้า notFound
   }
 
-  const newsDetails: NewsItemDetails = newsItem.nit_details;
+  // ตรวจสอบความถูกต้องของข้อมูลที่ดึงมา
+  if (!newsItem || !newsItem.nit_details) { // **KEY CHANGE: ใช้ nit_details**
+    notFound(); 
+  }
+
+  const newsDetails: NewsItemDetails = newsItem.nit_details; // **KEY CHANGE: ใช้ nit_details**
 
   // Helper Function สำหรับ Render แต่ละ Content Block
   const renderContentBlock = (block: NewsContentBlock, blockIndex: number) => {

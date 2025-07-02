@@ -1,12 +1,12 @@
 // backend/controllers/newsController.js
 
-import NewsItem from '../models/News.js'; 
+// **KEY FIX: เปลี่ยนชื่อตัวแปร import ให้เป็น News**
+import News from '../models/News.js'; 
 
 // Get all news items (with pagination if needed)
 export const getAllNews = async (req, res) => {
     try {
-        const news = await NewsItem.find({});
-        // ถ้าจะเพิ่ม pagination ให้ทำ logic ตรงนี้ (เช่น req.query.page, req.query.limit)
+        const news = await News.find({}); // **KEY FIX: ใช้ News.find**
         res.json(news);
     } catch (error) {
         console.error('Error in getAllNews:', error);
@@ -14,10 +14,12 @@ export const getAllNews = async (req, res) => {
     }
 };
 
-// Get single news item by ID (slug)
+// @desc    Get single news item by ID (slug)
+// @route   GET /api/news/:id
+// @access  Public
 export const getNewsById = async (req, res) => {
     try {
-        const newsItem = await NewsItem.findOne({ id: req.params.id });
+        const newsItem = await News.findOne({ nit_id: req.params.id }); // **KEY FIX: ใช้ News.findOne**
         if (!newsItem) {
             return res.status(404).json({ message: 'News item not found' });
         }

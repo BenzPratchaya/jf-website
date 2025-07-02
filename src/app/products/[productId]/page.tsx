@@ -4,7 +4,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
 import { ProductType, ProductDetails, ProductDetailSection } from '@/data/products';
