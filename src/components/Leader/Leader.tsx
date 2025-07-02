@@ -85,7 +85,7 @@ const Leader = () => {
   return (
     <>
       <section className="container py-8 space-y-6" id="explore">
-        {/* header section */}
+        {/* หมวดหมู่ */}
         <motion.h2
           whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 100 }}
@@ -95,7 +95,7 @@ const Leader = () => {
           Team Leaders
         </motion.h2>
 
-        {/* card section */}
+        {/* แสดงข้อมูลเมนู */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-4 xl:px-14">
           {leaderData.map((item) => (
             <motion.div
@@ -108,7 +108,7 @@ const Leader = () => {
               className="relative"
               key={item.id}
             >
-              {/* section img */}
+              {/* รูปสำหรับเมนู */}
               <Image
                 className="object-cover h-[400px] w-[350px]"
                 src={item.img}
@@ -117,6 +117,7 @@ const Leader = () => {
                 height={400}
               />
 
+              {/* ข้อมูลที่ใช้สำหรับการแสดงผลในหน้า */}
               <div className="absolute w-full bottom-0 inset-0 bg-brandDark/15">
                 <div className="h-full space-y-1 flex flex-col justify-end items-center">
                   <div className="flex flex-col items-center bg-black p-2 bg-opacity-50 backdrop-blur-sm w-full">
@@ -137,7 +138,8 @@ const Leader = () => {
                         duration: 0.6
                       }}
                       className="text-white uppercase tracking-wider">{item.place}</motion.h3>
-                    <div className="flex space-x-3 mt-2"> {/* เพิ่ม flex และ space-x เพื่อจัดเรียงไอคอน */}
+                    {/* โลโก้ */}
+                    <div className="flex space-x-3 mt-2">
                       {item.url.map((social, index) => (
                         <motion.a
                           key={index}

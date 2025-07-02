@@ -7,11 +7,8 @@ import mongoose from 'mongoose'; // Mongoose สำหรับ MongoDB ODM
 import Product from './models/Product.js'; 
 import Partner from './models/Partner.js'; 
 import Category from './models/Category.js'; 
-import News from './models/News.js'; // เปลี่ยนชื่อจาก NewsItem เป็น News
+import News from './models/News.js';
 
-// **สำคัญมาก:** ตรวจสอบ Path การนำเข้าข้อมูลเหล่านี้ให้ถูกต้อง
-// Path นี้สมมติว่า backend/ อยู่ใน root project เดียวกันกับ src/
-// และไฟล์ข้อมูลจริงคือ .ts (TypeScript)
 import { products, partners, categories } from '../backend/data/products.js'; 
 import { newsItems } from '../backend/data/news.js'
 

@@ -4,24 +4,25 @@
 import React from "react"
 import { motion, Variants } from "framer-motion"
 
-import fujifilmLogo from "/public/images/logos_partner/fujifilm_logo.png"
-import mbitsLogo from "/public/images/logos_partner/mbits_logo.png"
-import mindrayLogo from "/public/images/logos_partner/mindray_logo.png"
-import samsungLogo from "/public/images/logos_partner/samsung_logo.png" 
-import synapseLogo from "/public/images/logos_partner/synapse_logo.png"
-import vieworksLogo from "/public/images/logos_partner/vieworks_logo.png" 
-
-
 const LogoPartner = () => {
 
+  const fujifilmLogo = "/images/logos_partner/fujifilm_logo.png"
+  const mbitsLogo = "/images/logos_partner/mbits_logo.png"
+  const mindrayLogo = "/images/logos_partner/mindray_logo.png"
+  const samsungLogo = "/images/logos_partner/samsung_logo.png" 
+  const synapseLogo = "/images/logos_partner/synapse_logo.png"
+  const vieworksLogo = "/images/logos_partner/vieworks_logo.png" 
+
+  // โลโก้ประเภทและข้อมูลที่ใช้สำหรับการแสดงผล
   type StackLogoType = {
     stack: string;
     logoSrc: string;
     altText: string;
-    className: string; // Tailwind classes for sizing and other styles
+    className: string;
     variants: Variants
   }
 
+  // ฟังก์ชันสำหรับสร้าง Variants ของโลโก้ ใช้สำหรับการเคลื่อนไหวของโลโก้ในแต่ละช่วง
   const iconVariants = (duration: number): Variants => ({
     initial: { y: -10 },
     animate: {
@@ -35,46 +36,47 @@ const LogoPartner = () => {
     }
   })
 
+  // ข้อมูลโลโก้ที่ใช้สำหรับการแสดงผลในหน้า Partner
   const StackLogos: StackLogoType[] = [
     {
       stack: "Fujifilm",
-      logoSrc: fujifilmLogo.src,
-      altText: "Fujifilm Logo", // Updated altText
-      className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain", // Responsive sizes
+      logoSrc: fujifilmLogo,
+      altText: "Fujifilm Logo",
+      className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(2),
     },
     {
       stack: "Mbits",
-      logoSrc: mbitsLogo.src,
-      altText: "Mbits Logo", // Updated altText
+      logoSrc: mbitsLogo,
+      altText: "Mbits Logo", 
       className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(3),
     },
     {
       stack: "Mindray",
-      logoSrc: mindrayLogo.src,
-      altText: "Mindray Logo", // Updated altText
+      logoSrc: mindrayLogo,
+      altText: "Mindray Logo",
       className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(5),
     },
     {
       stack: "Samsung",
-      logoSrc: samsungLogo.src,
-      altText: "Samsung Logo", // Updated altText
+      logoSrc: samsungLogo,
+      altText: "Samsung Logo",
       className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(2),
     },
     {
       stack: "Synapse",
-      logoSrc: synapseLogo.src,
-      altText: "Synapse Logo", // Updated altText
+      logoSrc: synapseLogo,
+      altText: "Synapse Logo",
       className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(3),
     },
     {
       stack: "Vieworks",
-      logoSrc: vieworksLogo.src,
-      altText: "Vieworks Logo", // Updated altText
+      logoSrc: vieworksLogo,
+      altText: "Vieworks Logo",
       className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(5),
     },
@@ -82,22 +84,22 @@ const LogoPartner = () => {
 
   return (
     <>
-      <div className="py-12 bg-gradient-to-b from-gray-300 to-white"> {/* Added dark mode background */}
+      <div className="py-12 bg-gradient-to-b from-gray-300 to-white">
         <motion.h2
           whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 100 }}
           transition={{ duration: 1.2 }}
-          className="text-center text-3xl sm:text-4xl my-12 uppercase text-gray-800" // Adjusted text size, margin, and added dark mode text
+          className="text-center text-3xl sm:text-4xl my-12 uppercase text-gray-800"
         >
           Partnership
         </motion.h2>
-        <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-16 px-4"> {/* Responsive gap and padding */}
+        <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-16 px-4">
           {StackLogos.map((item, index) => (
             <motion.div
               variants={item.variants}
               initial="initial"
               animate="animate"
-              className="flex items-center justify-center p-2" // Added padding around each logo if needed
+              className="flex items-center justify-center p-2"
               key={index}
             >
               <img

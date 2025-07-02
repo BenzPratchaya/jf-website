@@ -13,14 +13,17 @@ const images = [
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
+  // เอฟเฟกต์เปลี่ยนภาพพื้นหลังทุก ๆ 5 วินาที
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 5000) // Change image every 5 seconds (5000 milliseconds)
+    }, 5000)
 
-    return () => clearInterval(timer) // Clean up the interval on component unmount
+    // ทำความสะอาดเมื่อคอมโพเนนต์ถูก unmount
+    return () => clearInterval(timer)
   }, [])
 
+  // สไตล์สำหรับพื้นหลังที่มีภาพ ใช้ CSS inline styles เพื่อกำหนดภาพพื้นหลังและการเปลี่ยน
   const bgImage: React.CSSProperties = {
     backgroundImage: `url('${images[currentImageIndex]}')`,
     backgroundRepeat: "no-repeat",
@@ -33,12 +36,12 @@ const Hero = () => {
   return (
     <>
       <section className="min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex justify-center items-center" style={bgImage}>
-        {/* radial gradient section */}
+        {/* พื้นหลังที่มีภาพ */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10" />
 
-        {/* hero text section */}
+        {/* เนื้อหาที่อยู่บนพื้นหลัง */}
         <motion.div
-          key={currentImageIndex} // Use key to re-trigger animations when image changes
+          key={currentImageIndex} // ใช้ key เพื่อให้ Framer Motion รู้ว่าต้องเปลี่ยนภาพเมื่อ index เปลี่ยน
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1.5 }}

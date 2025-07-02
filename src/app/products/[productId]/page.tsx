@@ -17,14 +17,14 @@ interface ProductDetailPageProps {
 }
 
 const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
-  const { productId } = await params;
+  const { productId } = await params; // ดึง productId จาก params
 
-  let product: ProductType | undefined;
-  let allProducts: ProductType[] = []; // สำหรับ Related Products
+  let product: ProductType | undefined; // สำหรับข้อมูลสินค้าชิ้นเดียว
+  let allProducts: ProductType[] = []; // สำหรับข้อมูลสินค้าทั้งหมด
 
   try {
-    // **นี่คือส่วนที่ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend**
-    const productRes = await fetch(`http://localhost:5000/api/products/${productId}`, { cache: 'no-store' }); 
+    const productRes = await fetch(`http://localhost:5000/api/products/${productId}`, { cache: 'no-store' });  // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
+    // ตรวจสอบว่า productRes.ok หรือไม่
     if (!productRes.ok) {
       if (productRes.status === 404) {
         console.error(`Product not found with ID: ${productId}`);
@@ -32,13 +32,15 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
       }
       throw new Error(`Failed to fetch product ${productId}: ${productRes.statusText}`);
     }
+    // ดึงข้อมูลสินค้าชิ้นเดียว ใช้ await เพื่อรอผลลัพธ์จาก fetch
     product = await productRes.json();
 
-    // **นี่คือส่วนที่ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)**
-    const allProductsRes = await fetch('http://localhost:5000/api/products', { cache: 'no-store' });
+    const allProductsRes = await fetch('http://localhost:5000/api/products', { cache: 'no-store' }); // ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)
+    // ตรวจสอบว่า allProductsRes.ok หรือไม่
     if (!allProductsRes.ok) {
       throw new Error(`Failed to fetch all products for related section: ${allProductsRes.statusText}`);
     }
+    // ดึงข้อมูลสินค้าทั้งหมด ใช้ await เพื่อรอผลลัพธ์จาก fetch
     allProducts = await allProductsRes.json();
 
   } catch (error: any) {
@@ -51,9 +53,9 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
     notFound(); 
   }
 
-  const productDetails: ProductDetails = product.pdt_details; 
+  const productDetails: ProductDetails = product.pdt_details; // ดึงข้อมูลรายละเอียดของสินค้าจาก product.pdt_details
 
-  // Helper function to render each section of the details (NO DARK MODE)
+  // ตรวจสอบว่ามี sectionsContent หรือไม่
   const renderDetailSection = (section: ProductDetailSection, index: number) => {
    switch (section.pds_type) {
       case 'paragraph':
@@ -103,7 +105,6 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
     }
   };
 
-
   // กรองสินค้าที่เกี่ยวข้อง (ไม่รวมสินค้าปัจจุบัน)
   const relatedProducts = allProducts.filter(p => p.pdt_id !== productId && p.pdt_details);
 
@@ -115,7 +116,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
         <div className="container mx-auto px-4">
           <div className="bg-white rounded-lg shadow-xl p-6 md:p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-              {/* Product Image Section */}
+              {/* กล่อง Product Image Section (ฝั่งซ้ายบนจอใหญ่) */}
               <div>
                 <Image
                   src={product.pdt_image}
@@ -127,7 +128,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
                 />
               </div>
 
-              {/* Product Information Section (Right Side on large screens) */}
+              {/* กล่อง Product Details Section (ฝั่งขวาบนจอใหญ่) */}
               <div>
                 <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
                   {product.pdt_name}
@@ -136,7 +137,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
                   {product.pdt_description}
                 </p>
 
-                {/* Project Information Box */}
+                {/* กล่อง Project Information */}
                 <div className="bg-gray-50 p-6 rounded-lg shadow-sm mb-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">Project Information</h3>
                   <ul className="text-gray-700 text-base space-y-2">
@@ -147,7 +148,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
                   </ul>
                 </div>
 
-                {/* Example Portfolio Detail Description Box */}
+                {/* กล่อง Portfolio Detail Description */}
                 <div className="bg-blue-100 p-4 rounded-lg text-blue-800 font-medium">
                   <p>This is an example of portfolio detail</p>
                   <p className="text-sm mt-2">
@@ -157,7 +158,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
               </div>
             </div>
 
-            {/* Full Content using contentBlocks */}
+            {/* กล่อง Full Content ที่ใช้ ProductDetailSection */}
             <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-3xl font-bold mb-4 text-gray-900">Details</h2>
               <div className="text-gray-700 leading-relaxed">
@@ -169,7 +170,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
           </div>
         </div>
 
-        {/* NEW SECTION: Related Products Slider Component */}
+        {/* กล่อง Related Products Slider Component */}
         <div className="container mx-auto px-4"> {/* Ensure container matches general page container */}
              <RelatedProductsSlider products={relatedProducts} />
         </div>

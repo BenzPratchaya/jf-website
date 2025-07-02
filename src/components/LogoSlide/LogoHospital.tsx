@@ -2,7 +2,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Image from "next/image" // Best practice to use Next.js Image component for optimization
+import Image from "next/image"
 
 const LogoHospital = () => {
 
@@ -47,28 +47,26 @@ const LogoHospital = () => {
         </motion.h2>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"> 
 
-          {/* icon zone */}
+          {/* Div สำหรับการเลื่อนต่อเนื่อง */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="my-8 sm:my-12 overflow-hidden relative py-4" // Adjusted my- for mobile, added py-4 for vertical space
+            className="my-8 sm:my-12 overflow-hidden relative py-4"
           >
-            {/* Div สำหรับการเลื่อนต่อเนื่อง */}
             <div
               className="flex whitespace-nowrap animate-scroll-left"
               style={{ animationDuration: '60s' }}
             >
               {[...techStack, ...techStack].map((item, index) => (
                 <div
-                  // Adjusted size and margins for responsiveness
                   className="inline-flex items-center justify-center flex-shrink-0 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] mx-2 sm:mx-4"
                   key={index}
                 >
-                  <Image // Changed <img> to Next.js <Image>
+                  <Image
                     src={item.imageUrl}
                     alt={item.alt || `Logo ${index}`}
-                    width={120} // Provide original width for optimization
-                    height={120} // Provide original height for optimization
+                    width={120}
+                    height={120} 
                     className="max-w-full max-h-full object-contain hover:scale-125 transition-transform duration-300"
                   />
                 </div>

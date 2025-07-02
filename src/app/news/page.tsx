@@ -9,24 +9,23 @@ import { Footer } from '@/components/Footer/Footer';
 import { NewsItemType } from '../../../backend/data/news';
 
 export default function NewsPage() {
+  // ใช้ useState เพื่อเก็บข้อมูลหน้าและจำนวนข่าวต่อหน้า**
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; 
-
- 
+  // ใช้ useState เพื่อเก็บข้อมูลข่าวสารทั้งหมด**
   const [allNewsItems, setAllNewsItems] = useState<NewsItemType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-   // **KEY CHANGE: สร้าง ref สำหรับ news grid container**
+  // สร้าง ref สำหรับ news grid container**
   const newsGridRef = useRef<HTMLDivElement>(null); 
 
-  // **KEY CHANGE: useEffect สำหรับ Fetch Data จาก Backend**
+  // useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
     const fetchNews = async () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('http://localhost:5000/api/news', { cache: 'no-store' }); // ดึงจาก Backend API
+        const res = await fetch('http://localhost:5000/api/news', { cache: 'no-store' }); // ดึงข้อมูลข่าวสารจาก Backend
         if (!res.ok) {
           throw new Error(`Failed to fetch news: ${res.statusText}`);
         }
@@ -44,7 +43,7 @@ export default function NewsPage() {
   }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
 
 
-    // คำนวณ Index ของข่าวที่จะแสดงในหน้าปัจจุบัน (ใช้ allNewsItems)
+  // คำนวณ Index ของข่าวที่จะแสดงในหน้าปัจจุบัน (ใช้ allNewsItems)
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentNewsItems = allNewsItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -52,15 +51,17 @@ export default function NewsPage() {
   // คำนวณจำนวนหน้าทั้งหมด (ใช้ allNewsItems)
   const totalPages = Math.ceil(allNewsItems.length / itemsPerPage);
 
+  // ฟังก์ชันสำหรับเปลี่ยนหน้าไปยังหน้าก่อนหน้า ใช้ setCurrentPage เพื่อเปลี่ยนหน้า**
   const goToPreviousPage = () => {
     setCurrentPage(prevPage => Math.max(1, prevPage - 1));
   };
 
+  // ฟังก์ชันสำหรับเปลี่ยนหน้าไปยังหน้าถัดไป ใช้ setCurrentPage เพื่อเปลี่ยนหน้า**
   const goToNextPage = () => {
     setCurrentPage(prevPage => Math.min(totalPages, prevPage + 1));
   };
 
-  // **KEY CHANGE: ปรับ useEffect ให้เลื่อนไปที่ newsGridRef**
+  // ปรับ useEffect ให้เลื่อนไปที่ newsGridRef**
   useEffect(() => {
     if (newsGridRef.current) { // ตรวจสอบว่า ref มีค่า (element อยู่ใน DOM)
       newsGridRef.current.scrollIntoView({
@@ -74,7 +75,7 @@ export default function NewsPage() {
       backgroundImage: "url('/images/hero/hero_bg1.jpg')",
     };
 
-  // **KEY CHANGE: แสดง Loading/Error State**
+  // แสดง Loading
   if (loading) {
     return (
       <>
@@ -88,6 +89,7 @@ export default function NewsPage() {
     );
   }
 
+  // แสดง Error
   if (error) {
     return (
       <>
@@ -101,8 +103,6 @@ export default function NewsPage() {
       </>
     );
   }
-
-
 
   return (
     <>
@@ -120,11 +120,11 @@ export default function NewsPage() {
             {allNewsItems.length === 0 ? (
                 <p className="text-center text-xl text-gray-600">No news found at this time.</p>
             ) : (
-                // **KEY CHANGE: กำหนด ref ให้กับ div ที่เป็น Grid Container**
+                // กำหนด ref ให้กับ div ที่เป็น Grid Container**
                 <div ref={newsGridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
                 {currentNewsItems.map((item: NewsItemType) => (
                   <div key={item.nit_id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-105">
-                    {/* News Image */}
+                    {/* รูปข่าวสาร */}
                     <div className="relative w-full h-48 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
                       <Image
                         src={item.nit_image}
@@ -135,7 +135,7 @@ export default function NewsPage() {
                       />
                     </div>
 
-                    {/* News Content */}
+                    {/* เนื้อหาข่าว */}
                     <div className="p-4 flex flex-col flex-grow">
                       <div className="flex justify-between items-center text-xs font-semibold text-gray-500 mb-2">
                         <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{item.nit_category}</span>
@@ -159,7 +159,7 @@ export default function NewsPage() {
             )}
             
 
-            {/* Pagination Controls */}
+            {/* แสดงปุ่มเปลี่ยนหน้าเมื่อมีหลายหน้า */}
             {totalPages > 1 && (
               <div className="flex justify-center items-center space-x-4 mt-12">
                 <button

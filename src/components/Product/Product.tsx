@@ -4,11 +4,9 @@
 import React from "react"
 import Link from "next/link"
 import Image from "next/image";
-
 // Import ProductType เท่านั้น
 import { ProductType } from '@/data/products';
-
-// KEY CHANGE: คอมโพเนนต์ Product จะรับ productsToShow เป็น prop
+// คอมโพเนนต์ Product จะรับ productsToShow เป็น prop
 interface ProductProps {
   productsToShow: ProductType[]; // รับ array ของสินค้าที่จะแสดง
 }

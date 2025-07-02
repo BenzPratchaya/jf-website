@@ -8,6 +8,7 @@ import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 const Contact = () => {
   return (
     <section id="contact" className="py-24 bg-white">
+      {/* ส่วนหัวของ Contact */}
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: 100 }}
@@ -16,12 +17,14 @@ const Contact = () => {
       >
         Contact Us
       </motion.h2>
-
+      
+      {/* ใช้ Container เพื่อจัดเนื้อหาให้อยู่ตรงกลางและเพิ่มช่องว่าง */}
+      {/* grid layout สำหรับการ์ดต่างๆ */}
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          {/* Left Column: Our Address Card & Map */}
-          <div className="space-y-8 flex flex-col"> {/* Added flex flex-col to make content fill column height */}
-            {/* Address Card */}
+          {/* คอลัมน์ซ้าย : การ์ด Our Address & การ์ด Map */}
+          <div className="space-y-8 flex flex-col">
+            {/* การ์ด Address */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -58,16 +61,16 @@ const Contact = () => {
             </motion.div>
           </div>
 
-          {/* Right Column: Email, Call Us & Contact Form */}
-          <div className="space-y-8 flex flex-col"> {/* Added flex flex-col */}
-            {/* Email & Call Us Cards - Now grouped here */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch flex-grow"> {/* IMPORTANT: items-stretch and flex-grow */}
-              {/* Email Card */}
+          {/* คอลัมน์ขวา : การ์ด Email, การ์ด Call Us & การ์ด Contact Form */}
+          <div className="space-y-8 flex flex-col"> 
+            {/* การ์ด Email & การ์ด Call Us */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch flex-grow">
+              {/* การ์ด Email Card */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow" // flex-grow
+                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow"
               >
                 <div className="text-blue-950 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   <FaEnvelope />
@@ -78,24 +81,24 @@ const Contact = () => {
                 </p>
               </motion.div>
 
-              {/* Call Us Card */}
+              {/* การ์ด Call Us */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow" // flex-grow
+                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow"
               >
                 <div className="text-blue-950 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   <FaPhoneAlt />
                 </div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-900 ">Call Us</h3>
-                <p className="text-sm text-gray-600 mb-auto"> {/* mb-auto */}
+                <p className="text-sm text-gray-600 mb-auto">
                   <a href="tel:+6625140314" className="hover:underline text-blue-600">+66 2514-0314-7</a>
                 </p>
               </motion.div>
             </div>
 
-            {/* Contact Form */}
+            {/* การ์ด Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}

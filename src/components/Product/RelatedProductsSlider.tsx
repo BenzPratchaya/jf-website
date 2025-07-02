@@ -18,36 +18,37 @@ interface RelatedProductsSliderProps {
 const RelatedProductsSlider = ({ products }: RelatedProductsSliderProps) => {
   return (
     <div className="mt-16 pt-8 border-t border-gray-200">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">สินค้าอื่นๆ ที่เกี่ยวข้อง</h2>
+      <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">Other related products</h2>
 
       {products.length === 0 ? (
-        <p className="text-center text-gray-600">ไม่มีสินค้าอื่นๆ ที่เกี่ยวข้องในขณะนี้</p>
+        <p className="text-center text-gray-600">There are no other related products at this time.</p>
       ) : (
         <Swiper
           // Modules ที่จะใช้
           modules={[Navigation, Pagination, A11y]}
           // จำนวนสไลด์ที่แสดงพร้อมกัน
-          slidesPerView={1} // Default: 1 slide per view on smallest screens
-          spaceBetween={20} // Space between slides
-          // Responsive breakpoints
+          slidesPerView={1} // Default: 1 สไลด์ต่อการดูบนหน้าจอที่เล็กที่สุด
+          spaceBetween={20} // ช่องว่างระหว่างสไลด์
+          // การตั้งค่า breakpoints สำหรับ responsive design
+          // เมื่อหน้าจอมีขนาดต่างกัน จะเปลี่ยนจำนวนสไล
           breakpoints={{
-            640: { // When window width is >= 640px (sm breakpoint)
+            640: { // เมื่อหน้าต่าง width >= 640px (sm breakpoint)
               slidesPerView: 2,
               spaceBetween: 30,
             },
-            768: { // When window width is >= 768px (md breakpoint)
+            768: { // เมื่อหน้าต่าง width >= 768px (md breakpoint)
               slidesPerView: 3,
               spaceBetween: 30,
             },
-            1024: { // When window width is >= 1024px (lg breakpoint)
-              slidesPerView: 4, // Display 4 slides on larger screens
+            1024: { // เมื่อหน้าต่าง width >= 1024px (lg breakpoint)
+              slidesPerView: 4, // 4 สไลด์บนหน้าจอที่ใหญ่ขึ้น
               spaceBetween: 40,
             },
           }}
-          navigation // Enable navigation arrows
-          pagination={{ clickable: true }} // Enable pagination dots
-          // loop={true} // Optional: Loop the slides
-          className="mySwiper pb-10" // Add some padding for pagination dots
+          navigation // เปิด navigation arrows
+          pagination={{ clickable: true }} // เปิด pagination dots
+          // loop={true} // ถ้าต้องการให้สไลด์วนกลับไปเริ่มต้นใหม่
+          className="mySwiper pb-10" // กำหนด className สำหรับ Swiper
         >
           {products.map((p, idx) => (
             <SwiperSlide key={p.pdt_id || idx}> {/* ใช้ p.id เป็น key */}
@@ -57,8 +58,8 @@ const RelatedProductsSlider = ({ products }: RelatedProductsSliderProps) => {
                     <Image
                       src={p.pdt_image}
                       alt={p.pdt_name}
-                      width={200} // Adjust based on common related product image size
-                      height={200} // Adjust based on common related product image size
+                      width={200}
+                      height={200} 
                       className="max-w-xs h-auto object-contain mx-auto"
                     />
                   </div>

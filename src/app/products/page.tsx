@@ -1,38 +1,36 @@
 // src/app/products/page.tsx
-"use client"; // Client Component เพราะมี State และ Interaction
+"use client"; // Client Component
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
-
 import Product from '@/components/Product/Product';
-
-// **KEY CHANGE: Import แค่ Type Definitions จาก src/data/products.ts**
-// ไม่ต้อง Import products, partners, categories array แล้ว
+// Import แค่ Type Definitions จาก src/data/products.ts**
 import { ProductType, PartnerType, CategoryType } from '@/data/products'; 
 
 export default function ProductsPage() {
+  // State สำหรับการกรองสินค้า ใช้ State เพื่อเก็บค่าที่เลือกจาก Dropdowns
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPartner, setSelectedPartner] = useState<string>('all');
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [displayedPartners, setDisplayedPartners] = useState<PartnerType[]>([]); 
 
-  // **KEY CHANGE: State สำหรับข้อมูลที่ดึงมาจาก Backend**
+  // State สำหรับข้อมูลที่ดึงมาจาก Backend**
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [allPartners, setAllPartners] = useState<PartnerType[]>([]);
   const [allCategories, setAllCategories] = useState<CategoryType[]>([]);
 
-  // **KEY CHANGE: State สำหรับ Loading และ Error**
+  // State สำหรับ Loading และ Error**
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Style สำหรับ Background Image ของส่วนหัว Products Page
-  const productsPageBgImageStyle: React.CSSProperties = { // เปลี่ยนชื่อตัวแปรให้เหมาะสมขึ้น
-    backgroundImage: "url('/images/hero/hero_bg1.jpg')", // Path รูปภาพ
+  const productsPageBgImageStyle: React.CSSProperties = {
+    backgroundImage: "url('/images/hero/hero_bg1.jpg')", 
   };
 
-  // **KEY CHANGE: useEffect สำหรับ Fetch Data จาก Backend**
+  // useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
     const fetchAllData = async () => {
       setIsLoading(true);
@@ -67,7 +65,7 @@ export default function ProductsPage() {
     fetchAllData();
   }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
 
-  // **KEY CHANGE: useEffect สำหรับ Logic การกรอง (ใช้ allProducts, allPartners, allCategories)**
+  // useEffect สำหรับ Logic การกรอง (ใช้ allProducts, allPartners, allCategories)**
   useEffect(() => {
     if (isLoading || error) return; // ไม่กรองถ้ายังโหลดอยู่หรือมี Error
 
@@ -102,7 +100,7 @@ export default function ProductsPage() {
   }, [selectedCategory, selectedPartner, allProducts, allPartners, allCategories, isLoading, error]); // Dependencies อัปเดต
 
 
-  // **KEY CHANGE: แสดง Loading/Error State**
+  // แสดง Loading
   if (isLoading) {
     return (
       <>
@@ -116,6 +114,7 @@ export default function ProductsPage() {
     );
   }
 
+  // แสดง Error
   if (error) {
     return (
       <>
@@ -134,7 +133,6 @@ export default function ProductsPage() {
   return (
     <>
       <Navbar />
-
       <main>
         {/* ส่วนหัวข้อหน้า Products - มี Background Image แบบ Fixed */}
         <section className="container text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={productsPageBgImageStyle}>
@@ -160,7 +158,7 @@ export default function ProductsPage() {
                   key={category.cgt_id}
                   onClick={() => {
                     setSelectedCategory(category.cgt_id);
-                    setSelectedPartner('all'); // Reset partner selection when category changes
+                    setSelectedPartner('all'); // รีเซ็ต Partner เมื่อเปลี่ยน Category
                   }}
                   className={`px-6 py-3 rounded-full border-2 transition-all duration-200 hover:scale-110 ease-in-out
                              ${selectedCategory === category.cgt_id ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}

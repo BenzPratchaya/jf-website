@@ -7,7 +7,6 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
 import { NewsItemType, NewsItemDetails, NewsContentBlock } from '@/data/news'; 
-const JF_LOGO_PATH = "/images/LOGO-JF.png";
 
 interface NewsDetailPageProps {
   params: {
@@ -15,13 +14,14 @@ interface NewsDetailPageProps {
   };
 }
 
+const jfLogo = "/images/LOGO-JF.png";
+
 const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
-  const { newsId } = await params;
-  
-  let newsItem: NewsItemType | undefined;
+  const { newsId } = await params; // ดึง newsId จาก params
+  let newsItem: NewsItemType | undefined; // สำหรับข้อมูลข่าวสารชิ้นเดียว
 
   try {
-    // **KEY CHANGE: ดึงข้อมูลข่าวสารชิ้นเดียวจาก Backend**
+    // ดึงข้อมูลข่าวสารชิ้นเดียวจาก Backend**
     const newsRes = await fetch(`http://localhost:5000/api/news/${newsId}`, { cache: 'no-store' }); // cache: 'no-store' สำหรับ dev
     if (!newsRes.ok) {
       if (newsRes.status === 404) {
@@ -93,7 +93,7 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
       <Navbar />
       <main className="bg-gray-50 py-8 md:py-12 max-w-5xl mx-auto">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb Navigation */}
+          {/* การนำทางแบบ Breadcrumb */}
           <nav className="text-sm mb-8">
             <ol className="list-none p-0 inline-flex flex-wrap text-gray-600">
               <li className="flex items-center">
@@ -110,9 +110,9 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
             </ol>
           </nav>
 
-          {/* News Content Area */}
+          {/* เนื้อหาข่าวสาร */}
           <div className="bg-white rounded-lg shadow-xl p-6 md:p-10">
-            {/* Main Image */}
+            {/* รูปหลัก */}
             <div className="mb-8 flex justify-center">
               <Image
                 src={newsItem.nit_image}
@@ -124,17 +124,17 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
               />
             </div>
 
-            {/* Title and Meta Info (Author/Date/Category) */}
+            {/* หัวข้อและข้อมูล (Author/Date/Category) */}
             <h1 className="text-2xl md:text-3xl text-gray-900 mb-4 leading-tight">
               {newsItem.nit_title}
             </h1>
             <div className="flex justify-between items-start text-sm text-gray-500 mb-6 border-b pb-4">
-              {/* Left Side: Author (with Logo) and Date */}
+              {/* ฝั่งซ้าย: ผู้เขียน (กับโลโก้) และเวลา */}
               <div className="flex flex-col items-start">
                 {newsDetails.nid_author && (
                   <div className="flex items-center gap-2 mb-1">
                     <Image
-                      src={JF_LOGO_PATH}
+                      src={jfLogo}
                       alt="JF Advance Med Logo"
                       width={72}
                       height={72}
@@ -146,13 +146,13 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
                 <span className="text-gray-500 text-xs md:text-sm">{newsItem.nit_date}</span>
               </div>
 
-              {/* Right Side: Category Tag */}
+              {/* ฝั่งขวา: หมวดหมู่ */}
               <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-semibold self-start">
                 {newsItem.nit_category}
               </span>
             </div>
 
-            {/* Full Content using contentBlocks */}
+            {/* เนื้อหาข่าวสาร */}
             <div className="text-gray-700 leading-relaxed">
               {newsDetails.nid_contentBlocks.map((block, index) => (
                 renderContentBlock(block, index)

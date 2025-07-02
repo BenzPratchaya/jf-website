@@ -9,22 +9,23 @@ import React from "react"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const companyLogo = "/images/LOGO-JF.png"
+  const jfLogo = "/images/LOGO-JF.png" //ดดด
   const navMenu = "whitespace-nowrap hover:underline text-base md:text-lg lg:text-xl p-2 font-light";
 
-  // Animation variants for the mobile menu itself (slide from right)
+  // รูปแบบแอนิเมชั่นสำหรับเมนู (การเลื่อนจากขวาไปซ้าย) ใช้สำหรับเมนูในมือถือ
   const menuVariants = {
     hidden: { x: "100%" },
     visible: { x: 0, transition: { type: "tween", duration: 0.3 } },
     exit: { x: "100%", transition: { type: "tween", duration: 0.3 } }
   };
 
-  // Animation variants for menu items (staggered fade-in)
+  // รูปแบบแอนิเมชั่นสำหรับรายการเมนู (การเลื่อนขึ้นลง) ใช้สำหรับรายการเมนูในมือถือ
   const listItemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
   };
 
+  // ฟังก์ชันสำหรับสลับสถานะของเมนู (เปิด/ปิด) และจัดการการเลื่อนของ body
   const toggleMenu = () => {
     setIsOpen(!isOpen);
     document.body.style.overflow = isOpen ? 'auto' : 'hidden';
@@ -33,7 +34,7 @@ const Navbar = () => {
   return (
     <nav className="container h-16 sm:h-18 md:h-20 w-screen flex items-center justify-center relative z-50 bg-white bg-opacity-90 backdrop-blur-sm">
       <div className="container flex items-center justify-between w-full h-full px-4">
-        {/* Logo Section (Left Side) */}
+        {/* Logo Section (ฝั่งซ้าย) */}
         <motion.div
           initial="hidden"
           animate="visible"
@@ -46,7 +47,7 @@ const Navbar = () => {
             <Image
               className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
               priority={true}
-              src={companyLogo}
+              src={jfLogo}
               alt="J.F.Advance Med Co.,Ltd. Logo"
               width={150}
               height={50}
@@ -54,7 +55,8 @@ const Navbar = () => {
           </Link>
         </motion.div>
 
-        {/* Desktop Navigation Links Section (Right Side) */}
+        {/* Navigation Menu (ฝั่งขวา) */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/"}>Home</Link>
@@ -79,7 +81,7 @@ const Navbar = () => {
           </motion.div>
         </div>
 
-        {/* Mobile Menu Button (Hamburger Icon / Close Icon) */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden z-50">
           <button onClick={toggleMenu} className={`text-3xl focus:outline-none ${isOpen ? 'text-white' : 'text-gray-800'}`}>
             {isOpen ? <FaTimes /> : <FaBars />}
@@ -87,7 +89,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Side Menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

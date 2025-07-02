@@ -4,10 +4,14 @@
 import { motion } from "framer-motion"
 
 const About = () => {
+
+  const aboutImage = "/images/banner.jpg"
+
   return (
     <>
       <section id="about" className="container py-20 mt-10">
-      {/* header section */}
+      {/* ใช้ flexbox เพื่อจัดวางเนื้อหาในแนวนอนและแนวตั้ง */}
+      {/* flex-col สำหรับมือถือ และ flex-row สำหรับหน้าจอขนาดกลางขึ้นไป */}
       <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 p-4">
         {/* ฝั่งซ้าย: Text Content */}
         <motion.div
@@ -35,8 +39,8 @@ const About = () => {
           className="md:w-1/2 flex justify-center items-center" 
         >
           <img
-            src="/images/banner.jpg" 
-            alt="JF Advance Med"
+            src={aboutImage}
+            alt="aboutImage"
             className="max-w-full h-auto rounded-lg"
           />
         </motion.div>

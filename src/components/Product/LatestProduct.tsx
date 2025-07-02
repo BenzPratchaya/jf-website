@@ -5,9 +5,8 @@ import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image";
-
 // Import ProductType เท่านั้น
-import { ProductType } from '@/data/products'; // ตรวจสอบ Path ให้ถูกต้อง
+import { ProductType } from '@/data/products';
 
 const LatestProduct = () => {
   // State สำหรับข้อมูลและสถานะการโหลด
@@ -15,7 +14,7 @@ const LatestProduct = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // **KEY CHANGE: useEffect สำหรับ Fetch Data จาก Backend**
+  // useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -40,20 +39,21 @@ const LatestProduct = () => {
   const startIndex = Math.max(0, allProducts.length - 6);
   const latestProducts = allProducts.slice(startIndex);
 
-  // **KEY CHANGE: แสดง Loading/Error UI**
+  // แสดง Loading
   if (loading) {
     return (
       <section id="products" className="py-24 bg-white text-center">
         <h2 className="text-4xl my-16 uppercase text-gray-800">Products</h2>
-        <p className="text-xl text-gray-600">กำลังโหลดสินค้าล่าสุด...</p>
+        <p className="text-xl text-gray-600">Loading the latest products...</p>
       </section>
     );
   }
 
+  // แสดง Error
   if (error) {
     return (
       <section id="products" className="py-24 bg-red-100 text-center">
-        <h2 className="text-4xl my-16 uppercase text-red-800">เกิดข้อผิดพลาด</h2>
+        <h2 className="text-4xl my-16 uppercase text-red-800">An error occurred</h2>
         <p className="text-xl text-red-600">{error}</p>
       </section>
     );
@@ -61,13 +61,17 @@ const LatestProduct = () => {
 
   return (
     <section id="products" className="container py-24 bg-white">
+      {/* ส่วนหัวของ Products */}
       <h2 className="text-center text-4xl my-16 uppercase text-gray-800">Products</h2>
 
+      {/* ใช้ Container เพื่อจัดเนื้อหาให้อยู่ตรงกลางและเพิ่มช่องว่าง */}
+      {/* grid layout สำหรับการ์ดสินค้า */}
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+          {/* ใช้ map เพื่อแสดงสินค้า */}
           {latestProducts.map((product: ProductType, index: number) => (
             <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col">
-              <Link href={`/products/${product.pdt_id}`} className="flex-grow flex flex-col">
+              <Link href={`/products/${product.pdt_id}`} className="flex-grow flex flex-col"> 
                 <div className="relative w-full flex justify-center items-center p-4">
                   <Image
                     src={product.pdt_image}
