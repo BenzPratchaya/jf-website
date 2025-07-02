@@ -12,8 +12,8 @@ import News from './models/News.js'; // เปลี่ยนชื่อจา�
 // **สำคัญมาก:** ตรวจสอบ Path การนำเข้าข้อมูลเหล่านี้ให้ถูกต้อง
 // Path นี้สมมติว่า backend/ อยู่ใน root project เดียวกันกับ src/
 // และไฟล์ข้อมูลจริงคือ .ts (TypeScript)
-import { products, partners, categories } from '../src/data/products'; // **ไม่ต้องมี .js/.jsx ท้าย**
-import { newsItems } from '../src/data/news'; // **ไม่ต้องมี .js/.jsx ท้าย**
+import { products, partners, categories } from '../backend/data/products.js'; 
+import { newsItems } from '../backend/data/news.js'
 
 
 async function seedDatabase() {

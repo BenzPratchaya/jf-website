@@ -7,6 +7,7 @@ const ProductDetailSectionSchema = new mongoose.Schema({ // **เปลี่ย
   pds_title: { type: String, required: false },
   pds_type: { type: String, enum: ['paragraph', 'list', 'image', 'grid', 'heading'], required: true }, // **มี 'heading' ด้วย**
   pds_content: { type: String, required: false },
+  pds_items: { type: [String], required: false },
   pds_image: { type: String, required: false },
   pds_alt: { type: String, required: false }, // **มี altText**
   pds_grid: { type: [{ title: String, items: [String] }], required: false },
@@ -28,14 +29,14 @@ const ProductDetailsSchema = new mongoose.Schema({
 
 // --- Product Schema ---
 const ProductSchema = new mongoose.Schema({
-  pnt_id: { type: String, required: true, unique: true },
-  pnt_name: { type: String, required: true },
-  pnt_image: { type: String, required: true },
-  pnt_description: { type: String, required: true },
-  pnt_link: { type: String, required: true },
-  pnt_details: { type: ProductDetailsSchema, required: true },
-  pnt_partnerId: { type: String, required: true },
-  pnt_categoryId: { type: String, required: true },
+  pdt_id: { type: String, required: true, unique: true },
+  pdt_name: { type: String, required: true },
+  pdt_image: { type: String, required: true },
+  pdt_description: { type: String, required: true },
+  pdt_link: { type: String, required: true },
+  pdt_details: { type: ProductDetailsSchema, required: true },
+  pdt_partnerId: { type: String, required: true },
+  pdt_categoryId: { type: String, required: true },
 }, { timestamps: true });
 
 export default mongoose.model('Product', ProductSchema);

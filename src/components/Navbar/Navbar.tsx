@@ -77,9 +77,6 @@ const Navbar = () => {
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
             <Link href={"/#contact"}>Contact</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
-            <Link href={"/admin"}>Admin</Link>
-          </motion.div>
         </div>
 
         {/* Mobile Menu Button (Hamburger Icon / Close Icon) */}

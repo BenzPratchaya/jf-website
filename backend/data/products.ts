@@ -14,7 +14,6 @@ export type ProductDetailSection = {
 
 // --- Definition of ProductDetails ---
 export type ProductDetails = {
-  pdd_relatedLinks: boolean;
   pdd_overview?: string; // ภาพรวมสินค้า
   pdd_keyFeatures?: string[]; // คุณสมบัติหลัก (รายการ)
   pdd_applications?: string[]; // การใช้งาน (รายการ)
@@ -28,7 +27,6 @@ export type ProductDetails = {
 
 // --- Definition of ProductType ---
 export type ProductType = {
-  filter(arg0: (p: any) => any): unknown;
   pdt_id: string; // The URL slug (e.g., 'ge-oec-c-arm')
   pdt_name: string;
   pdt_image: string; // รูปภาพหลักของสินค้า (สำหรับหน้า Products List)
@@ -62,9 +60,12 @@ export const products: ProductType[] = [
     pdt_link: '/products/ge-oec-c-arm',
     pdt_details: {
       pdd_overview: 'ระบบ Digital Radiography.',
-      pdd_keyFeatures: [],
-      pdd_applications: [],
-      pdd_sectionsContent: [],
+      pdd_keyFeatures: ['เครื่องตรวจจับดิจิทัลความละเอียดสูง'],
+      pdd_applications: ['รังสีวิทยาทั่วไป'],
+      pdd_sectionsContent: [
+        { pds_type: 'paragraph', pds_content: 'ภาพรวมระบบ DR ปฏิวัติการถ่ายภาพเอกซเรย์...' },
+        { pds_type: 'image', pds_image: '/images/products/2-GE-C ARM.jpg', pds_alt: 'ระบบ DR กำลังใช้งาน' },
+      ],
       pdd_category: 'เครื่องเอกซเรย์ดิจิทัล',
       pdd_client: 'โรงพยาบาลทั่วไป',
       pdd_projectDate: '15 พฤษภาคม 2568',
