@@ -1,25 +1,63 @@
 // components/Product/LatestProduct.tsx
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image";
 
 // Import ProductType เท่านั้น
-import { ProductType } from '@/data/products';
+import { ProductType } from '@/data/products'; // ตรวจสอบ Path ให้ถูกต้อง
 
-// KEY CHANGE: คอมโพเนนต์ Product จะรับ productsToShow เป็น prop
-interface ProductProps {
-  productsToShow: ProductType[]; // รับ array ของสินค้าที่จะแสดง
-}
+const LatestProduct = () => { // รับ prop productsToShow
+  // State สำหรับข้อมูลและสถานะการโหลด
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const LatestProduct = ({ productsToShow }: ProductProps) => { // รับ prop productsToShow
-  // KEY CHANGE: กรองเอาแค่ 6 รายการหลังสุด
-  // ตรวจสอบให้แน่ใจว่า productsToShow มีอย่างน้อย 6 รายการก่อนที่จะ slice
-  const startIndex = Math.max(0, productsToShow.length - 6);
-  const latestProducts = productsToShow.slice(startIndex);
+  // **KEY CHANGE: useEffect สำหรับ Fetch Data จาก Backend**
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/products', { cache: 'no-store' }); // ดึงจาก Backend API
+        if (!res.ok) {
+          throw new Error(`Failed to fetch products: ${res.statusText}`);
+        }
+        const data: ProductType[] = await res.json();
+        setAllProducts(data);
+      } catch (err: any) {
+        console.error("Error fetching latest products:", err);
+        setError("Failed to load latest products.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchProducts();
+  }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
+
+  // กรองเอาแค่ 6 รายการหลังสุดจาก allProducts ที่ดึงมา
+  const startIndex = Math.max(0, allProducts.length - 6);
+  const latestProducts = allProducts.slice(startIndex);
+
+  // **KEY CHANGE: แสดง Loading/Error UI**
+  if (loading) {
+    return (
+      <section id="products" className="py-24 bg-white text-center">
+        <h2 className="text-4xl my-16 uppercase text-gray-800">Products</h2>
+        <p className="text-xl text-gray-600">กำลังโหลดสินค้าล่าสุด...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="products" className="py-24 bg-red-100 text-center">
+        <h2 className="text-4xl my-16 uppercase text-red-800">เกิดข้อผิดพลาด</h2>
+        <p className="text-xl text-red-600">{error}</p>
+      </section>
+    );
+  }
 
   return (
     <section id="products" className="container py-24 bg-white">

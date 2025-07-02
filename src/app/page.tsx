@@ -4,10 +4,8 @@ import About from "@/components/About/About";
 import LogoPartner from "@/components/LogoSlide/LogoPartner";
 import LogoHospital from "@/components/LogoSlide/LogoHospital";
 import Leader from "@/components/Leader/Leader";
-import Product from "@/components/Product/Product";
 import Contact from "@/components/Contact/Contact";
 import { Footer } from "@/components/Footer/Footer";
-import { products } from "@/data/products";
 import LatestProduct from "@/components/Product/LatestProduct";
 
 export default function Home() {
@@ -18,7 +16,7 @@ export default function Home() {
         <Hero />
         <About />
         <LogoPartner />
-        <LatestProduct productsToShow={products} />
+        <LatestProduct />
         <LogoHospital />
         <Leader />
         <Contact />

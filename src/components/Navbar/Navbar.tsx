@@ -10,7 +10,7 @@ import React from "react"
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const companyLogo = "/images/LOGO-JF.png"
-  const navItemClasses = "whitespace-nowrap hover:underline text-base md:text-lg lg:text-xl p-2 font-light";
+  const navMenu = "whitespace-nowrap hover:underline text-base md:text-lg lg:text-xl p-2 font-light";
 
   // Animation variants for the mobile menu itself (slide from right)
   const menuVariants = {
@@ -42,7 +42,7 @@ const Navbar = () => {
             transition: { duration: 0.3, ease: "easeInOut" }
           }}
         >
-          <Link href={"/"} onClick={() => setIsOpen(false)}> {/* Link อยู่ข้างใน */}
+          <Link href={"/"} onClick={() => setIsOpen(false)}>
             <Image
               className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
               priority={true}
@@ -56,25 +56,25 @@ const Navbar = () => {
 
         {/* Desktop Navigation Links Section (Right Side) */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/"}>Home</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/#about"}>About</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/#services"}>Services</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/products"}>Products</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/#solution"}>Solution</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/news"}>News</Link>
           </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navItemClasses}>
+          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/#contact"}>Contact</Link>
           </motion.div>
         </div>
