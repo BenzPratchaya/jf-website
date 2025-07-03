@@ -1,15 +1,24 @@
-// backend/routes/productRoutes.js (เวอร์ชันย้อนกลับ)
+// backend/routes/productRoutes.js
+import express from 'express';
+import { 
+  getAllProducts, // ใช้ชื่อนี้ตามที่ให้มาล่าสุด
+  getProductById, 
+  createProduct, 
+  updateProduct,  
+  deleteProduct   
+} from '../controllers/productController.js';
+import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
-import express from 'express'; // ใช้ express สำหรับการสร้าง Router
 const router = express.Router();
-import * as productController from '../controllers/productController.js'; 
 
-router.get('/', productController.getAllProducts); // GET /api/products
-router.get('/:id', productController.getProductById); // GET /api/products/:id
+router.route('/')
+  .get(getAllProducts) // GET all products
+  .post(protect, authorizeRoles('admin', 'superadmin'), createProduct); // POST new product
 
-// POST, PUT, DELETE routes
-router.post('/', productController.createProduct);  // POST /api/products
-router.put('/:id', productController.updateProduct); // PUT /api/products/:id
-router.delete('/:id', productController.deleteProduct); // DELETE /api/products/:id
+// ใช้ route ที่ใช้ _id (:id) สำหรับ GET, PUT, DELETE
+router.route('/:id') 
+  .get(getProductById) 
+  .put(protect, authorizeRoles('admin', 'superadmin'), updateProduct) 
+  .delete(protect, authorizeRoles('admin', 'superadmin'), deleteProduct); 
 
 export default router;

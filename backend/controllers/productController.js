@@ -1,48 +1,27 @@
 // backend/controllers/productController.js
-
-import Product from '../models/Product.js'; // Import Product Model
+import asyncHandler from 'express-async-handler'; // ต้องแน่ใจว่าได้ติดตั้งแล้ว
+import Product from '../models/Product.js';
 
 // @desc    Get all products
 // @route   GET /api/products
 // @access  Public
-export const getAllProducts = async (req, res) => {
-    try {
-        const products = await Product.find({}); // ดึงข้อมูลทั้งหมด
-        res.json(products); // จะ return Field ชื่อใหม่แล้ว
-    } catch (error) {
-        console.error('Error in getAllProducts:', error);
-        res.status(500).json({ message: 'Error fetching products', error: error.message });
-    }
-};
-
-// @desc    Get single product by ID (slug)
-// @route   GET /api/products/:id
-// @access  Public
-export const getProductById = async (req, res) => {
-    try {
-        // **KEY FIX: เปลี่ยนจาก { id: req.params.id } เป็น { pdt_id: req.params.id }**
-        const product = await Product.findOne({ pdt_id: req.params.id }); 
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.json(product); // จะ return Field ชื่อใหม่แล้ว
-    } catch (error) {
-        console.error('Error in getProductById:', error);
-        res.status(500).json({ message: 'Error fetching product', error: error.message });
-    }
-};
+// เปลี่ยนเป็นใช้ asyncHandler เพื่อจัดการ Error อัตโนมัติ
+const getAllProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find({});
+    res.json(products);
+});
 
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
-export const createProduct = async (req, res) => {
-    try {
-        // req.body ควรมีข้อมูล Field ชื่อใหม่มาจาก Frontend แล้ว
+// เปลี่ยนเป็นใช้ asyncHandler เพื่อจัดการ Error อัตโนมัติ
+const createProduct = asyncHandler(async (req, res) => {
+    try { // ยังคง try-catch ได้ถ้าต้องการจัดการ Error บางประเภทเป็นพิเศษ
         const newProduct = new Product(req.body); 
         const savedProduct = await newProduct.save();
-        res.status(201).json(savedProduct); // ส่งข้อมูล Field ชื่อใหม่กลับไป
+        res.status(201).json(savedProduct);
     } catch (error) {
-        console.error('Error in createProduct:', error);
+        // Error handling ที่ specific กว่าถูกย้ายมาใน try-catch block นี้
         if (error.name === 'ValidationError') {
             const messages = Object.values(error.errors).map(val => val.message);
             return res.status(400).json({ message: messages.join(', ') });
@@ -50,50 +29,78 @@ export const createProduct = async (req, res) => {
         if (error.code === 11000) { // Duplicate key error
             return res.status(400).json({ message: 'Product with this ID already exists.' });
         }
-        res.status(500).json({ message: 'Error creating product', error: error.message });
+        // Error อื่นๆ จะถูกส่งต่อไปยัง asyncHandler และ Error Middleware ทั่วไป
+        throw error; 
     }
-};
+});
 
-// @desc    Update a product
-// @route   PUT /api/products/:id
-// @access  Private/Admin
-export const updateProduct = async (req, res) => {
-    try {
-        // **KEY FIX: ค้นหาด้วย pdt_id และอัปเดต Field ชื่อใหม่**
-        const updatedProduct = await Product.findOneAndUpdate(
-            { pdt_id: req.params.id }, // Find by our custom 'pdt_id' slug
-            req.body, // req.body ควรมีข้อมูล Field ชื่อใหม่มาจาก Frontend แล้ว
-            { new: true, runValidators: true }
-        );
+// @desc    Get single product by ID (เปลี่ยนไปใช้ pdt_id)
+// @route   GET /api/products/:id  <-- ตรงนี้ req.params.id จะเป็น pdt_id
+const getProductById = asyncHandler(async (req, res) => {
+  // *** เพิ่ม console.log สองบรรทัดนี้ ***
+  console.log('Fetching product with pdt_id:', req.params.id); 
+  const product = await Product.findOne({ pdt_id: req.params.id }); 
+  console.log('Product found:', product); 
+  // *** สิ้นสุดการเพิ่ม console.log ***
 
-        if (!updatedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.json(updatedProduct); // ส่งข้อมูล Field ชื่อใหม่กลับไป
-    } catch (error) {
-        console.error('Error in updateProduct:', error);
-        if (error.name === 'ValidationError') {
-            const messages = Object.values(error.errors).map(val => val.message);
-            return res.status(400).json({ message: messages.join(', ') });
-        }
-        res.status(500).json({ message: 'Error updating product', error: error.message });
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
+// @desc    Update a product by ID (เปลี่ยนไปใช้ pdt_id)
+// @route   PUT /api/products/:id  <-- ตรงนี้ req.params.id จะเป็น pdt_id
+const updateProduct = asyncHandler(async (req, res) => {
+  // *** แก้ไขบรรทัดนี้: ค้นหาด้วย pdt_id แทน _id ***
+  const product = await Product.findOne({ pdt_id: req.params.id }); 
+
+  if (product) {
+    product.pdt_id = req.body.pdt_id || product.pdt_id;
+    product.pdt_name = req.body.pdt_name || product.pdt_name;
+    product.pdt_image = req.body.pdt_image || product.pdt_image;
+    product.pdt_description = req.body.pdt_description || product.pdt_description;
+    product.pdt_link = req.body.pdt_link || product.pdt_link;
+    product.pdt_partnerId = req.body.pdt_partnerId || product.pdt_partnerId;
+    product.pdt_categoryId = req.body.pdt_categoryId || product.pdt_categoryId;
+
+    if (req.body.pdt_details) {
+      product.pdt_details.pdd_category = req.body.pdt_details.pdd_category || product.pdt_details.pdd_category;
+      product.pdt_details.pdd_client = req.body.pdt_details.pdd_client || product.pdt_details.pdd_client;
+      product.pdt_details.pdd_projectDate = req.body.pdt_details.pdd_projectDate || product.pdt_details.pdd_projectDate;
+      product.pdt_details.pdd_projectUrl = req.body.pdt_details.pdd_projectUrl || product.pdt_details.pdd_projectUrl;
+      product.pdt_details.pdd_longDescription = req.body.pdt_details.pdd_longDescription || product.pdt_details.pdd_longDescription;
     }
-};
+    
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
 
-// @desc    Delete a product
-// @route   DELETE /api/products/:id
-// @access  Private/Admin
-export const deleteProduct = async (req, res) => {
-    try {
-        // **KEY FIX: ค้นหาด้วย pdt_id**
-        const deletedProduct = await Product.findOneAndDelete({ pdt_id: req.params.id }); 
+// @desc    Delete a product by ID (เปลี่ยนไปใช้ pdt_id)
+// @route   DELETE /api/products/:id  <-- ตรงนี้ req.params.id จะเป็น pdt_id
+const deleteProduct = asyncHandler(async (req, res) => {
+  // *** แก้ไขบรรทัดนี้: ค้นหาด้วย pdt_id แทน _id ***
+  const product = await Product.findOne({ pdt_id: req.params.id }); 
 
-        if (!deletedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.json({ message: 'Product removed' });
-    } catch (error) {
-        console.error('Error in deleteProduct:', error);
-        res.status(500).json({ message: 'Error deleting product', error: error.message });
-    }
+  if (product) {
+    await Product.deleteOne({ _id: product._id }); // ยังคงลบด้วย _id ได้
+    res.json({ message: 'Product removed' });
+  } else {
+    res.status(404);
+    throw new new Error('Product not found');
+  }
+});
+
+export { 
+  getAllProducts,
+  getProductById, 
+  createProduct, 
+  updateProduct, 
+  deleteProduct 
 };
