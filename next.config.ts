@@ -12,6 +12,12 @@ const nextConfig = {
               port: '5000',
               pathname: '/uploads/products/**', // อนุญาตเฉพาะ path ที่ต้องการ
             },
+            {
+              protocol: 'https',
+              hostname: 'res.cloudinary.com', // Domain ของ Cloudinary
+              port: '', 
+              pathname: '/your_cloud_name/image/upload/**', // เปลี่ยน 'your_cloud_name' เป็น Cloud Name ของคุณ
+            },
         ],
     },
 };

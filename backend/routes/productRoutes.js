@@ -35,15 +35,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// กำหนด Filter สำหรับชนิดไฟล์ (อนุญาตเฉพาะรูปภาพ)
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true); // อนุญาต
-  } else {
-    cb(new Error('Only image files are allowed!'), false); // ไม่อนุญาต
-  }
-};
-
 // สร้าง Multer instance พร้อมการตั้งค่า
 const upload = multer({ 
   storage: storage,
