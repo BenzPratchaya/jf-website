@@ -1,5 +1,11 @@
 // backend/routes/newsRoutes.js
+
 import express from 'express';
+import multer from 'multer'; // *** เพิ่ม: Import multer ***
+import path from 'path';     // *** เพิ่ม: Import path สำหรับจัดการ Path ไฟล์ ***
+import { fileURLToPath } from 'url'; // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
+import { dirname } from 'path';      // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
+
 import { 
   getNews, 
   getNewsById, 
@@ -11,14 +17,51 @@ import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.route('/')
-  .get(getNews) // GET all news
-  .post(protect, authorizeRoles('admin', 'superadmin'), createNews); // POST new news item
+// สำหรับ __dirname ใน ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-// ใช้ route ที่ใช้ nit_id (:id) สำหรับ GET, PUT, DELETE
+// *** ตั้งค่า Multer สำหรับการอัปโหลดไฟล์ ***
+const storage = multer.diskStorage({
+  // กำหนด Folder ปลายทาง: Root ของโปรเจกต์/uploads/news
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '..', '..', 'uploads', 'new')); 
+  },
+  // กำหนดชื่อไฟล์เป็น nit_id
+  filename: (req, file, cb) => {
+    const nitId = req.body.nit_id; // ดึง nit_id จาก req.body
+    const fileExtension = path.extname(file.originalname); // นามสกุลไฟล์เดิม
+    cb(null, `${nitId}${fileExtension}`); // ตั้งชื่อไฟล์เป็น nit_id.นามสกุล
+  },
+});
+
+// กำหนด Filter สำหรับชนิดไฟล์ (อนุญาตเฉพาะรูปภาพ)
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
+
+// สร้าง Multer instance พร้อมการตั้งค่า
+const upload = multer({ 
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 1024 * 1024 * 5 } // จำกัดขนาดไฟล์ 5MB
+});
+
+// Routes สำหรับ News
+router.route('/')
+  .get(getNews) 
+  // POST /api/news (สร้างข่าวใหม่พร้อมอัปโหลดรูปภาพ)
+  // 'newsImage' คือชื่อ field ใน FormData ที่ Frontend จะส่งไฟล์มา
+  .post(protect, authorizeRoles('admin', 'superadmin'), upload.single('newsImage'), createNews);
+
 router.route('/:id') // ใช้ :id เป็น parameter (ซึ่งจะรับค่า nit_id)
   .get(getNewsById) 
-  .put(protect, authorizeRoles('admin', 'superadmin'), updateNews) 
+  // PUT /api/news/:id (อัปเดตข่าวและรูปภาพ)
+  .put(protect, authorizeRoles('admin', 'superadmin'), upload.single('newsImage'), updateNews) 
   .delete(protect, authorizeRoles('admin', 'superadmin'), deleteNews); 
 
 export default router;
