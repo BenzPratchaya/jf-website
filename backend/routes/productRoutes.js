@@ -2,9 +2,8 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import { fileURLToPath } from 'url'; // สำหรับ __dirname ใน ES Modules
-import { dirname } from 'path';      // สำหรับ __dirname ใน ES Modules
-
+import { fileURLToPath } from 'url'; // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
+import { dirname } from 'path';      // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
 import { 
   getAllProducts, 
   getProductById, 
@@ -23,7 +22,7 @@ const __dirname = dirname(__filename);
 // ตั้งค่า Multer สำหรับการอัปโหลดไฟล์
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/products'); // Folder ที่จะเก็บไฟล์ที่อัปโหลด
+    cb(null, path.join(__dirname, '..', '..', 'uploads', 'products')); // กำหนด Folder ปลายทางเป็น uploads/products
   },
   filename: (req, file, cb) => {
     // *** แก้ไขบรรทัดนี้: ใช้ req.body.pdt_id ในการตั้งชื่อไฟล์ ***
