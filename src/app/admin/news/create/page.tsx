@@ -1,5 +1,5 @@
 // src/app/admin/news/create/page.tsx
-'use client';
+'use client'; // Client Component
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,7 +9,7 @@ export default function CreateNewsPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     nit_id: '',
-    nit_image: '',
+    // nit_image: '', // ไม่ต้องเก็บ URL String แล้ว
     nit_category: '',
     nit_date: '',
     nit_title: '',
@@ -21,6 +21,8 @@ export default function CreateNewsPage() {
       nid_relatedLinks: [],
     },
   });
+  const [newsImage, setNewsImage] = useState<File | null>(null); // สถานะใหม่สำหรับไฟล์รูปภาพ
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // สถานะใหม่สำหรับแสดงรูปภาพ
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -38,32 +40,62 @@ export default function CreateNewsPage() {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
+
+  // Function สำหรับจัดการการเลือกไฟล์รูปภาพ
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setNewsImage(file);
+      setImagePreview(URL.createObjectURL(file)); // สร้าง URL สำหรับแสดง Preview
+    } else {
+      setNewsImage(null);
+      setImagePreview(null);
+    }
+  };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
+    // สร้าง FormData object สำหรับส่งข้อมูลแบบ multipart/form-data
+    const data = new FormData();
+    data.append('nit_id', formData.nit_id);
+    data.append('nit_category', formData.nit_category);
+    data.append('nit_date', formData.nit_date);
+    data.append('nit_title', formData.nit_title);
+    data.append('nit_description', formData.nit_description);
+    data.append('nit_link', formData.nit_link);
+    
+    // แปลง nit_details ให้เป็น JSON string ก่อน append
+    data.append('nit_details', JSON.stringify(formData.nit_details));
+
+    if (newsImage) {
+      data.append('newsImage', newsImage); // 'newsImage' คือชื่อ field ที่ Backend จะรับไฟล์
+    }
+
     try {
-      const res = await fetch('http://localhost:5000/api/news', { // Backend: POST /api/news
+      const res = await fetch('http://localhost:5000/api/news', { // Backend API: POST /api/news
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // ไม่ต้องระบุ 'Content-Type': 'multipart/form-data' เพราะ Browser จะจัดการให้เองเมื่อใช้ FormData
         credentials: 'include',
-        body: JSON.stringify(formData),
+        body: data, // ส่ง FormData object
       });
 
       if (res.ok) {
         setSuccess('News item created successfully!');
-        setFormData({ /* reset form */
-          nit_id: '', nit_image: '', nit_category: '', nit_date: '', nit_title: '', nit_description: '', nit_link: '',
+        setFormData({ // Clear form
+          nit_id: '', nit_category: '', nit_date: '', nit_title: '', nit_description: '', nit_link: '',
           nit_details: { nid_contentBlocks: [], nid_author: '', nid_relatedLinks: [] }
         });
+        setNewsImage(null);
+        setImagePreview(null);
         router.push('/admin/news');
       } else if (res.status === 401 || res.status === 403) {
         router.push('/admin/login');
       } else {
-        const data = await res.json();
-        setError(data.message || 'Failed to create news item.');
+        const resData = await res.json();
+        setError(resData.message || 'Failed to create news item.');
       }
     } catch (err) {
       console.error('Error creating news item:', err);
@@ -79,7 +111,6 @@ export default function CreateNewsPage() {
       </Link>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-4">
-        {/* Input fields for News details (อ้างอิงจาก News.js model) */}
         <div>
           <label htmlFor="nit_id" className="block text-sm font-medium text-gray-700">News ID</label>
           <input type="text" name="nit_id" id="nit_id" value={formData.nit_id} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
@@ -88,10 +119,23 @@ export default function CreateNewsPage() {
           <label htmlFor="nit_title" className="block text-sm font-medium text-gray-700">Title</label>
           <input type="text" name="nit_title" id="nit_title" value={formData.nit_title} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
         </div>
+        
+        {/* ช่องอัปโหลดไฟล์รูปภาพ */}
         <div>
-          <label htmlFor="nit_image" className="block text-sm font-medium text-gray-700">Image URL</label>
-          <input type="text" name="nit_image" id="nit_image" value={formData.nit_image} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          <label htmlFor="newsImage" className="block text-sm font-medium text-gray-700">News Image File</label>
+          <input 
+            type="file" 
+            name="newsImage" 
+            id="newsImage" 
+            accept="image/*" // รับเฉพาะไฟล์รูปภาพ
+            onChange={handleImageChange} 
+            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+          />
+          {imagePreview && (
+            <img src={imagePreview} alt="Image Preview" className="mt-2 w-24 h-24 object-cover rounded" />
+          )}
         </div>
+
         <div>
           <label htmlFor="nit_category" className="block text-sm font-medium text-gray-700">Category</label>
           <input type="text" name="nit_category" id="nit_category" value={formData.nit_category} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>

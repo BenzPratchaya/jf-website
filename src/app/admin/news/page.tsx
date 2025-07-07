@@ -1,14 +1,14 @@
 // src/app/admin/news/page.tsx
-'use client'; // Client Component
+'use client'; 
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface NewsItem {
-  _id: string; // MongoDB's internal ID
-  nit_id: string; // Custom news item ID, ใช้สำหรับ URL และ API
-  nit_image: string;
+  _id: string;
+  nit_id: string; // Custom news item ID
+  nit_image: string; // News Image URL
   nit_category: string;
   nit_date: string;
   nit_title: string;
@@ -31,17 +31,17 @@ export default function AdminNewsPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/news', { // Backend API: GET /api/news
+      const res = await fetch('http://localhost:5000/api/news', { 
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // ส่ง HttpOnly cookie
+        credentials: 'include',
       });
 
       if (res.ok) {
         const data = await res.json();
         setNews(data);
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login'); // Redirect หากไม่ได้รับอนุญาต
+        router.push('/admin/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to fetch news.');
@@ -58,20 +58,19 @@ export default function AdminNewsPage() {
     fetchNews();
   }, [fetchNews]);
 
-  const handleDelete = async (nit_id: string) => { // รับ nit_id
+  const handleDelete = async (nit_id: string) => { 
     if (!window.confirm('Are you sure you want to delete this news item?')) {
       return;
     }
 
     try {
-      // Backend API: DELETE /api/news/:id (Backend Controller คาดหวัง nit_id ที่ส่งมาใน param :id)
       const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
 
       if (res.ok) {
-        setNews(news.filter(item => item.nit_id !== nit_id)); // Filter ด้วย nit_id
+        setNews(news.filter(item => item.nit_id !== nit_id));
       } else if (res.status === 401 || res.status === 403) {
         router.push('/admin/login');
       } else {
@@ -114,6 +113,7 @@ export default function AdminNewsPage() {
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">_id (Internal)</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">News ID</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Title</th>
+                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Image</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Category</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Date</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Actions</th>
@@ -125,6 +125,22 @@ export default function AdminNewsPage() {
                   <td className="py-2 px-4 text-sm text-gray-800">{item._id}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_id}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_title}</td>
+                  <td className="py-2 px-4 text-sm">
+                    {item.nit_image && (
+                      <img
+                        src={`http://localhost:5000${item.nit_image}`} // ต้องใส่ base URL ของ backend
+                        alt={item.nit_title}
+                        className="w-16 h-16 object-cover rounded"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).onerror = null;
+                          (e.target as HTMLImageElement).src = '/images/placeholder.png'; // แสดงรูป placeholder หากมี error
+                        }}
+                      />
+                    )}
+                    {!item.nit_image && (
+                      <span className="text-gray-500">No Image</span>
+                    )}
+                  </td>
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_category}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_date}</td>
                   <td className="py-2 px-4 text-sm">
