@@ -3,11 +3,13 @@
 
 import EditProductForm from './editProductForm'; // นำเข้า Client Component
 
+type Params = Promise<{ pdt_id: string }>
+
 // นี่คือ Server Component ที่รับ params จาก URL
 // แก้ไข: เปลี่ยน productId เป็น pdt_id ตามชื่อ Folder
-export default async function EditProductPage({ params }: { params: { pdt_id: string } }) {
-  // แก้ไข: Destructure pdt_id จาก params
-  const { pdt_id } = await params;
+export default async function EditProductPage( props : { params: Params }) {
+  const params = await props.params;
+  const pdt_id = params.pdt_id;
 
   // Render Client Component และส่ง pdt_id เป็น prop
   return <EditProductForm pdt_id={pdt_id} />; // แก้ไข: ส่ง pdt_id เป็น prop

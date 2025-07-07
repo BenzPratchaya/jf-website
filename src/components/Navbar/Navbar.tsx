@@ -120,7 +120,7 @@ const Navbar = () => {
                 { name: "Solution", href: "/#solution" },
                 { name: "News", href: "/news" },
                 { name: "Contact", href: "/#contact" },
-              ].map((item, index) => (
+              ].map((item) => (
                 <motion.li key={item.name} variants={listItemVariants} onClick={toggleMenu}>
                   <Link href={item.href} className="block text-center text-white hover:text-gray-300 transition-colors">
                     {item.name}

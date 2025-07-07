@@ -11,14 +11,14 @@ const generateToken = (res, userId) => {
 
   res.cookie('accessToken', accessToken, {
     httpOnly: true, // ป้องกันการเข้าถึงจาก client-side script
-    secure: process.env.NODE_ENV !== 'development', // ใช้ secure cookie ใน production
+    secure: process.env.NODE_ENV !== 'production', // ใช้ secure cookie ใน production
     sameSite: 'strict', // ป้องกัน CSRF attacks
     maxAge: 60 * 60 * 1000, // 1 ชั่วโมง (สำหรับ Access Token)
   });
 
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
+    secure: process.env.NODE_ENV !== 'production',
     sameSite: 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 วัน (สำหรับ Refresh Token)
   });

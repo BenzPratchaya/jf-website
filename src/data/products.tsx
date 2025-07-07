@@ -22,7 +22,7 @@ export type ProductDetails = {
 
 // --- Definition of ProductType ---
 export type ProductType = {
-  filter(arg0: (p: any) => any): unknown;
+  filter(arg0: (p: unknown) => unknown): unknown;
   pdt_id: string; // The URL slug (e.g., 'ge-oec-c-arm')
   pdt_name: string;
   pdt_image: string; // รูปภาพหลักของสินค้า (สำหรับหน้า Products List)

@@ -24,7 +24,7 @@ const LatestProduct = () => {
         }
         const data: ProductType[] = await res.json();
         setAllProducts(data);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching latest products:", err);
         setError("Failed to load latest products.");
       } finally {

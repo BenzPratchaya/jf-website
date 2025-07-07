@@ -5,10 +5,13 @@
 
 import EditAdminForm from './editAdminForm'; // นำเข้า Client Component
 
+type Params = Promise<{ adminId: string }>
+
 // นี่คือ Server Component ที่รับ params จาก URL
-export default async function EditAdminPage({ params }: { params: { adminId: string } }) {
+export default async function EditAdminPage( props : { params: Params  }) {
   // ใน Server Component, params จะเป็น Object ไม่ใช่ Promise จึงเข้าถึงได้โดยตรง
-  const { adminId } = await params;
+  const params = await props.params;
+  const adminId  = params.adminId;
 
   // Render Client Component และส่ง adminId เป็น prop
   return <EditAdminForm adminId={adminId} />;

@@ -8,16 +8,12 @@ import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
 import { NewsItemType, NewsItemDetails, NewsContentBlock } from '@/data/news'; 
 
-interface NewsDetailPageProps {
-  params: {
-    newsId: string;
-  };
-}
-
 const jfLogo = "/images/LOGO-JF.png";
+type Params = Promise<{ newsId: string }>
 
-const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
-  const { newsId } = await params; // ดึง newsId จาก params
+const NewsDetailPage = async ( props : { params: Params }) => {
+  const params = await props.params;
+  const newsId = params.newsId;
   let newsItem: NewsItemType | undefined; // สำหรับข้อมูลข่าวสารชิ้นเดียว
 
   try {
@@ -32,7 +28,7 @@ const NewsDetailPage = async ({ params }: NewsDetailPageProps) => {
     }
     newsItem = await newsRes.json();
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching news data for NewsDetailPage:', error);
     notFound(); // ในกรณีที่ Fetch ล้มเหลว (เช่น Backend Server ไม่ทำงาน), ให้แสดงหน้า notFound
   }

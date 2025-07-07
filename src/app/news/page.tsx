@@ -31,7 +31,7 @@ export default function NewsPage() {
         }
         const data: NewsItemType[] = await res.json();
         setAllNewsItems(data);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching news:", err);
         setError("Failed to load news. Please try again later.");
       } finally {

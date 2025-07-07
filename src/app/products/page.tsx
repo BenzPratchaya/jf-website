@@ -72,7 +72,7 @@ export default function ProductsPage() {
     console.log('Filtering Logic triggered:', { selectedCategory, selectedPartner });
     
     let currentFilteredProducts: ProductType[] = allProducts; // ใช้ allProducts ที่ดึงมา
-    let relevantPartnerIds: Set<string> = new Set(); 
+    const relevantPartnerIds: Set<string> = new Set(); 
 
     // 1. กรองสินค้าตาม Category ก่อน
     if (selectedCategory !== 'all') {

@@ -3,6 +3,7 @@
 
 import React from "react"
 import { motion, Variants } from "framer-motion"
+import Image from "next/image"
 
 const LogoPartner = () => {
 
@@ -102,7 +103,9 @@ const LogoPartner = () => {
               className="flex items-center justify-center p-2"
               key={index}
             >
-              <img
+              <Image
+                width={100}
+                height={100}
                 src={item.logoSrc}
                 alt={item.altText}
                 className={item.className}

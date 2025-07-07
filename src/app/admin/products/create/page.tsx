@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CreateProductPage() {
   const router = useRouter();
@@ -131,7 +132,10 @@ export default function CreateProductPage() {
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
           />
           {imagePreview && (
-            <img src={imagePreview} alt="Image Preview" className="mt-2 w-24 h-24 object-cover rounded" />
+            <Image
+              width={96} 
+              height={96}
+              src={imagePreview} alt="Image Preview" className="mt-2 w-24 h-24 object-cover rounded" />
           )}
         </div>
 

@@ -2,6 +2,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 const About = () => {
 
@@ -38,7 +39,9 @@ const About = () => {
           }}
           className="md:w-1/2 flex justify-center items-center" 
         >
-          <img
+          <Image
+            width={500}
+            height={500}
             src={aboutImage}
             alt="aboutImage"
             className="max-w-full h-auto rounded-lg"

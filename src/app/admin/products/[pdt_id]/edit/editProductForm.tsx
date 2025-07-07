@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Product {
     _id: string;
@@ -20,7 +21,7 @@ interface Product {
         pdd_projectDate: string;
         pdd_projectUrl: string;
         pdd_longDescription: string;
-        pdd_sectionsContent?: any[];
+        pdd_sectionsContent?: unknown[];
     };
 }
 
@@ -190,7 +191,10 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
                   <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image File</label>
                   {imagePreviewUrl && ( // แสดงรูปภาพปัจจุบันหรือรูปที่เลือกใหม่
                     <div className="mb-2">
-                        <img src={imagePreviewUrl} alt="Current Product Image" className="w-24 h-24 object-cover rounded" />
+                        <Image
+                            width={96} 
+                            height={96}
+                            src={imagePreviewUrl} alt="Current Product Image" className="w-24 h-24 object-cover rounded" />
                         <button 
                             type="button" 
                             onClick={handleClearImage} 

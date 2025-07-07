@@ -4,6 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Product {
   _id: string;
@@ -15,7 +16,7 @@ interface Product {
   pdt_partnerId: string;
   pdt_categoryId: string;
   pdt_details: {
-    pdd_sectionsContent?: any[];
+    pdd_sectionsContent?: unknown[];
     pdd_category: string;
     pdd_client: string;
     pdd_projectDate: string;
@@ -130,7 +131,9 @@ export default function AdminProductPage() {
                   <td className="py-2 px-4 text-sm text-gray-800">{product.pdt_name}</td>
                   <td className="py-2 px-4 text-sm">
                     {product.pdt_image && (
-                      <img
+                      <Image
+                        width={64}
+                        height={64}
                         src={`http://localhost:5000${product.pdt_image}`} // ต้องใส่ base URL ของ backend
                         alt={product.pdt_name}
                         className="w-16 h-16 object-cover rounded"

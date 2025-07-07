@@ -4,6 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface NewsItem {
   _id: string;
@@ -15,7 +16,7 @@ interface NewsItem {
   nit_description: string;
   nit_link: string;
   nit_details: {
-    nid_contentBlocks: any[];
+    nid_contentBlocks: unknown[];
     nid_author?: string;
     nid_relatedLinks?: { text: string; url: string }[];
   };
@@ -127,7 +128,9 @@ export default function AdminNewsPage() {
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_title}</td>
                   <td className="py-2 px-4 text-sm">
                     {item.nit_image && (
-                      <img
+                      <Image
+                        width={64}
+                        height={64}
                         src={`http://localhost:5000${item.nit_image}`} // ต้องใส่ base URL ของ backend
                         alt={item.nit_title}
                         className="w-16 h-16 object-cover rounded"

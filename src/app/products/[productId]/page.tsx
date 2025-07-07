@@ -10,14 +10,11 @@ import { ProductType, ProductDetails, ProductDetailSection } from '@/data/produc
 // Client Component
 import RelatedProductsSlider from '@/components/Product/RelatedProductsSlider';
 
-interface ProductDetailPageProps {
-  params: {
-    productId: string;
-  };
-}
+type Params = Promise<{ productId: string }>
 
-const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
-  const { productId } = await params; // ดึง productId จาก params
+const ProductDetailPage = async ( props : { params: Params }) => {
+  const params = await props.params;
+  const productId = params.productId;
 
   let product: ProductType | undefined; // สำหรับข้อมูลสินค้าชิ้นเดียว
   let allProducts: ProductType[] = []; // สำหรับข้อมูลสินค้าทั้งหมด
@@ -43,7 +40,7 @@ const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
     // ดึงข้อมูลสินค้าทั้งหมด ใช้ await เพื่อรอผลลัพธ์จาก fetch
     allProducts = await allProductsRes.json();
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching product data for ProductDetailPage:', error);
     notFound(); // ถ้า fetch ไม่สำเร็จ ก็ไปหน้า 404
   }
