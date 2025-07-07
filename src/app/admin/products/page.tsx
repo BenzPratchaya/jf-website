@@ -134,7 +134,7 @@ export default function AdminProductPage() {
                       <Image
                         width={64}
                         height={64}
-                        src={product.pdt_image} // ต้องใส่ base URL ของ backend
+                        src={`http://localhost:5000${product.pdt_image}`} // ต้องใส่ base URL ของ backend
                         alt={product.pdt_name}
                         className="w-16 h-16 object-cover rounded"
                         onError={(e) => {
