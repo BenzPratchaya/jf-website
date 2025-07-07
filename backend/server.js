@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 });
 
 // *** แก้ไข: Serve static files จาก Folder uploads ที่ Root ของโปรเจกต์ ***
-app.use('/uploads', express.static(uploadsFolder)); 
+// app.use('/uploads', express.static(uploadsFolder)); 
 
 // API Routes
 app.get('/', (req, res) => {

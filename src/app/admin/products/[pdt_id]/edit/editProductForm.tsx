@@ -49,7 +49,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
                     setFormData(data);
                     // ตั้งค่า initial preview จากรูปภาพที่มีอยู่เดิม
                     if (data.pdt_image) {
-                      setImagePreviewUrl(`http://localhost:5000${data.pdt_image}`); // ต้องใส่ base URL ของ backend
+                      setImagePreviewUrl(data.pdt_image); // ต้องใส่ base URL ของ backend
                     }
                 } else if (res.status === 401 || res.status === 403) {
                     router.push('/admin/login');

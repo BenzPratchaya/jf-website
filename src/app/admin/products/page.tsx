@@ -114,7 +114,6 @@ export default function AdminProductPage() {
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">_id (Internal)</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Product ID</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Product Name</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Product Image</th>
@@ -126,7 +125,6 @@ export default function AdminProductPage() {
             <tbody>
               {products.map((product) => (
                 <tr key={product._id} className="border-b hover:bg-gray-50">
-                  <td className="py-2 px-4 text-sm text-gray-800">{product._id}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{product.pdt_id}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{product.pdt_name}</td>
                   <td className="py-2 px-4 text-sm">
@@ -134,7 +132,7 @@ export default function AdminProductPage() {
                       <Image
                         width={64}
                         height={64}
-                        src={`http://localhost:5000${product.pdt_image}`} // ต้องใส่ base URL ของ backend
+                        src={product.pdt_image} // ต้องใส่ base URL ของ backend
                         alt={product.pdt_name}
                         className="w-16 h-16 object-cover rounded"
                         onError={(e) => {

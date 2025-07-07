@@ -74,7 +74,7 @@ const LatestProduct = () => {
               <Link href={`/products/${product.pdt_id}`} className="flex-grow flex flex-col"> 
                 <div className="relative w-full flex justify-center items-center p-4">
                   <Image
-                    src={`http://localhost:5000${product.pdt_image}`}
+                    src={product.pdt_image}
                     alt={product.pdt_name}
                     width={400}
                     height={300}

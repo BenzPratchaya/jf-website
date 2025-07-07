@@ -116,7 +116,7 @@ const ProductDetailPage = async ( props : { params: Params }) => {
               {/* กล่อง Product Image Section (ฝั่งซ้ายบนจอใหญ่) */}
               <div>
                 <Image
-                  src={`http://localhost:5000${product.pdt_image}`}
+                  src={product.pdt_image}
                   alt={product.pdt_name}
                   width={800}
                   height={600}
