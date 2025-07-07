@@ -56,7 +56,7 @@ const RelatedProductsSlider = ({ products }: RelatedProductsSliderProps) => {
                 <div className="bg-white mb-10 rounded-lg shadow-md overflow-hidden transition-transform duration-300 group-hover:scale-105 flex flex-col h-full">
                   <div className="relative w-full flex justify-center items-center p-4">
                     <Image
-                      src={p.pdt_image}
+                      src={`http://localhost:5000${p.pdt_image}`}
                       alt={p.pdt_name}
                       width={200}
                       height={200} 

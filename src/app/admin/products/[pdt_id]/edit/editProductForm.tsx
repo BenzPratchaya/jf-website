@@ -1,4 +1,4 @@
-// src/app/admin/products/[productId]/edit/editProductForm.tsx
+// src/app/admin/products/[pdt_id]/edit/editProductForm.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ interface Product {
     _id: string;
     pdt_id: string; // Custom product ID
     pdt_name: string;
-    pdt_image: string;
+    pdt_image: string; // Path/URL ของรูปภาพ
     pdt_description: string;
     pdt_link: string;
     pdt_partnerId: string;
@@ -25,9 +25,11 @@ interface Product {
 }
 
 // Component นี้จะรับ pdt_id เป็น prop
-export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เปลี่ยน productId เป็น pdt_id
+export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
     const router = useRouter();
     const [formData, setFormData] = useState<Product | null>(null);
+    const [productImageFile, setProductImageFile] = useState<File | null>(null); // สถานะสำหรับไฟล์ใหม่ที่เลือก
+    const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // สถานะสำหรับ Preview รูปภาพ
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -35,8 +37,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                // Backend API: GET /api/products/:id (ซึ่ง Controller คาดหวัง pdt_id)
-                const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, { // ใช้ pdt_id ใน URL
+                const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, { // Backend API: GET /api/products/:id
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -45,6 +46,10 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
                 if (res.ok) {
                     const data = await res.json();
                     setFormData(data);
+                    // ตั้งค่า initial preview จากรูปภาพที่มีอยู่เดิม
+                    if (data.pdt_image) {
+                      setImagePreviewUrl(`http://localhost:5000${data.pdt_image}`); // ต้องใส่ base URL ของ backend
+                    }
                 } else if (res.status === 401 || res.status === 403) {
                     router.push('/admin/login');
                 } else {
@@ -59,7 +64,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
             }
         };
 
-        if (pdt_id) { // ตรวจสอบ pdt_id
+        if (pdt_id) {
             fetchProduct();
         }
     }, [pdt_id, router]); // Dependency array: pdt_id
@@ -81,6 +86,27 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
         }
     };
 
+    // จัดการการเลือกไฟล์รูปภาพใหม่
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        setProductImageFile(file);
+        setImagePreviewUrl(URL.createObjectURL(file)); // สร้าง URL สำหรับแสดง Preview ของรูปใหม่
+      } else {
+        setProductImageFile(null); // ไม่มีไฟล์ใหม่เลือก
+        // ไม่ล้าง imagePreviewUrl ที่เป็นของรูปเก่าทันที ถ้าผู้ใช้ไม่ได้ตั้งใจลบรูป
+      }
+    };
+
+    // ฟังก์ชันสำหรับลบรูปภาพปัจจุบัน (ถ้าผู้ใช้ต้องการลบรูปภาพโดยไม่ใส่รูปใหม่)
+    const handleClearImage = () => {
+      setProductImageFile(null); // ล้างไฟล์ที่เลือกใหม่ (ถ้ามี)
+      setImagePreviewUrl(null); // ล้าง preview
+      if (formData) { // ล้าง pdt_image ใน formData ด้วย เพื่อส่งค่าว่างไป Backend
+        setFormData(prev => ({ ...prev!, pdt_image: '' })); 
+      }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -91,13 +117,28 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
             return;
         }
 
+        const data = new FormData();
+        data.append('pdt_id', formData.pdt_id); // ควรใช้ pdt_id จาก formData เผื่อมีการเปลี่ยนแปลง
+        data.append('pdt_name', formData.pdt_name);
+        data.append('pdt_description', formData.pdt_description);
+        data.append('pdt_link', formData.pdt_link);
+        data.append('pdt_partnerId', formData.pdt_partnerId);
+        data.append('pdt_categoryId', formData.pdt_categoryId);
+        data.append('pdt_details', JSON.stringify(formData.pdt_details)); // แปลง nested object เป็น JSON string
+
+        if (productImageFile) {
+          data.append('productImage', productImageFile); // 'productImage' คือชื่อ field ที่ Backend จะรับไฟล์
+        } else if (formData.pdt_image !== undefined && formData.pdt_image === '') { // ถ้าผู้ใช้กด Clear Image หรือ pdt_image เป็นค่าว่าง
+            data.append('pdt_image', ''); // ส่งค่าว่างไปให้ Backend รู้ว่าต้องการลบรูป
+        }
+        // ถ้า productImageFile เป็น null และ formData.pdt_image มีค่าอยู่ (คือไม่ได้เปลี่ยนรูปหรือลบรูป)
+        // ไม่ต้อง append pdt_image เพราะ backend จะใช้ค่าเดิมจาก product ที่ถูกหาด้วย pdt_id
+
         try {
-            // Backend API: PUT /api/products/:id (ซึ่ง Controller คาดหวัง pdt_id)
-            const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, { // ใช้ pdt_id ใน URL
+            const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, { // Backend API: PUT /api/products/:id (ซึ่ง Controller คาดหวัง pdt_id)
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify(formData),
+                body: data, // ส่ง FormData object
             });
 
             if (res.ok) {
@@ -106,8 +147,8 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
             } else if (res.status === 401 || res.status === 403) {
                 router.push('/admin/login');
             } else {
-                const data = await res.json();
-                setError(data.message || 'Failed to update product.');
+                const resData = await res.json();
+                setError(resData.message || 'Failed to update product.');
             }
         } catch (err) {
             console.error('Error updating product:', err);
@@ -122,7 +163,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
     if (error && !formData) {
         return <div className="text-center mt-10 text-red-600">{error}</div>;
     }
-
+    
     if (!formData) {
         return <div className="text-center mt-10 text-gray-500">Product not found.</div>;
     }
@@ -143,10 +184,37 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) { // เ
                   <label htmlFor="pdt_name" className="block text-sm font-medium text-gray-700">Product Name</label>
                   <input type="text" name="pdt_name" id="pdt_name" value={formData.pdt_name} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
                 </div>
+                
+                {/* ช่องอัปโหลดไฟล์รูปภาพสำหรับ Edit */}
                 <div>
-                  <label htmlFor="pdt_image" className="block text-sm font-medium text-gray-700">Product Image URL</label>
-                  <input type="text" name="pdt_image" id="pdt_image" value={formData.pdt_image} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+                  <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image File</label>
+                  {imagePreviewUrl && ( // แสดงรูปภาพปัจจุบันหรือรูปที่เลือกใหม่
+                    <div className="mb-2">
+                        <img src={imagePreviewUrl} alt="Current Product Image" className="w-24 h-24 object-cover rounded" />
+                        <button 
+                            type="button" 
+                            onClick={handleClearImage} 
+                            className="mt-1 text-red-500 hover:text-red-700 text-sm"
+                        >
+                            Remove Image
+                        </button>
+                    </div>
+                  )}
+                  {/* input type file จะต้องไม่มี value หรือ defaultValue เพื่อให้มันว่างเปล่าเมื่อไม่มีไฟล์เลือก */}
+                  <input 
+                    type="file" 
+                    name="productImage" 
+                    id="productImage" 
+                    accept="image/*" 
+                    onChange={handleImageChange} 
+                    className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                  />
+                  {/* ถ้าไม่มีรูปปัจจุบันและไม่มีการเลือกไฟล์ใหม่ จะแสดงข้อความ ไม่มีรูปภาพ */}
+                  {!imagePreviewUrl && !productImageFile && (
+                    <p className="text-gray-500 text-sm mt-1">No image selected or uploaded.</p>
+                  )}
                 </div>
+
                 <div>
                   <label htmlFor="pdt_description" className="block text-sm font-medium text-gray-700">Short Description</label>
                   <textarea name="pdt_description" id="pdt_description" value={formData.pdt_description} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>

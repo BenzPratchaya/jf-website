@@ -1,5 +1,5 @@
 // src/app/admin/products/create/page.tsx
-'use client'; // Client Component
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -8,9 +8,8 @@ import Link from 'next/link';
 export default function CreateProductPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    pdt_id: '', // Custom product ID
+    pdt_id: '',
     pdt_name: '',
-    pdt_image: '',
     pdt_description: '',
     pdt_link: '',
     pdt_partnerId: '',
@@ -24,6 +23,8 @@ export default function CreateProductPage() {
       pdd_sectionsContent: [],
     },
   });
+  const [productImage, setProductImage] = useState<File | null>(null); // สถานะสำหรับไฟล์รูปภาพ
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // สถานะสำหรับแสดงรูปภาพ
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -42,31 +43,58 @@ export default function CreateProductPage() {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProductImage(file);
+      setImagePreview(URL.createObjectURL(file)); // สร้าง URL สำหรับแสดง Preview
+    } else {
+      setProductImage(null);
+      setImagePreview(null);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
+    const data = new FormData();
+    data.append('pdt_id', formData.pdt_id);
+    data.append('pdt_name', formData.pdt_name);
+    data.append('pdt_description', formData.pdt_description);
+    data.append('pdt_link', formData.pdt_link);
+    data.append('pdt_partnerId', formData.pdt_partnerId);
+    data.append('pdt_categoryId', formData.pdt_categoryId);
+    
+    data.append('pdt_details', JSON.stringify(formData.pdt_details)); // แปลง pdt_details ให้เป็น JSON string
+
+    if (productImage) {
+      data.append('productImage', productImage); // 'productImage' คือชื่อ field ที่ Backend จะรับไฟล์
+    }
+
     try {
       const res = await fetch('http://localhost:5000/api/products', { // Backend API: POST /api/products
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // ไม่ต้องระบุ 'Content-Type': 'multipart/form-data' เพราะ Browser จะจัดการให้เองเมื่อใช้ FormData
         credentials: 'include',
-        body: JSON.stringify(formData),
+        body: data, // ส่ง FormData object
       });
 
       if (res.ok) {
         setSuccess('Product created successfully!');
         setFormData({ // Clear form
-          pdt_id: '', pdt_name: '', pdt_image: '', pdt_description: '', pdt_link: '',
+          pdt_id: '', pdt_name: '', pdt_description: '', pdt_link: '',
           pdt_partnerId: '', pdt_categoryId: '', pdt_details: { pdd_category: '', pdd_client: '', pdd_projectDate: '', pdd_projectUrl: '', pdd_longDescription: '', pdd_sectionsContent: [] }
         });
+        setProductImage(null);
+        setImagePreview(null);
         router.push('/admin/products');
       } else if (res.status === 401 || res.status === 403) {
         router.push('/admin/login');
       } else {
-        const data = await res.json();
-        setError(data.message || 'Failed to create product.');
+        const resData = await res.json();
+        setError(resData.message || 'Failed to create product.');
       }
     } catch (err) {
       console.error('Error creating product:', err);
@@ -82,7 +110,6 @@ export default function CreateProductPage() {
       </Link>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-4">
-        {/* Input fields for Product details (อ้างอิงจาก Product.js model) */}
         <div>
           <label htmlFor="pdt_id" className="block text-sm font-medium text-gray-700">Product ID</label>
           <input type="text" name="pdt_id" id="pdt_id" value={formData.pdt_id} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
@@ -91,10 +118,23 @@ export default function CreateProductPage() {
           <label htmlFor="pdt_name" className="block text-sm font-medium text-gray-700">Product Name</label>
           <input type="text" name="pdt_name" id="pdt_name" value={formData.pdt_name} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
         </div>
+        
+        {/* ช่องอัปโหลดไฟล์รูปภาพ */}
         <div>
-          <label htmlFor="pdt_image" className="block text-sm font-medium text-gray-700">Product Image URL</label>
-          <input type="text" name="pdt_image" id="pdt_image" value={formData.pdt_image} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image File</label>
+          <input 
+            type="file" 
+            name="productImage" 
+            id="productImage" 
+            accept="image/*" // รับเฉพาะไฟล์รูปภาพ
+            onChange={handleImageChange} 
+            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+          />
+          {imagePreview && (
+            <img src={imagePreview} alt="Image Preview" className="mt-2 w-24 h-24 object-cover rounded" />
+          )}
         </div>
+
         <div>
           <label htmlFor="pdt_description" className="block text-sm font-medium text-gray-700">Short Description</label>
           <textarea name="pdt_description" id="pdt_description" value={formData.pdt_description} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>

@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface Product {
-  _id: string; // MongoDB's internal ID
-  pdt_id: string; // Custom product ID, ใช้สำหรับ URL และ API
+  _id: string;
+  pdt_id: string;
   pdt_name: string;
-  pdt_image: string;
+  pdt_image: string; // Product Image URL
   pdt_description: string;
   pdt_link: string;
   pdt_partnerId: string;
@@ -61,20 +61,19 @@ export default function AdminProductPage() {
     fetchProducts();
   }, [fetchProducts]);
 
-  const handleDelete = async (pdt_id: string) => { // รับ pdt_id
+  const handleDelete = async (pdt_id: string) => {
     if (!window.confirm('Are you sure you want to delete this product?')) {
       return;
     }
 
     try {
-      // Backend API: DELETE /api/products/:id (ซึ่งตอนนี้ Controller ค้นหาด้วย pdt_id)
       const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
 
       if (res.ok) {
-        setProducts(products.filter(product => product.pdt_id !== pdt_id)); // Filter ด้วย pdt_id
+        setProducts(products.filter(product => product.pdt_id !== pdt_id));
       } else if (res.status === 401 || res.status === 403) {
         router.push('/admin/login');
       } else {
@@ -107,10 +106,6 @@ export default function AdminProductPage() {
         </Link>
       </div>
 
-      <Link href="/admin/dashboard" className="text-blue-500 hover:underline mb-4 block">
-        &larr; Back to Dashboard
-      </Link>
-
       {products.length === 0 ? (
         <p className="text-center text-gray-500 mt-8">No products found. Add a new product to get started!</p>
       ) : (
@@ -136,7 +131,7 @@ export default function AdminProductPage() {
                   <td className="py-2 px-4 text-sm">
                     {product.pdt_image && (
                       <img
-                        src={product.pdt_image}
+                        src={`http://localhost:5000${product.pdt_image}`} // ต้องใส่ base URL ของ backend
                         alt={product.pdt_name}
                         className="w-16 h-16 object-cover rounded"
                         onError={(e) => {

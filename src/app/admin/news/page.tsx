@@ -104,10 +104,6 @@ export default function AdminNewsPage() {
         </Link>
       </div>
 
-      <Link href="/admin/dashboard" className="text-blue-500 hover:underline mb-4 block">
-        &larr; Back to Dashboard
-      </Link>
-
       {news.length === 0 ? (
         <p className="text-center text-gray-500 mt-8">No news items found. Add a new news item to get started!</p>
       ) : (
