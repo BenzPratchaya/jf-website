@@ -1,9 +1,6 @@
 // backend/routes/productRoutes.js
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url'; // สำหรับ __dirname ใน ES Modules
-import { dirname } from 'path';      // สำหรับ __dirname ใน ES Modules
 
 import { 
   getAllProducts, 
@@ -16,24 +13,17 @@ import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// สำหรับ __dirname ใน ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// *** แก้ไข: เปลี่ยนไปใช้ memoryStorage แทน diskStorage ***
+// Multer จะเก็บไฟล์ใน RAM ชั่วคราว
+const storage = multer.memoryStorage(); 
 
-// *** ตั้งค่า Multer สำหรับการอัปโหลดไฟล์ ***
-const storage = multer.diskStorage({
-  // กำหนด Folder ปลายทางที่จะบันทึกไฟล์
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', '..', 'uploads', 'products')); // Path ที่ถูกต้อง: /backend/uploads/products
-  },
-  // กำหนดชื่อไฟล์
-  filename: (req, file, cb) => {
-    // ใช้ pdt_id จาก req.body ในการตั้งชื่อไฟล์
-    const pdtId = req.body.pdt_id; 
-    const fileExtension = path.extname(file.originalname); // นามสกุลไฟล์เดิม (.jpg, .png)
-    cb(null, `${pdtId}${fileExtension}`); // ตั้งชื่อไฟล์เป็น pdt_id.นามสกุล
-  },
-});
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
 
 // สร้าง Multer instance พร้อมการตั้งค่า
 const upload = multer({ 

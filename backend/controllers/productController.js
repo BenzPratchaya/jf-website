@@ -95,6 +95,19 @@ const createProduct = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Get single product by ID (pdt_id)
+// @route   GET /api/products/:id
+const getProductById = asyncHandler(async (req, res) => {
+  const product = await Product.findOne({ pdt_id: req.params.id }); 
+
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
 // @desc    Update a product by ID (pdt_id)
 // @route   PUT /api/products/:id
 const updateProduct = asyncHandler(async (req, res) => {
