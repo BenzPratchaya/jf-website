@@ -32,11 +32,24 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// *** แก้ไข: กำหนด CORS Origin ให้ดึงจาก Environment Variable ***
+const allowedOrigins = [
+  'http://localhost:3000', // สำหรับการพัฒนา Local
+  process.env.CLIENT_ORIGIN_URL, // URL ของ Frontend ที่ Deploy แล้ว (จาก Vercel/Netlify)
+];
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://jf-website-opal.vercel.app/'],
-    credentials: true,
-}));
+    origin: function (origin, callback) {
+        // อนุญาต Requests ที่ไม่มี Origin (เช่น Mobile Apps, Postman)
+        // หรือ Requests จาก Origins ที่อยู่ใน allowedOrigins
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true, // สำคัญ: เพื่อให้ Cookie ถูกส่งระหว่าง Frontend/Backend
+})); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
