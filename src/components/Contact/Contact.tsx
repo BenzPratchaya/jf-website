@@ -3,12 +3,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaFax } from 'react-icons/fa';
 
 const Contact = () => {
   return (
     <section id="contact" className="py-24 bg-white">
-      {/* ส่วนหัวของ Contact */}
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: 100 }}
@@ -17,126 +16,129 @@ const Contact = () => {
       >
         Contact Us
       </motion.h2>
-      
-      {/* ใช้ Container เพื่อจัดเนื้อหาให้อยู่ตรงกลางและเพิ่มช่องว่าง */}
-      {/* grid layout สำหรับการ์ดต่างๆ */}
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          {/* คอลัมน์ซ้าย : การ์ด Our Address & การ์ด Map */}
-          <div className="space-y-8 flex flex-col">
-            {/* การ์ด Address */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow" // flex-grow to make this card fill space
-            >
-              <div className="text-blue-950 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                <FaMapMarkerAlt />
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">Our Address</h3>
-              <p className="text-sm text-gray-600 mb-auto">
-                J.F.Advance Med Co.,Ltd. 2521/33-26 Ladprao Road, Khlongchaokhunsing, Wangthonglang, Bangkok 10310, Thailand
-              </p>
-              <p className="text-sm text-gray-700 t-2">Tel: +66 2514-0314-7 / FAX: +66 2514-0328</p>
-            </motion.div>
 
-            {/* Google Map Embed */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.548602640745!2d100.60831667455936!3d13.787170896474692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29dfa553d2875%3A0xc8eb628a884b0c61!2sJ.F.%20Advance%20Med!5e1!3m2!1sth!2sth!4v1750135770407!5m2!1sth!2sth"
-                width="100%"
-                height="450"
-                style={{ border: 0 }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="J.F.Advance Med Co.,Ltd. Location Map"
-              ></iframe>
-            </motion.div>
-          </div>
-
-          {/* คอลัมน์ขวา : การ์ด Email, การ์ด Call Us & การ์ด Contact Form */}
-          <div className="space-y-8 flex flex-col"> 
-            {/* การ์ด Email & การ์ด Call Us */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch flex-grow">
-              {/* การ์ด Email Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow"
-              >
-                <div className="text-blue-950 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <FaEnvelope />
-                </div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">Email Us</h3>
-                <p className="text-sm text-gray-600 mb-auto">
-                  <a href="mailto:sales@jfaw.co.th" className="hover:underline text-blue-600">sales@jfav.co.th</a>
-                </p>
-              </motion.div>
-
-              {/* การ์ด Call Us */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center group flex-grow"
-              >
-                <div className="text-blue-950 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <FaPhoneAlt />
-                </div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900 ">Call Us</h3>
-                <p className="text-sm text-gray-600 mb-auto">
-                  <a href="tel:+6625140314" className="hover:underline text-blue-600">+66 2514-0314-7</a>
-                </p>
-              </motion.div>
+      {/* ส่วนที่ 1: Info Cards */}
+      <div className="container mx-auto px-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Our Main Office */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
+          >
+            <div className="text-blue-900 text-5xl mb-4">
+              <FaMapMarkerAlt />
             </div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900 uppercase">Our Address</h3>
+            <p className="text-sm text-gray-700">
+              2521/33-26 Ladprao Road,<br />
+              Khlongchaokhunsing, Wangthonglang,<br />
+              Bangkok 10310, Thailand
+            </p>
+          </motion.div>
+          {/* Phone */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
+          >
+            <div className="text-blue-900 text-5xl mb-4">
+              <FaPhoneAlt />
+            </div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900 uppercase">Phone</h3>
+            <p className="text-sm text-gray-700">
+              +66 2514-0314-7
+            </p>
+          </motion.div>
+          {/* Fax */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
+          >
+            <div className="text-blue-900 text-5xl mb-4">
+              <FaFax />
+            </div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900 uppercase">Fax</h3>
+            <p className="text-sm text-gray-700">
+              +66 2514-0328
+            </p>
+          </motion.div>
+          {/* Email */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
+          >
+            <div className="text-blue-900 text-5xl mb-4">
+              <FaEnvelope />
+            </div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900 uppercase">Email</h3>
+            <p className="text-sm text-blue-900">
+              <a href="mailto:sales@jfav.co.th" className="hover:underline">sales@jfav.co.th</a>
+            </p>
+          </motion.div>
+        </div>
+      </div>
 
-            {/* การ์ด Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="bg-white p-8 rounded-lg shadow-md"
-            >
-              <h3 className="text-2xl font-semibold mb-6 text-gray-900 text-center">Send Us a Message</h3>
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent"
-                  />
-                </div>
+      {/* ส่วนที่ 2: Map + Form */}
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          {/* Map */}
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.726898697226!2d100.60831667455936!3d13.787170896474692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29dfa553d2875%3A0xc8eb628a884b0c61!2sJ.F.%20Advance%20Med!5e0!3m2!1sth!2sth!4v1750135770407!5m2!1sth!2sth"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="J.F.Advance Med Co.,Ltd. Location Map"
+            ></iframe>
+          </div>
+          {/* Contact Form */}
+          <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col justify-center">
+            <form className="space-y-6">
+              <div className="flex flex-col md:flex-row gap-4">
                 <input
                   type="text"
-                  placeholder="Subject"
-                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent"
+                  placeholder="Your Name"
+                  className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-500"
+                  required
                 />
-                <textarea
-                  placeholder="Message"
-                  rows={5}
-                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent resize-y"
-                ></textarea>
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <input
+                type="text"
+                placeholder="Subject"
+                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-500"
+                required
+              />
+              <textarea
+                placeholder="Message"
+                rows={5}
+                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-500"
+                required
+              ></textarea>
+              <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-md bg-blue-950 text-white font-semibold hover:bg-blue-800 transition-colors duration-300"
+                  className="bg-blue-950 hover:bg-blue-900 text-white font-semibold px-10 py-3 rounded transition"
                 >
                   Send Message
                 </button>
-              </form>
-            </motion.div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
