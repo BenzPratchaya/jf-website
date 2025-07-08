@@ -33,7 +33,7 @@ export default function EditAdminForm({ adminId }: { adminId: string }) {
           const data = await res.json();
           setFormData(data);
         } else if (res.status === 401 || res.status === 403) {
-          router.push('/admin/login');
+          router.push('/auth/login');
         } else {
           const data = await res.json();
           setError(data.message || 'Failed to fetch admin user data.');
@@ -80,7 +80,7 @@ export default function EditAdminForm({ adminId }: { adminId: string }) {
         setSuccess('Admin user updated successfully!');
         router.push('/admin/admins');
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to update admin user.');

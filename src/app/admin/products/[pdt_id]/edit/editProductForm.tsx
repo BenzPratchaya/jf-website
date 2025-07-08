@@ -53,7 +53,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
                       setImagePreviewUrl(data.pdt_image); // ต้องใส่ base URL ของ backend
                     }
                 } else if (res.status === 401 || res.status === 403) {
-                    router.push('/admin/login');
+                    router.push('/auth/login');
                 } else {
                     const data = await res.json();
                     setError(data.message || 'Failed to fetch product data.');
@@ -147,7 +147,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
                 setSuccess('Product updated successfully!');
                 router.push('/admin/products');
             } else if (res.status === 401 || res.status === 403) {
-                router.push('/admin/login');
+                router.push('/auth/login');
             } else {
                 const resData = await res.json();
                 setError(resData.message || 'Failed to update product.');

@@ -44,7 +44,7 @@ export default function AdminNewsPage() {
         const data = await res.json();
         setNews(data);
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to fetch news.');
@@ -75,7 +75,7 @@ export default function AdminNewsPage() {
       if (res.ok) {
         setNews(news.filter(item => item.nit_id !== nit_id));
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to delete news item.');

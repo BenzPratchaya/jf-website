@@ -46,7 +46,7 @@ export default function AdminProductPage() {
         const data = await res.json();
         setProducts(data);
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to fetch products.');
@@ -77,7 +77,7 @@ export default function AdminProductPage() {
       if (res.ok) {
         setProducts(products.filter(product => product.pdt_id !== pdt_id));
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to delete product.');

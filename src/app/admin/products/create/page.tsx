@@ -93,7 +93,7 @@ export default function CreateProductPage() {
         setImagePreview(null);
         router.push('/admin/products');
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const resData = await res.json();
         setError(resData.message || 'Failed to create product.');

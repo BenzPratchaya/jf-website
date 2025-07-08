@@ -50,7 +50,7 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
             setImagePreviewUrl(null);
           }
         } else if (res.status === 401 || res.status === 403) {
-          router.push('/admin/login');
+          router.push('/auth/login');
         } else {
           const data = await res.json();
           setError(data.message || 'Failed to fetch news item data.');
@@ -139,7 +139,7 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
         setSuccess('News item updated successfully!');
         router.push('/admin/news');
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const resData = await res.json();
         setError(resData.message || 'Failed to update news item.');

@@ -41,7 +41,7 @@ export default function CreateAdminUserPage() {
         setFormData({ username: '', password: '', role: 'admin' });
         router.push('/admin/admins');
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to create admin user.');

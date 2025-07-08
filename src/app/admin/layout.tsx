@@ -36,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           const data = await res.json();
           setAdminProfile(data);
         } else if (res.status === 401 || res.status === 403) {
-          router.push('/admin/login'); // Redirect หากไม่ได้ Login
+          router.push('/auth/login'); // Redirect หากไม่ได้ Login
         } else {
           const data = await res.json();
           setErrorProfile(data.message || 'Failed to fetch admin profile.');
@@ -90,7 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="flex justify-center items-center min-h-screen bg-red-100 text-red-700">
         Error: {errorProfile || 'Admin profile not loaded. Please log in again.'}
-        <button onClick={() => router.push('/admin/login')} className="ml-4 px-4 py-2 bg-red-600 text-white rounded">Login</button>
+        <button onClick={() => router.push('/auth/login')} className="ml-4 px-4 py-2 bg-red-600 text-white rounded">Login</button>
       </div>
     );
   }

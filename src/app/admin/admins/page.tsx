@@ -37,7 +37,7 @@ export default function AdminUsersPage() {
         setAdmins(data);
       } else if (res.status === 401 || res.status === 403) {
         // หากไม่ได้รับอนุญาต (ไม่ได้ login หรือไม่ใช่ superadmin)
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to fetch admin users.');
@@ -69,7 +69,7 @@ export default function AdminUsersPage() {
       if (res.ok) {
         setAdmins(admins.filter(admin => admin._id !== adminId)); // Filter ด้วย _id
       } else if (res.status === 401 || res.status === 403) {
-        router.push('/admin/login');
+        router.push('/auth/login');
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to delete admin user.');
