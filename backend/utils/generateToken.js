@@ -19,7 +19,7 @@ const generateToken = (res, userId) => {
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
     secure: isSecure, // ใช้ค่าที่คำนวณแล้ว
-    sameSite: 'strict', 
+    sameSite: 'Lax', 
     maxAge: 60 * 60 * 1000, 
   });
 
@@ -27,7 +27,7 @@ const generateToken = (res, userId) => {
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: isSecure, // ใช้ค่าที่คำนวณแล้ว
-    sameSite: 'strict',
+    sameSite: 'Lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, 
   });
   console.log('DEBUG-COOKIE: Cookie set attempts complete.');
