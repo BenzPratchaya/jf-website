@@ -2,9 +2,9 @@
 
 import express from 'express';
 import multer from 'multer'; // *** เพิ่ม: Import multer ***
-import path from 'path';     // *** เพิ่ม: Import path สำหรับจัดการ Path ไฟล์ ***
-import { fileURLToPath } from 'url'; // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
-import { dirname } from 'path';      // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
+// import path from 'path';     // *** เพิ่ม: Import path สำหรับจัดการ Path ไฟล์ ***
+// import { fileURLToPath } from 'url'; // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
+// import { dirname } from 'path';      // *** เพิ่ม: สำหรับ __dirname ใน ES Modules ***
 
 import { 
   getNews, 
@@ -17,23 +17,9 @@ import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// สำหรับ __dirname ใน ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// *** ตั้งค่า Multer สำหรับการอัปโหลดไฟล์ ***
-const storage = multer.diskStorage({
-  // กำหนด Folder ปลายทาง: Root ของโปรเจกต์/uploads/news
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', '..', 'uploads', 'new')); 
-  },
-  // กำหนดชื่อไฟล์เป็น nit_id
-  filename: (req, file, cb) => {
-    const nitId = req.body.nit_id; // ดึง nit_id จาก req.body
-    const fileExtension = path.extname(file.originalname); // นามสกุลไฟล์เดิม
-    cb(null, `${nitId}${fileExtension}`); // ตั้งชื่อไฟล์เป็น nit_id.นามสกุล
-  },
-});
+// *** แก้ไข: ใช้ memoryStorage() แทน diskStorage ***
+// Multer จะเก็บไฟล์ใน RAM ชั่วคราวใน req.file.buffer
+const storage = multer.memoryStorage(); 
 
 // กำหนด Filter สำหรับชนิดไฟล์ (อนุญาตเฉพาะรูปภาพ)
 const fileFilter = (req, file, cb) => {
@@ -46,9 +32,9 @@ const fileFilter = (req, file, cb) => {
 
 // สร้าง Multer instance พร้อมการตั้งค่า
 const upload = multer({ 
-  storage: storage,
+  storage: storage, // ใช้ memoryStorage ที่นี่!
   fileFilter: fileFilter,
-  limits: { fileSize: 1024 * 1024 * 5 } // จำกัดขนาดไฟล์ 5MB
+  limits: { fileSize: 1024 * 1024 * 10 } // จำกัดขนาดไฟล์ 10MB
 });
 
 // Routes สำหรับ News

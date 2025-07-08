@@ -114,7 +114,7 @@ export default function AdminProductPage() {
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Product ID</th>
+                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">ID</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Product Name</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Product Image</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Partner ID</th>

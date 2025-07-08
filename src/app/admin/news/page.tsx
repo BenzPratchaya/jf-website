@@ -111,8 +111,7 @@ export default function AdminNewsPage() {
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">_id (Internal)</th>
-                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">News ID</th>
+                <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">ID</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Title</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Image</th>
                 <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Category</th>
@@ -123,7 +122,6 @@ export default function AdminNewsPage() {
             <tbody>
               {news.map((item) => (
                 <tr key={item._id} className="border-b hover:bg-gray-50">
-                  <td className="py-2 px-4 text-sm text-gray-800">{item._id}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_id}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{item.nit_title}</td>
                   <td className="py-2 px-4 text-sm">
@@ -131,7 +129,7 @@ export default function AdminNewsPage() {
                       <Image
                         width={64}
                         height={64}
-                        src={`http://localhost:5000${item.nit_image}`} // ต้องใส่ base URL ของ backend
+                        src={item.nit_image} // ต้องใส่ base URL ของ backend
                         alt={item.nit_title}
                         className="w-16 h-16 object-cover rounded"
                         onError={(e) => {

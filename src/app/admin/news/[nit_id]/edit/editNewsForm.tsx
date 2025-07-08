@@ -1,10 +1,9 @@
-// src/app/admin/news/[nit_id]/edit/editNewsForm.tsx
+// src/app/(admin)/news/[nit_id]/edit/editNewsForm.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface NewsItem {
   _id: string;
@@ -16,18 +15,17 @@ interface NewsItem {
   nit_description: string;
   nit_link: string;
   nit_details: {
-    nid_contentBlocks: unknown[];
+    nid_contentBlocks: any[];
     nid_author?: string;
     nid_relatedLinks?: { text: string; url: string }[];
   };
 }
 
-// Component นี้จะรับ nit_id เป็น prop
 export default function EditNewsForm({ nit_id }: { nit_id: string }) {
   const router = useRouter();
   const [formData, setFormData] = useState<NewsItem | null>(null);
-  const [newsImageFile, setNewsImageFile] = useState<File | null>(null); // สถานะสำหรับไฟล์ใหม่ที่เลือก
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // สถานะสำหรับ Preview รูปภาพ
+  const [newsImageFile, setNewsImageFile] = useState<File | null>(null); // สถานะใหม่สำหรับไฟล์ที่เลือก
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // สถานะใหม่สำหรับ Preview รูปภาพ
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -35,7 +33,7 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
   useEffect(() => {
     const fetchNewsItem = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, { // Backend API: GET /api/news/:id
+        const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -44,9 +42,8 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
         if (res.ok) {
           const data = await res.json();
           setFormData(data);
-          // ตั้งค่า initial preview จากรูปภาพที่มีอยู่เดิม
           if (data.nit_image) {
-            setImagePreviewUrl(`http://localhost:5000${data.nit_image}`); // ต้องใส่ base URL ของ backend
+            setImagePreviewUrl(data.nit_image); // ใช้ Cloudinary URL โดยตรง
           } else {
             setImagePreviewUrl(null);
           }
@@ -86,22 +83,20 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
     }
   };
 
-  // จัดการการเลือกไฟล์รูปภาพใหม่
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setNewsImageFile(file);
-      setImagePreviewUrl(URL.createObjectURL(file)); // สร้าง URL สำหรับแสดง Preview ของรูปใหม่
+      setImagePreviewUrl(URL.createObjectURL(file));
     } else {
       setNewsImageFile(null);
     }
   };
 
-  // ฟังก์ชันสำหรับลบรูปภาพปัจจุบัน (ถ้าผู้ใช้ต้องการลบรูปภาพโดยไม่ใส่รูปใหม่)
   const handleClearImage = () => {
-    setNewsImageFile(null); // ล้างไฟล์ที่เลือกใหม่ (ถ้ามี)
-    setImagePreviewUrl(null); // ล้าง preview
-    if (formData) { // ล้าง nit_image ใน formData ด้วย เพื่อส่งค่าว่างไป Backend
+    setNewsImageFile(null);
+    setImagePreviewUrl(null);
+    if (formData) {
       setFormData(prev => ({ ...prev!, nit_image: '' })); 
     }
   };
@@ -125,17 +120,17 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
     data.append('nit_link', formData.nit_link);
     data.append('nit_details', JSON.stringify(formData.nit_details));
 
-    if (newsImageFile) { // ถ้ามีไฟล์ใหม่ถูกเลือก
-      data.append('newsImage', newsImageFile); // 'newsImage' คือชื่อ field ที่ Backend จะรับไฟล์
-    } else if (formData.nit_image !== undefined && formData.nit_image === '') { // ถ้าผู้ใช้กด Clear Image หรือ nit_image ใน formData เป็นค่าว่าง
-        data.append('nit_image', ''); // ส่งค่าว่างไปให้ Backend รู้ว่าต้องการลบรูป
+    if (newsImageFile) {
+      data.append('newsImage', newsImageFile);
+    } else if (formData.nit_image !== undefined && formData.nit_image === '') {
+        data.append('nit_image', '');
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, { // Backend API: PUT /api/news/:id
+      const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, {
         method: 'PUT',
         credentials: 'include',
-        body: data, // ส่ง FormData object
+        body: data,
       });
 
       if (res.ok) {
@@ -160,7 +155,7 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
   if (error && !formData) {
     return <div className="text-center mt-10 text-red-600">{error}</div>;
   }
-  
+
   if (!formData) {
     return <div className="text-center mt-10 text-gray-500">News item not found.</div>;
   }
@@ -181,18 +176,13 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
           <label htmlFor="nit_title" className="block text-sm font-medium text-gray-700">Title</label>
           <input type="text" name="nit_title" id="nit_title" value={formData.nit_title} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
         </div>
-        
+
         {/* ช่องอัปโหลดไฟล์รูปภาพสำหรับ Edit */}
         <div>
           <label htmlFor="newsImage" className="block text-sm font-medium text-gray-700">News Image File</label>
           {imagePreviewUrl && ( // แสดงรูปภาพปัจจุบันหรือรูปที่เลือกใหม่
             <div className="mb-2">
-                <Image 
-                    width={96} 
-                    height={96}
-                    src={imagePreviewUrl} 
-                    alt="Current News Image" 
-                    className="w-24 h-24 object-cover rounded" />
+                <img src={imagePreviewUrl} alt="Current News Image" className="w-24 h-24 object-cover rounded" />
                 <button 
                     type="button" 
                     onClick={handleClearImage} 

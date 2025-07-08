@@ -18,19 +18,40 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Helper function to delete image from Cloudinary (เหมือนเดิม)
+// Helper function to delete image from Cloudinary (สำหรับ News)
 const deleteImageFromCloudinary = async (imageUrl) => {
     if (imageUrl && imageUrl.startsWith('http') && imageUrl.includes('res.cloudinary.com')) { 
-        const publicIdWithFolder = imageUrl.split('/').slice(-2).join('/').split('.')[0]; 
-        
-        try {
-            const result = await cloudinary.uploader.destroy(`uploads/products/${publicIdWithFolder}`); 
-            console.log(`Cloudinary image deleted: ${publicIdWithFolder}`, result);
-        } catch (error) {
-            console.error(`Error deleting Cloudinary image: ${publicIdWithFolder}`, error);
+        // *** แก้ไข: ปรับ Logic ในการ Extract public_id ให้ถูกต้อง ***
+        const urlParts = imageUrl.split('/');
+        const uploadIndex = urlParts.indexOf('upload'); // หา index ของ 'upload' ใน URL Path
+
+        let publicId = '';
+        if (uploadIndex > -1 && urlParts.length > uploadIndex + 1) {
+            // ถ้า URL มี version number (เช่น /v1234567890/...)
+            // public ID จะอยู่หลังจาก 'upload/' และเลข version
+            const pathAfterUpload = urlParts.slice(uploadIndex + 1).join('/'); // เช่น v1234567890/uploads/news/news7.jpg
+            const versionIndex = pathAfterUpload.indexOf('/'); // หา index ของ '/' หลังเลข version
+            if (versionIndex > -1) {
+                // publicId คือส่วนที่เหลือหลังจาก version number และก่อนนามสกุลไฟล์
+                publicId = pathAfterUpload.substring(versionIndex + 1).split('.')[0]; // เช่น uploads/news/news7
+            } else { // ไม่มี version number (กรณีใช้ Eager transformations)
+                publicId = pathAfterUpload.split('.')[0];
+            }
+        }
+
+        if (publicId) {
+            try {
+                // ใช้ publicId ที่ Extract มาได้โดยตรง
+                const result = await cloudinary.uploader.destroy(publicId); 
+                console.log(`Cloudinary image deleted: ${publicId}`, result);
+            } catch (error) {
+                console.error(`Error deleting Cloudinary image: ${publicId}`, error);
+            }
+        } else {
+            console.log(`Could not extract public_id from Cloudinary URL: ${imageUrl}`);
         }
     } else {
-        console.log(`No valid Cloudinary URL found to delete: ${imageUrl}`);
+        console.log(`Not a Cloudinary URL or no valid URL found to delete: ${imageUrl}`);
     }
 };
 
