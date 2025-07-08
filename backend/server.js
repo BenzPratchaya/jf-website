@@ -34,9 +34,9 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:3000', // หรือ URL ของ Frontend ของคุณ
-    credentials: true, // อนุญาตให้ส่ง cookies ระหว่าง origin ที่ต่างกัน
-})); 
+    origin: ['http://localhost:3000', 'https://jf-website-opal.vercel.app/'],
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
