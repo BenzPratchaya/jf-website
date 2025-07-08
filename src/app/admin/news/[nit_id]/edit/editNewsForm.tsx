@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface NewsItem {
   _id: string;
@@ -15,7 +16,7 @@ interface NewsItem {
   nit_description: string;
   nit_link: string;
   nit_details: {
-    nid_contentBlocks: any[];
+    nid_contentBlocks: unknown[];
     nid_author?: string;
     nid_relatedLinks?: { text: string; url: string }[];
   };
@@ -182,7 +183,10 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
           <label htmlFor="newsImage" className="block text-sm font-medium text-gray-700">News Image File</label>
           {imagePreviewUrl && ( // แสดงรูปภาพปัจจุบันหรือรูปที่เลือกใหม่
             <div className="mb-2">
-                <img src={imagePreviewUrl} alt="Current News Image" className="w-24 h-24 object-cover rounded" />
+                <Image
+                  width={96}
+                  height={96}
+                  src={imagePreviewUrl} alt="Current News Image" className="w-24 h-24 object-cover rounded" />
                 <button 
                     type="button" 
                     onClick={handleClearImage} 
