@@ -153,8 +153,8 @@ export default function ProductsPage() {
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Categories</h2>
             <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-              {/* ใช้ allCategories ที่ดึงมาจาก Backend */}
-              {allCategories.map((category: CategoryType) => (
+              {/* Sort ให้ allCategories ที่ cgt_id === 'all' ขึ้นก่อน */}
+              {[...allCategories].sort((a, b) => (a.cgt_id === 'all' ? -1 : b.cgt_id === 'all' ? 1 : 0)).map((category: CategoryType) => (
                 <button
                   key={category.cgt_id}
                   onClick={() => {
@@ -177,7 +177,8 @@ export default function ProductsPage() {
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-8">Filter By Partner</h2>
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
-              {displayedPartners.map((partner: PartnerType) => {
+              {/* Sort ให้ displayedPartners ที่ pnt_id === 'all' ขึ้นก่อน */}
+              {[...displayedPartners].sort((a, b) => (a.pnt_id === 'all' ? -1 : b.pnt_id === 'all' ? 1 : 0)).map((partner: PartnerType) => {
                 const isPartnerSelected = selectedPartner === partner.pnt_id;
 
                 if (partner.pnt_id === 'all') {
