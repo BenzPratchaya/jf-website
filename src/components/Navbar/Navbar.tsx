@@ -71,9 +71,6 @@ const Navbar = () => {
             <Link href={"/products"}>Products</Link>
           </motion.div>
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
-            <Link href={"/#solution"}>Solution</Link>
-          </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/news"}>News</Link>
           </motion.div>
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
@@ -117,7 +114,6 @@ const Navbar = () => {
                 { name: "About", href: "/#about" },
                 { name: "Services", href: "/#services" },
                 { name: "Product", href: "/products" },
-                { name: "Solution", href: "/#solution" },
                 { name: "News", href: "/news" },
                 { name: "Contact", href: "/#contact" },
               ].map((item) => (
