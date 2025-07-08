@@ -1,4 +1,5 @@
-import jwt from 'jsonwebtoken'; // Import jsonwebtoken
+// backend/utils/generateToken.js
+import jwt from 'jsonwebtoken';
 
 const generateToken = (res, userId) => {
   const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -9,19 +10,27 @@ const generateToken = (res, userId) => {
     expiresIn: '7d', // Refresh Token หมดอายุใน 7 วัน
   });
 
+  // *** เพิ่ม Log เพื่อ Debug Cookie Settings ***
+  console.log('DEBUG-COOKIE: NODE_ENV for secure flag:', process.env.NODE_ENV);
+  const isSecure = process.env.NODE_ENV !== 'development';
+  console.log('DEBUG-COOKIE: Secure flag value for cookies:', isSecure);
+  console.log('DEBUG-COOKIE: Setting accessToken cookie...');
+
   res.cookie('accessToken', accessToken, {
-    httpOnly: true, // ป้องกันการเข้าถึงจาก client-side script
-    secure: process.env.NODE_ENV !== 'production', // ใช้ secure cookie ใน production
-    sameSite: 'strict', // ป้องกัน CSRF attacks
-    maxAge: 60 * 60 * 1000, // 1 ชั่วโมง (สำหรับ Access Token)
+    httpOnly: true,
+    secure: isSecure, // ใช้ค่าที่คำนวณแล้ว
+    sameSite: 'strict', 
+    maxAge: 60 * 60 * 1000, 
   });
 
+  console.log('DEBUG-COOKIE: Setting refreshToken cookie...');
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'production',
+    secure: isSecure, // ใช้ค่าที่คำนวณแล้ว
     sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 วัน (สำหรับ Refresh Token)
+    maxAge: 7 * 24 * 60 * 60 * 1000, 
   });
+  console.log('DEBUG-COOKIE: Cookie set attempts complete.');
 };
 
 export default generateToken;
