@@ -127,10 +127,10 @@ export default function NewsPage() {
                     {/* รูปข่าวสาร */}
                     <div className="relative w-full h-48 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
                       <Image
-                        src={`http://localhost:5000${item.nit_image}`}
-                        alt={item.nit_title}
                         width={400} 
                         height={200}
+                        src={item.nit_image}
+                        alt={item.nit_title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-300"
                       />
                     </div>

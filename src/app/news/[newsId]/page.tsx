@@ -111,7 +111,7 @@ const NewsDetailPage = async ( props : { params: Params }) => {
             {/* รูปหลัก */}
             <div className="mb-8 flex justify-center">
               <Image
-                src={`http://localhost:5000${newsItem.nit_image}`}
+                src={newsItem.nit_image}
                 alt={newsItem.nit_title}
                 width={1000}
                 height={600}
