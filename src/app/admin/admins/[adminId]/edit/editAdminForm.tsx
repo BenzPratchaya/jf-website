@@ -19,10 +19,11 @@ export default function EditAdminForm({ adminId }: { adminId: string }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
   useEffect(() => {
     const fetchAdminUser = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/admin/${adminId}`, {
+        const res = await fetch(`${apiBaseUrl}/api/admin/${adminId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -68,7 +69,7 @@ export default function EditAdminForm({ adminId }: { adminId: string }) {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/${adminId}`, {
+      const res = await fetch(`${apiBaseUrl}/api/admin/${adminId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

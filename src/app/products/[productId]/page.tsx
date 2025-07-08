@@ -18,9 +18,10 @@ const ProductDetailPage = async ( props : { params: Params }) => {
 
   let product: ProductType | undefined; // สำหรับข้อมูลสินค้าชิ้นเดียว
   let allProducts: ProductType[] = []; // สำหรับข้อมูลสินค้าทั้งหมด
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   try {
-    const productRes = await fetch(`http://localhost:5000/api/products/${productId}`, { cache: 'no-store' });  // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
+    const productRes = await fetch(`${apiBaseUrl}/api/products/${productId}`, { cache: 'no-store' });  // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
     // ตรวจสอบว่า productRes.ok หรือไม่
     if (!productRes.ok) {
       if (productRes.status === 404) {
@@ -32,7 +33,7 @@ const ProductDetailPage = async ( props : { params: Params }) => {
     // ดึงข้อมูลสินค้าชิ้นเดียว ใช้ await เพื่อรอผลลัพธ์จาก fetch
     product = await productRes.json();
 
-    const allProductsRes = await fetch('http://localhost:5000/api/products', { cache: 'no-store' }); // ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)
+    const allProductsRes = await fetch(`${apiBaseUrl}/api/products`, { cache: 'no-store' }); // ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)
     // ตรวจสอบว่า allProductsRes.ok หรือไม่
     if (!allProductsRes.ok) {
       throw new Error(`Failed to fetch all products for related section: ${allProductsRes.statusText}`);

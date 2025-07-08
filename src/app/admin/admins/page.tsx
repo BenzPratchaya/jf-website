@@ -20,12 +20,13 @@ export default function AdminUsersPage() {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
   const fetchAdmins = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
       // Frontend เรียก Backend: GET /api/admin/all
-      const res = await fetch('http://localhost:5000/api/admin/all', {
+      const res = await fetch(`${apiBaseUrl}/api/admin/all`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include', // ต้องส่ง Cookie ไปด้วย
@@ -60,7 +61,7 @@ export default function AdminUsersPage() {
 
     try {
       // Frontend เรียก Backend: DELETE /api/admin/:id
-      const res = await fetch(`http://localhost:5000/api/admin/${adminId}`, {
+      const res = await fetch(`${apiBaseUrl}/api/admin/${adminId}`, {
         method: 'DELETE',
         credentials: 'include',
       });

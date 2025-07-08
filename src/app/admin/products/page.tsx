@@ -30,12 +30,13 @@ export default function AdminProductPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/products', {
+      const res = await fetch(`${apiBaseUrl}/api/products`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -68,7 +69,7 @@ export default function AdminProductPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, {
+      const res = await fetch(`${apiBaseUrl}/api/products/${pdt_id}`, {
         method: 'DELETE',
         credentials: 'include',
       });

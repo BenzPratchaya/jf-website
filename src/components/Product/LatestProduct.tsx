@@ -13,12 +13,13 @@ const LatestProduct = () => {
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   // useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products', { cache: 'no-store' }); // ดึงจาก Backend API
+        const res = await fetch(`${apiBaseUrl}/api/products`, { cache: 'no-store' }); // ดึงจาก Backend API
         if (!res.ok) {
           throw new Error(`Failed to fetch products: ${res.statusText}`);
         }

@@ -24,6 +24,7 @@ export default function ProductsPage() {
   // State สำหรับ Loading และ Error**
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   // Style สำหรับ Background Image ของส่วนหัว Products Page
   const productsPageBgImageStyle: React.CSSProperties = {
@@ -37,19 +38,19 @@ export default function ProductsPage() {
       setError(null);
       try {
         // Fetch Products
-        const productsRes = await fetch('http://localhost:5000/api/products');
+        const productsRes = await fetch(`${apiBaseUrl}/api/products`);
         if (!productsRes.ok) throw new Error(`Failed to fetch products: ${productsRes.statusText}`);
         const productsData: ProductType[] = await productsRes.json();
         setAllProducts(productsData);
 
         // Fetch Partners
-        const partnersRes = await fetch('http://localhost:5000/api/partners');
+        const partnersRes = await fetch(`${apiBaseUrl}/api/partners`);
         if (!partnersRes.ok) throw new Error(`Failed to fetch partners: ${partnersRes.statusText}`);
         const partnersData: PartnerType[] = await partnersRes.json();
         setAllPartners(partnersData);
 
         // Fetch Categories
-        const categoriesRes = await fetch('http://localhost:5000/api/categories');
+        const categoriesRes = await fetch(`${apiBaseUrl}/api/categories`);
         if (!categoriesRes.ok) throw new Error(`Failed to fetch categories: ${categoriesRes.statusText}`);
         const categoriesData: CategoryType[] = await categoriesRes.json();
         setAllCategories(categoriesData);

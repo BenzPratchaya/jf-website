@@ -34,11 +34,12 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, { // Backend API: GET /api/products/:id
+                const res = await fetch(`${apiBaseUrl}/api/products/${pdt_id}`, { // Backend API: GET /api/products/:id
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -136,7 +137,7 @@ export default function EditProductForm({ pdt_id }: { pdt_id: string }) {
         // ไม่ต้อง append pdt_image เพราะ backend จะใช้ค่าเดิมจาก product ที่ถูกหาด้วย pdt_id
 
         try {
-            const res = await fetch(`http://localhost:5000/api/products/${pdt_id}`, { // Backend API: PUT /api/products/:id (ซึ่ง Controller คาดหวัง pdt_id)
+            const res = await fetch(`${apiBaseUrl}/api/products/${pdt_id}`, { // Backend API: PUT /api/products/:id (ซึ่ง Controller คาดหวัง pdt_id)
                 method: 'PUT',
                 credentials: 'include',
                 body: data, // ส่ง FormData object

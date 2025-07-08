@@ -28,11 +28,13 @@ export default function AdminNewsPage() {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
   const fetchNews = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/news', { 
+      const res = await fetch(`${apiBaseUrl}/api/news`, { 
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -65,7 +67,7 @@ export default function AdminNewsPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, {
+      const res = await fetch(`${apiBaseUrl}/api/news/${nit_id}`, {
         method: 'DELETE',
         credentials: 'include',
       });

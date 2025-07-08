@@ -15,6 +15,8 @@ export default function CreateAdminUserPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -27,7 +29,7 @@ export default function CreateAdminUserPage() {
 
     try {
       // Backend: POST /api/admin/register (ต้องเป็น superadmin)
-      const res = await fetch('http://localhost:5000/api/admin/register', {
+      const res = await fetch(`${apiBaseUrl}/api/admin/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

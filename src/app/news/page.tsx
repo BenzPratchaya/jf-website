@@ -18,6 +18,7 @@ export default function NewsPage() {
   const [error, setError] = useState<string | null>(null);
   // สร้าง ref สำหรับ news grid container**
   const newsGridRef = useRef<HTMLDivElement>(null); 
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   // useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
@@ -25,7 +26,7 @@ export default function NewsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('http://localhost:5000/api/news', { cache: 'no-store' }); // ดึงข้อมูลข่าวสารจาก Backend
+        const res = await fetch(`${apiBaseUrl}/api/news`, { cache: 'no-store' }); // ดึงข้อมูลข่าวสารจาก Backend
         if (!res.ok) {
           throw new Error(`Failed to fetch news: ${res.statusText}`);
         }

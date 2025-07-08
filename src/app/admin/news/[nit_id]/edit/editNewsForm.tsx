@@ -31,10 +31,11 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
   useEffect(() => {
     const fetchNewsItem = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, {
+        const res = await fetch(`${apiBaseUrl}/api/news/${nit_id}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -128,7 +129,7 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/news/${nit_id}`, {
+      const res = await fetch(`${apiBaseUrl}/api/news/${nit_id}`, {
         method: 'PUT',
         credentials: 'include',
         body: data,

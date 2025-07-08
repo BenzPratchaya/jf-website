@@ -28,6 +28,7 @@ export default function CreateProductPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null); // สถานะสำหรับแสดงรูปภาพ
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -75,7 +76,7 @@ export default function CreateProductPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/products', { // Backend API: POST /api/products
+      const res = await fetch(`${apiBaseUrl}/api/products`, { // Backend API: POST /api/products
         method: 'POST',
         // ไม่ต้องระบุ 'Content-Type': 'multipart/form-data' เพราะ Browser จะจัดการให้เองเมื่อใช้ FormData
         credentials: 'include',

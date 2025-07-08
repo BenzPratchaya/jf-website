@@ -15,10 +15,11 @@ const NewsDetailPage = async ( props : { params: Params }) => {
   const params = await props.params;
   const newsId = params.newsId;
   let newsItem: NewsItemType | undefined; // สำหรับข้อมูลข่าวสารชิ้นเดียว
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   try {
     // ดึงข้อมูลข่าวสารชิ้นเดียวจาก Backend**
-    const newsRes = await fetch(`http://localhost:5000/api/news/${newsId}`, { cache: 'no-store' }); // cache: 'no-store' สำหรับ dev
+    const newsRes = await fetch(`${apiBaseUrl}/api/news/${newsId}`, { cache: 'no-store' }); // cache: 'no-store' สำหรับ dev
     if (!newsRes.ok) {
       if (newsRes.status === 404) {
         console.error(`News item not found with ID: ${newsId}`);

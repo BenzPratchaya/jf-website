@@ -21,10 +21,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname(); // สำหรับไฮไลต์ลิงก์ปัจจุบัน
 
   // Fetch Admin Profile on component mount
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/admin/profile', { // Backend API: GET /api/admin/profile
+        const res = await fetch(`${apiBaseUrl}/api/admin/profile`, { // Backend API: GET /api/admin/profile
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -52,7 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/logout', { // Backend API: POST /api/admin/logout
+      const res = await fetch(`${apiBaseUrl}/api/admin/logout`, { // Backend API: POST /api/admin/logout
         method: 'POST',
         credentials: 'include',
       });
