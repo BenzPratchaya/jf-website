@@ -6,7 +6,7 @@ import Image from "next/image"
 
 const About = () => {
 
-  const aboutImage = "/images/banner.jpg"
+  const aboutImage = "/images/about/banner.jpg"
 
   return (
     <>
