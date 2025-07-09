@@ -35,7 +35,7 @@ const Hero = () => {
 
   return (
     <>
-      <section className="min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex justify-center items-center" style={bgImage}>
+      <section className="md:mt-20 mt-16 min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex justify-center items-center" style={bgImage}>
         {/* พื้นหลังที่มีภาพ */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10" />
 

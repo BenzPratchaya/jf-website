@@ -140,7 +140,7 @@ export default function ProductsPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className='md:pt-20 pt-16'>
         {/* ส่วนหัวข้อหน้า Products - มี Background Image แบบ Fixed */}
         <section className="container text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={productsPageBgImageStyle}>
             {/* Overlay สีดำโปร่งแสง (เพื่อให้ข้อความอ่านง่าย) */}

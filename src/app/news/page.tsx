@@ -114,7 +114,7 @@ export default function NewsPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className='md:pt-20 pt-16'>
         {/* ส่วนหัวข้อหน้า News */}
         <section className="container text-center relative py-12 bg-gray-700 bg-cover bg-center bg-fixed text-white" style={partnersBgImageStyle}>
           <h3 className="text-xl font-semibold text-gray-400 mb-2">NEWS & PROJECTS</h3>
