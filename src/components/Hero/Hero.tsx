@@ -1,7 +1,6 @@
 // components/Hero/Hero.tsx
 "use client"
 
-import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 
 const images = [
