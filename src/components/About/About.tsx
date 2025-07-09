@@ -23,7 +23,7 @@ const About = () => {
         <div className="flex justify-center mt-2 mb-8">
         <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
       </div>
-        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 p-4 bg-gradient-to-br from-blue-50 via-white to-blue-100 rounded-3xl shadow-xl">
+        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 p-4 bg-gradient-to-br from-gray-200 via-white to-gray-200 rounded-3xl shadow-xl">
           {/* ฝั่งซ้าย: Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }} 
