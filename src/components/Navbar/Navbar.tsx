@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="container h-16 sm:h-18 md:h-20 w-screen flex items-center justify-center relative z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+    <nav className="container h-16 sm:h-18 md:h-20 w-screen flex items-center justify-center fixed z-50 bg-white bg-opacity-90 backdrop-blur-sm">
       <div className="container flex items-center justify-between w-full h-full px-4">
         {/* Logo Section (ฝั่งซ้าย) */}
         <motion.div

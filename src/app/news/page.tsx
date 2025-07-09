@@ -76,18 +76,24 @@ export default function NewsPage() {
       backgroundImage: "url('/images/hero/hero_bg1.jpg')",
     };
 
-  // แสดง Loading
+    // แสดง Loading
   if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main className="bg-gray-100 py-24 text-center min-h-screen">
-          <h1 className="text-4xl font-bold text-gray-800">กำลังโหลดข่าวสาร...</h1>
-          <p className="text-lg text-gray-600 mt-4">กรุณารอสักครู่</p>
-        </main>
-        <Footer />
-      </>
-    );
+  return (
+    <>
+      <Navbar />
+      <main className="bg-gray-100 py-24 min-h-screen flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center">
+          {/* Loading Spinner */}
+          <span className="relative flex h-20 w-20 mb-6">
+            <span className="relative inline-flex rounded-full h-20 w-20 border-4 border-blue-500 border-t-transparent animate-spin"></span>
+          </span>
+          <h1 className="text-4xl font-bold text-gray-800">Loading news...</h1>
+          <p className="text-lg text-gray-600 mt-4">please wait a moment</p>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
   }
 
   // แสดง Error
@@ -96,9 +102,9 @@ export default function NewsPage() {
       <>
         <Navbar />
         <main className="bg-red-100 py-24 text-center min-h-screen">
-          <h1 className="text-4xl font-bold text-red-800">เกิดข้อผิดพลาดในการโหลดข่าวสาร</h1>
+          <h1 className="text-4xl font-bold text-red-800">An error occurred while loading data.</h1>
           <p className="text-lg text-red-600 mt-4">{error}</p>
-          <p className="text-md text-red-500 mt-2">โปรดตรวจสอบว่า Backend Server ทำงานอยู่</p>
+          <p className="text-md text-red-500 mt-2">Please check that the Backend Server is running.</p>
         </main>
         <Footer />
       </>

@@ -22,7 +22,7 @@ export default function ProductsPage() {
   const [allCategories, setAllCategories] = useState<CategoryType[]>([]);
 
   // State สำหรับ Loading และ Error**
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
@@ -34,7 +34,7 @@ export default function ProductsPage() {
   // useEffect สำหรับ Fetch Data จาก Backend**
   useEffect(() => {
     const fetchAllData = async () => {
-      setIsLoading(true);
+      setLoading(true);
       setError(null);
       try {
         // Fetch Products
@@ -59,7 +59,7 @@ export default function ProductsPage() {
         console.error("Error fetching data from backend:", err);
         setError("Failed to load products. Please try again later.");
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -68,7 +68,7 @@ export default function ProductsPage() {
 
   // useEffect สำหรับ Logic การกรอง (ใช้ allProducts, allPartners, allCategories)**
   useEffect(() => {
-    if (isLoading || error) return; // ไม่กรองถ้ายังโหลดอยู่หรือมี Error
+    if (loading || error) return; // ไม่กรองถ้ายังโหลดอยู่หรือมี Error
 
     console.log('Filtering Logic triggered:', { selectedCategory, selectedPartner });
     
@@ -98,21 +98,27 @@ export default function ProductsPage() {
     setFilteredProducts(currentFilteredProducts);
     console.log('Filtering Result: Filtered products count =', currentFilteredProducts.length);
     
-  }, [selectedCategory, selectedPartner, allProducts, allPartners, allCategories, isLoading, error]); // Dependencies อัปเดต
+  }, [selectedCategory, selectedPartner, allProducts, allPartners, allCategories, loading, error]); // Dependencies อัปเดต
 
 
   // แสดง Loading
-  if (isLoading) {
-    return (
-      <>
-        <Navbar />
-        <main className="bg-gray-100 py-24 text-center min-h-screen">
-          <h1 className="text-4xl font-bold text-gray-800">กำลังโหลดสินค้า...</h1>
-          <p className="text-lg text-gray-600 mt-4">กรุณารอสักครู่</p>
-        </main>
-        <Footer />
-      </>
-    );
+  if (loading) {
+  return (
+    <>
+      <Navbar />
+      <main className="bg-gray-100 py-24 min-h-screen flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center">
+          {/* Loading Spinner */}
+          <span className="relative flex h-20 w-20 mb-6">
+            <span className="relative inline-flex rounded-full h-20 w-20 border-4 border-blue-500 border-t-transparent animate-spin"></span>
+          </span>
+          <h1 className="text-4xl font-bold text-gray-800">Loading products...</h1>
+          <p className="text-lg text-gray-600 mt-4">please wait a moment</p>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
   }
 
   // แสดง Error
@@ -121,9 +127,9 @@ export default function ProductsPage() {
       <>
         <Navbar />
         <main className="bg-red-100 py-24 text-center min-h-screen">
-          <h1 className="text-4xl font-bold text-red-800">เกิดข้อผิดพลาดในการโหลดข้อมูล</h1>
+          <h1 className="text-4xl font-bold text-red-800">An error occurred while loading data.</h1>
           <p className="text-lg text-red-600 mt-4">{error}</p>
-          <p className="text-md text-red-500 mt-2">โปรดตรวจสอบว่า Backend Server ทำงานอยู่</p>
+          <p className="text-md text-red-500 mt-2">Please check that the Backend Server is running.</p>
         </main>
         <Footer />
       </>
