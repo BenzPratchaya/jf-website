@@ -12,7 +12,11 @@ const LogoPartner = () => {
   const mindrayLogo = "/images/logos_partner/mindray_logo.png"
   const samsungLogo = "/images/logos_partner/samsung_logo.png" 
   const synapseLogo = "/images/logos_partner/synapse_logo.png"
-  const vieworksLogo = "/images/logos_partner/vieworks_logo.png" 
+  const vieworksLogo = "/images/logos_partner/vieworks_logo.png"
+  const geLogo = "/images/logos_partner/ge_logo.png"
+  const uritLogo = "/images/logos_partner/urit_logo.png"
+  const lunitLogo = "/images/logos_partner/lunit_logo.png"
+  const vinnoLogo = "/images/logos_partner/vinno_logo.png"
 
   // โลโก้ประเภทและข้อมูลที่ใช้สำหรับการแสดงผล
   type StackLogoType = {
@@ -78,6 +82,34 @@ const LogoPartner = () => {
       stack: "Vieworks",
       logoSrc: vieworksLogo,
       altText: "Vieworks Logo",
+      className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
+      variants: iconVariants(5),
+    },
+    {
+      stack: "GE",
+      logoSrc: geLogo,
+      altText: "Ge Logo",
+      className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
+      variants: iconVariants(5),
+    },
+    {
+      stack: "Urit",
+      logoSrc: uritLogo,
+      altText: "Urit Logo",
+      className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
+      variants: iconVariants(5),
+    },
+    {
+      stack: "Lunit",
+      logoSrc: lunitLogo,
+      altText: "Lunit Logo",
+      className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
+      variants: iconVariants(5),
+    },
+    {
+      stack: "Vinno",
+      logoSrc: vinnoLogo,
+      altText: "Vinno Logo",
       className: "w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain",
       variants: iconVariants(5),
     },

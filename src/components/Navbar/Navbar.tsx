@@ -62,10 +62,7 @@ const Navbar = () => {
             <Link href={"/"}>Home</Link>
           </motion.div>
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
-            <Link href={"/#about"}>About</Link>
-          </motion.div>
-          <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
-            <Link href={"/#services"}>Services</Link>
+            <Link href={"/about"}>About</Link>
           </motion.div>
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/products"}>Products</Link>
@@ -74,7 +71,7 @@ const Navbar = () => {
             <Link href={"/news"}>News</Link>
           </motion.div>
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
-            <Link href={"/#contact"}>Contact</Link>
+            <Link href={"/contact"}>Contact</Link>
           </motion.div>
         </div>
 
@@ -111,11 +108,10 @@ const Navbar = () => {
             >
               {[
                 { name: "Home", href: "/" },
-                { name: "About", href: "/#about" },
-                { name: "Services", href: "/#services" },
+                { name: "About", href: "/about" },
                 { name: "Product", href: "/products" },
                 { name: "News", href: "/news" },
-                { name: "Contact", href: "/#contact" },
+                { name: "Contact", href: "/contact" },
               ].map((item) => (
                 <motion.li key={item.name} variants={listItemVariants} onClick={toggleMenu}>
                   <Link href={item.href} className="block text-center text-white hover:text-gray-300 transition-colors">

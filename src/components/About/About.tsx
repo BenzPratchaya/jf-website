@@ -42,7 +42,7 @@ const About = () => {
               J.F. Advanced caused by the appreciation of the benefits and opportunities. Business Medical At the time the company was established (in the year.. 2537) there is no company that is. Thailand is a leading supplier Nationality And medical services for the X-ray department and the Company is a major change in the year.. Since 2544
             </p>
             <a
-              href="#"
+              href="/about"
               className="inline-block mt-2 px-6 py-2 rounded-lg bg-blue-900 text-white font-semibold shadow hover:bg-blue-700 transition-all duration-300"
             >
               Read More
