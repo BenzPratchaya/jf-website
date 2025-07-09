@@ -6,6 +6,7 @@ import Link from "next/link"
 import Image from "next/image";
 // Import ProductType เท่านั้น
 import { ProductType } from '@/data/products';
+import { motion } from "framer-motion";
 
 const LatestProduct = () => {
   // State สำหรับข้อมูลและสถานะการโหลด
@@ -62,7 +63,18 @@ const LatestProduct = () => {
   return (
     <section id="products" className="container py-24 bg-white">
       {/* ส่วนหัวของ Products */}
-      <h2 className="text-center text-4xl my-16 uppercase text-gray-800">Products</h2>
+      <motion.h2
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="text-center text-3xl sm:text-4xl uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
+        >
+          Product
+        </motion.h2>
+        <div className="flex justify-center mt-2 mb-8">
+          <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
+        </div>
 
       {/* ใช้ Container เพื่อจัดเนื้อหาให้อยู่ตรงกลางและเพิ่มช่องว่าง */}
       {/* grid layout สำหรับการ์ดสินค้า */}
