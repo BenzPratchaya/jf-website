@@ -100,12 +100,12 @@ const LatestProduct = () => {
 
         {/* ปุ่ม Read More */}
         <div className="text-center mt-12">
-            <a 
+            <Link 
               className="inline-block bg-blue-900 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300"
               href="/products"
             >
                 See All Products
-            </a>  
+            </Link>  
         </div>
       </div>
     </section>
