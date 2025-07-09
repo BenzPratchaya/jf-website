@@ -9,9 +9,10 @@ const Contact = () => {
   return (
     <section id="contact" className="py-24 bg-white">
       <motion.h2
-        whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2 }}
+        viewport={{ once: true }}
         className="text-center text-4xl my-16 uppercase text-gray-800"
       >
         Contact Us
@@ -25,6 +26,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
           >
             <div className="text-blue-900 text-5xl mb-4">
@@ -42,6 +44,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
           >
             <div className="text-blue-900 text-5xl mb-4">
@@ -57,6 +60,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
           >
             <div className="text-blue-900 text-5xl mb-4">
@@ -72,6 +76,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center text-center"
           >
             <div className="text-blue-900 text-5xl mb-4">
@@ -89,7 +94,12 @@ const Contact = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {/* Map */}
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-2xl shadow-md overflow-hidden">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.726898697226!2d100.60831667455936!3d13.787170896474692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29dfa553d2875%3A0xc8eb628a884b0c61!2sJ.F.%20Advance%20Med!5e0!3m2!1sth!2sth!4v1750135770407!5m2!1sth!2sth"
               width="100%"
@@ -100,9 +110,14 @@ const Contact = () => {
               referrerPolicy="no-referrer-when-downgrade"
               title="J.F.Advance Med Co.,Ltd. Location Map"
             ></iframe>
-          </div>
+          </motion.div>
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }} 
+            className="bg-white rounded-2xl shadow-md p-8 flex flex-col justify-center">
             <form className="space-y-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <input
@@ -139,7 +154,7 @@ const Contact = () => {
                 </button>
               </div>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

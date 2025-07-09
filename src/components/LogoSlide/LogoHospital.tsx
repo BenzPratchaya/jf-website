@@ -38,9 +38,10 @@ const LogoHospital = () => {
         className="bg-gradient-to-b from-white to-gray-300" 
       >
         <motion.h2
-          whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
+          viewport={{ once: true }}
           className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-gray-800" 
         >
           our clients

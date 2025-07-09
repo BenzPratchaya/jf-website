@@ -104,8 +104,9 @@ const LatestProduct = () => {
             <motion.a
                 className="inline-block bg-blue-900 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
+                viewport={{ once: true }}
                 href="/products"
             >
                 See All Products

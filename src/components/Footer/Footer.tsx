@@ -39,6 +39,7 @@ function CompanyDetails() {
         delay: 0.2,
         duration: 0.6
       }}
+      viewport={{ once: true }  }
       className="space-y-6 text-center md:text-left">
         <Image
           src={jfLogo}
@@ -77,6 +78,7 @@ function FooterLinks() {
         delay: 0.3,
         duration: 0.6
       }}
+      viewport={{ once: true }  }
       className="space-y-6 text-center md:text-left">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -120,6 +122,7 @@ function SocialMedia() {
         delay: 0.4,
         duration: 0.6
       }}
+      viewport={{ once: true }  }
       className="space-y-6 text-center md:text-left">
         <h1 className="text-xl tracking-wider">Follow Us</h1>
 

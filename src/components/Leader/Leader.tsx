@@ -87,81 +87,89 @@ const Leader = () => {
       <section className="container py-8 space-y-6" id="explore">
         {/* หมวดหมู่ */}
         <motion.h2
-          whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
+          viewport={{ once: true }}
           className="text-center text-4xl my-12 uppercase text-gray-800"
         >
           Team Leaders
         </motion.h2>
 
         {/* แสดงข้อมูลเมนู */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-4 xl:px-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center gap-6 sm:gap-8 xl:px-8">
           {leaderData.map((item) => (
             <motion.div
               initial="hidden"
               animate="visible"
               whileHover={{
-                scale: 1.1,
-                transition: { duration: 0.5, ease: "easeInOut" }
+                scale: 1.06,
+                transition: { duration: 0.4, ease: "easeInOut" }
               }}
-              className="relative"
+              className="relative rounded-2xl overflow-hidden shadow-lg bg-white w-full h-full max-w-xs flex flex-col items-center pt-6 pb-0"
               key={item.id}
             >
               {/* รูปสำหรับเมนู */}
-              <Image
-                className="object-cover h-[400px] w-[350px]"
-                src={item.img}
-                alt="img"
-                width={400}
-                height={400}
-              />
+              <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-32 lg:h-32 xl:w-36 xl:h-36 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-100 mx-auto mb-4">
+                <Image
+                  className="object-cover w-full h-full"
+                  src={item.img}
+                  alt={item.title}
+                  width={144}
+                  height={144}
+                  priority
+                />
+              </div>
 
               {/* ข้อมูลที่ใช้สำหรับการแสดงผลในหน้า */}
-              <div className="absolute w-full bottom-0 inset-0 bg-brandDark/15">
-                <div className="h-full space-y-1 flex flex-col justify-end items-center">
-                  <div className="flex flex-col items-center bg-black p-2 bg-opacity-50 backdrop-blur-sm w-full">
-                    <motion.h3
-                      initial={{ opacity: 0, x: 50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{
-                        delay: 0.2,
-                        duration: 0.6
-                      }}
-                      className="text-white text-2xl tracking-wider">{item.title}
-                    </motion.h3>
-                    <motion.h3
-                      initial={{ opacity: 0, x: -50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{
-                        delay: 0.2,
-                        duration: 0.6
-                      }}
-                      className="text-white uppercase tracking-wider">{item.place}</motion.h3>
-                    {/* โลโก้ */}
-                    <div className="flex space-x-3 mt-2">
-                      {item.url.map((social, index) => (
-                        <motion.a
-                          key={index}
-                          href={social.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          initial={{ opacity: 0, y: 50 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.1 }}
-                          className="text-white hover:text-blue-400 text-xl"
-                        >
-                          <FontAwesomeIcon
-                            icon={social.icon}
-                            className="bg-white/20 rounded-full p-2 w-5 h-4 flex items-center justify-center"/>
-                        </motion.a>
-                      ))}
-                    </div>
-                  </div>
+              <div className="relative w-full flex flex-col items-center px-2 sm:px-4 pb-4">
+                <motion.h3
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 0.2,
+                    duration: 0.6
+                  }}
+                  viewport={{ once: true }}
+                  className="text-gray-900 text-base sm:text-lg md:text-xl font-bold tracking-wider text-center drop-shadow"
+                >
+                  {item.title}
+                </motion.h3>
+                <motion.h3
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 0.2,
+                    duration: 0.6
+                  }}
+                  viewport={{ once: true }}
+                  className="text-gray-600 text-xs sm:text-sm md:text-base uppercase tracking-wider text-center mb-2"
+                >
+                  {item.place}
+                </motion.h3>
+                {/* โลโก้ */}
+                <div className="flex space-x-3 mt-2">
+                  {item.url.map((social, index) => (
+                    <motion.a
+                      key={index}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="text-blue-900 hover:text-blue-400 text-base sm:text-lg md:text-xl"
+                    >
+                      <FontAwesomeIcon
+                        icon={social.icon}
+                        className="bg-white/20 rounded-full p-2 w-7 h-7 flex items-center justify-center"
+                      />
+                    </motion.a>
+                  ))}
                 </div>
               </div>
             </motion.div>
-
           ))}
         </div>
       </section>

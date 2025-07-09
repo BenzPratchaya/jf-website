@@ -22,6 +22,7 @@ const About = () => {
             delay: 0.5,
             duration: 0.6
           }}
+          viewport={{ once: true }}
           className="text-center md:text-left md:w-1/2 space-y-4 mb-8 md:mb-0"
         >
           <h1 className="text-2xl md:text-4xl font-medium">WHY JF ADVANCE MED</h1>
@@ -37,6 +38,7 @@ const About = () => {
             delay: 0.5,
             duration: 0.6
           }}
+          viewport={{ once: true }}
           className="md:w-1/2 flex justify-center items-center" 
         >
           <Image

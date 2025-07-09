@@ -32,8 +32,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="container h-16 sm:h-18 md:h-20 w-screen flex items-center justify-center fixed z-50 bg-white bg-opacity-90 backdrop-blur-sm">
-      <div className="container flex items-center justify-between w-full h-full px-4">
+    <nav className="fixed top-0 left-0 w-full h-16 sm:h-18 md:h-20 flex items-center justify-center z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+      <div className="container flex items-center justify-between w-full h-full px-2 sm:px-4">
         {/* Logo Section (ฝั่งซ้าย) */}
         <motion.div
           initial="hidden"
@@ -45,19 +45,19 @@ const Navbar = () => {
         >
           <Link href={"/"} onClick={() => setIsOpen(false)}>
             <Image
-              className="w-[125px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
+              className="w-[110px] xs:w-[120px] sm:w-[135px] md:w-[140px] lg:w-[150px] h-auto object-contain"
               priority={true}
               src={jfLogo}
               alt="J.F.Advance Med Co.,Ltd. Logo"
               width={150}
               height={50}
-            ></Image>
+            />
           </Link>
         </motion.div>
 
         {/* Navigation Menu (ฝั่งขวา) */}
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-4 lg:gap-6 text-gray-800">
+        <div className="hidden md:flex items-center gap-3 lg:gap-6 text-gray-800">
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/"}>Home</Link>
           </motion.div>
@@ -94,9 +94,9 @@ const Navbar = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed top-0 h-screen w-screen bg-blue-950 bg-opacity-90 flex flex-col items-center justify-center space-y-8 z-40 md:hidden"
+            className="fixed top-0 left-0 h-screen w-screen bg-blue-950 bg-opacity-90 flex flex-col items-center justify-center space-y-8 z-40 md:hidden"
           >
-            <motion.ul className="space-y-6 text-2xl"
+            <motion.ul className="space-y-6 text-xl xs:text-2xl sm:text-3xl"
               variants={{
                 visible: {
                   transition: {
