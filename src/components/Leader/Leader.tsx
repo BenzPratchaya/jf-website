@@ -91,10 +91,13 @@ const Leader = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
           viewport={{ once: true }}
-          className="text-center text-4xl my-12 uppercase text-gray-800"
+          className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
         >
           Team Leaders
         </motion.h2>
+        <div className="flex justify-center mt-2 mb-8">
+          <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
+        </div>
 
         {/* แสดงข้อมูลเมนู */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center gap-6 sm:gap-8 xl:px-8">

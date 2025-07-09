@@ -85,23 +85,26 @@ const LogoPartner = () => {
 
   return (
     <>
-      <div className="py-12 bg-gradient-to-b from-gray-300 to-white">
+      <div className="py-12 bg-gradient-to-b from-gray-100 via-white to-gray-50">
         <motion.h2
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
           viewport={{ once: true }}
-          className="text-center text-3xl sm:text-4xl my-12 uppercase text-gray-800"
+          className="text-center text-3xl sm:text-4xl pt-12 uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
         >
           Partnership
         </motion.h2>
+        <div className="flex justify-center mt-2 mb-12">
+          <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
+        </div>
         <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-16 px-4">
           {StackLogos.map((item, index) => (
             <motion.div
               variants={item.variants}
               initial="initial"
               animate="animate"
-              className="flex items-center justify-center p-2"
+              className="flex items-center justify-center p-4 bg-white rounded-2xl shadow-lg border border-blue-100 hover:shadow-2xl hover:border-blue-300 transition-all duration-300 group"
               key={index}
             >
               <Image
@@ -109,7 +112,7 @@ const LogoPartner = () => {
                 height={100}
                 src={item.logoSrc}
                 alt={item.altText}
-                className={item.className}
+                className={item.className + " group-hover:scale-110 transition-transform duration-300"}
               />
             </motion.div>
           ))}
