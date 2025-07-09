@@ -3,9 +3,12 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Autoplay, FreeMode } from "swiper/modules"
+import "swiper/css"
+import "swiper/css/free-mode"
 
 const LogoHospital = () => {
-
   const techStack = [
     { imageUrl: "/images/logos_hospital/chula_logo.png", alt: "Chulalongkorn University Logo" },
     { imageUrl: "/images/logos_hospital/cmu_logo.png", alt: "Chiang Mai University Logo" },
@@ -35,47 +38,52 @@ const LogoHospital = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-gradient-to-b from-white to-gray-300" 
+        className="bg-gradient-to-b from-white to-gray-300"
       >
         <motion.h2
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
           viewport={{ once: true }}
-          className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-gray-800" 
+          className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-gray-800"
         >
           our clients
         </motion.h2>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"> 
-
-          {/* Div สำหรับการเลื่อนต่อเนื่อง */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="my-8 sm:my-12 overflow-hidden relative py-4"
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <Swiper
+            modules={[Autoplay, FreeMode]}
+            slidesPerView={2}
+            spaceBetween={24}
+            freeMode={true}
+            loop={true}
+            autoplay={{
+              delay: 0,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: false,
+            }}
+            speed={4000}
+            breakpoints={{
+              480: { slidesPerView: 3 },
+              640: { slidesPerView: 4 },
+              1024: { slidesPerView: 6 },
+              1280: { slidesPerView: 8 },
+            }}
+            className="my-8"
           >
-            <div
-              className="flex whitespace-nowrap animate-scroll-left"
-              style={{ animationDuration: '60s' }}
-            >
-              {[...techStack, ...techStack].map((item, index) => (
-                <div
-                  className="inline-flex items-center justify-center flex-shrink-0 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] mx-2 sm:mx-4"
-                  key={index}
-                >
+            {[...techStack, ...techStack].map((item, index) => (
+              <SwiperSlide key={index} className="flex items-center justify-center">
+                <div className="inline-flex items-center justify-center flex-shrink-0 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] mx-2 sm:mx-4">
                   <Image
                     src={item.imageUrl}
                     alt={item.alt || `Logo ${index}`}
                     width={120}
-                    height={120} 
+                    height={120}
                     className="max-w-full max-h-full object-contain hover:scale-125 transition-transform duration-300"
                   />
                 </div>
-              ))}
-            </div>
-
-          </motion.div>
-
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </motion.div>
     </>
