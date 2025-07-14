@@ -1,5 +1,4 @@
-// src/app/products/page.tsx
-"use client"; // Client Component
+'use client'; // Client Component
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -11,8 +10,9 @@ import { ProductType, PartnerType, CategoryType } from '@/data/products';
 
 export default function ProductsPage() {
   // State สำหรับการกรองสินค้า ใช้ State เพื่อเก็บค่าที่เลือกจาก Dropdowns
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedPartner, setSelectedPartner] = useState<string>('all');
+  // เปลี่ยนค่าเริ่มต้นจาก 'all' เป็น '' (empty string) เพื่อเป็นตัวแทนของ "ทั้งหมด"
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedPartner, setSelectedPartner] = useState<string>('');
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [displayedPartners, setDisplayedPartners] = useState<PartnerType[]>([]); 
 
@@ -47,12 +47,16 @@ export default function ProductsPage() {
         const partnersRes = await fetch(`${apiBaseUrl}/api/partners`);
         if (!partnersRes.ok) throw new Error(`Failed to fetch partners: ${partnersRes.statusText}`);
         const partnersData: PartnerType[] = await partnersRes.json();
+        // ตรวจสอบข้อมูล partner ที่ดึงมา: ใช้ pnt_name สำหรับชื่อ และ _id เป็น key
+        console.log('Fetched partners:', partnersData); 
         setAllPartners(partnersData);
 
         // Fetch Categories
         const categoriesRes = await fetch(`${apiBaseUrl}/api/categories`);
         if (!categoriesRes.ok) throw new Error(`Failed to fetch categories: ${categoriesRes.statusText}`);
         const categoriesData: CategoryType[] = await categoriesRes.json();
+        // ตรวจสอบข้อมูล category ที่ดึงมา: ใช้ cgt_name สำหรับชื่อ และ _id เป็น key
+        console.log('Fetched categories:', categoriesData); 
         setAllCategories(categoriesData);
 
       } catch (err) {
@@ -64,7 +68,7 @@ export default function ProductsPage() {
     };
 
     fetchAllData();
-  }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
+  }, [apiBaseUrl]); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
 
   // useEffect สำหรับ Logic การกรอง (ใช้ allProducts, allPartners, allCategories)**
   useEffect(() => {
@@ -76,7 +80,7 @@ export default function ProductsPage() {
     const relevantPartnerIds: Set<string> = new Set(); 
 
     // 1. กรองสินค้าตาม Category ก่อน
-    if (selectedCategory !== 'all') {
+    if (selectedCategory !== '') { // ตรวจสอบเป็น empty string แทน 'all'
       currentFilteredProducts = currentFilteredProducts.filter(product => product.pdt_categoryId === selectedCategory);
     }
 
@@ -86,12 +90,12 @@ export default function ProductsPage() {
     });
 
     // 3. กรองรายชื่อ Partner ที่จะแสดงผล
-    // ต้องรวม 'all' partner เข้ามาเสมอ
-    const filteredPartnersForDisplay = allPartners.filter(p => relevantPartnerIds.has(p.pnt_id) || p.pnt_id === 'all');
+    // แสดงเฉพาะ Partners ที่มีสินค้าอยู่ในผลลัพธ์การกรอง Category (ไม่รวม 'all' จาก backend)
+    const filteredPartnersForDisplay = allPartners.filter(p => relevantPartnerIds.has(p.pnt_id));
     setDisplayedPartners(filteredPartnersForDisplay);
 
     // 4. กรองสินค้าอีกครั้งด้วย Partner ที่ถูกเลือก (จาก currentFilteredProducts)
-    if (selectedPartner !== 'all') {
+    if (selectedPartner !== '') { // ตรวจสอบเป็น empty string แทน 'all'
       currentFilteredProducts = currentFilteredProducts.filter(product => product.pdt_partnerId === selectedPartner);
     }
 
@@ -159,65 +163,79 @@ export default function ProductsPage() {
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Categories</h2>
             <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-              {/* Sort ให้ allCategories ที่ cgt_id === 'all' ขึ้นก่อน */}
-              {[...allCategories].sort((a, b) => (a.cgt_id === 'all' ? -1 : b.cgt_id === 'all' ? 1 : 0)).map((category: CategoryType) => (
-                <button
-                  key={category.cgt_id}
-                  onClick={() => {
-                    setSelectedCategory(category.cgt_id);
-                    setSelectedPartner('all'); // รีเซ็ต Partner เมื่อเปลี่ยน Category
-                  }}
-                  className={`px-6 py-3 rounded-full border-2 transition-all duration-200 hover:scale-110 ease-in-out
-                             ${selectedCategory === category.cgt_id ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
-                >
-                  {category.cgt_name}
-                </button>
-              ))}
+              {/* ปุ่ม "All Categories" (เพิ่มด้วยตนเอง ไม่ได้มาจาก Backend) */}
+              <button
+                key="all-categories" // Key ที่ไม่ซ้ำกัน
+                onClick={() => {
+                  setSelectedCategory(''); // ตั้งค่าเป็น empty string สำหรับ "ทั้งหมด"
+                  setSelectedPartner(''); // รีเซ็ต Partner เป็น empty string เมื่อเปลี่ยน Category
+                }}
+                className={`px-6 py-3 rounded-full border-2 transition-all duration-200 hover:scale-110 ease-in-out
+                          ${selectedCategory === '' ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
+              >
+                All
+              </button>
+              {allCategories
+                .filter(category => category.cgt_id !== 'all') // กรองค่า 'all' ออก หากมีมาจาก Backend
+                .map((category: CategoryType) => (
+                  <button
+                    key={category.cgt_id} // ใช้ _id เป็น key เพื่อความเสถียร
+                    onClick={() => {
+                      setSelectedCategory(category.cgt_id);
+                      setSelectedPartner(''); // รีเซ็ต Partner เป็น empty string เมื่อเลือก Category อื่น
+                    }}
+                    className={`px-6 py-3 rounded-full border-2 transition-all duration-200 hover:scale-110 ease-in-out
+                              ${selectedCategory === category.cgt_id ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
+                  >
+                    {category.cgt_name}
+                  </button>
+                ))}
             </div>
           </div>
         </section>
-
 
         {/* ส่วนเลือก Partner */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-8">Filter By Partner</h2>
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
-              {/* Sort ให้ displayedPartners ที่ pnt_id === 'all' ขึ้นก่อน */}
-              {[...displayedPartners].sort((a, b) => (a.pnt_id === 'all' ? -1 : b.pnt_id === 'all' ? 1 : 0)).map((partner: PartnerType) => {
-                const isPartnerSelected = selectedPartner === partner.pnt_id;
-
-                if (partner.pnt_id === 'all') {
-                  return (
-                    <button 
-                      key={partner.pnt_id}
-                      onClick={() => setSelectedPartner(partner.pnt_id)}
-                      className={`px-6 py-3 rounded-full border-2 transition-all duration-200 ease-in-out hover:scale-110
-                                 ${isPartnerSelected ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
-                    >
-                      {partner.pnt_name}
-                    </button>
-                  );
-                } else {
+              {/* ปุ่ม "All Partners" (เพิ่มด้วยตนเอง ไม่ได้มาจาก Backend) */}
+              <button 
+                key="all-partners" // Key ที่ไม่ซ้ำกัน
+                onClick={() => setSelectedPartner('')} // ตั้งค่าเป็น empty string สำหรับ "ทั้งหมด"
+                className={`px-6 py-3 rounded-full border-2 transition-all duration-200 ease-in-out hover:scale-110
+                            ${selectedPartner === '' ? 'border-blue-600 shadow-md bg-blue-50 text-blue-800 font-semibold' : 'border-gray-200 hover:border-gray-300 text-gray-700'}`}
+              >
+                All
+              </button>
+              {displayedPartners
+                .filter(p => p.pnt_id !== 'all') // กรองค่า 'all' ออก หากมีมาจาก Backend
+                .sort((a, b) => a.pnt_name.localeCompare(b.pnt_name)) // เรียงลำดับ Partners ตามชื่อ
+                .map((partner: PartnerType) => {
+                  const isPartnerSelected = selectedPartner === partner.pnt_id;
                   return (
                     <div
-                      key={partner.pnt_id}
+                      key={partner.pnt_id} // ใช้ _id เป็น key เพื่อความเสถียร
                       onClick={() => setSelectedPartner(partner.pnt_id)}
                       className={`cursor-pointer p-3 md:p-4 rounded-lg border-2 transition-all duration-200 ease-in-out hover:scale-110
-                                 ${isPartnerSelected ? 'border-blue-600 shadow-2xl bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
-                                 w-28 h-28 flex flex-col items-center justify-center text-center overflow-hidden`}
+                                  ${isPartnerSelected ? 'border-blue-600 shadow-2xl bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
+                                  w-28 h-28 flex flex-col items-center justify-center text-center overflow-hidden`}
                     >
-                      <Image
-                        src={partner.pnt_logo}
-                        alt={partner.pnt_name + ' Logo'}
-                        width={80} 
-                        height={80}
-                        className="object-contain"
-                      />
+                      {/* แสดงรูปภาพหรือชื่อ ถ้ามี logo ให้แสดงรูป ถ้าไม่มีหรือโหลดไม่ได้ให้แสดงชื่อ */}
+                      {partner.pnt_logo ? (
+                        <Image
+                          src={partner.pnt_logo}
+                          alt={partner.pnt_name + ' Logo'}
+                          width={80} 
+                          height={80}
+                          className="object-contain"
+                        />
+                      ) : (
+                        <span className="text-sm font-medium text-gray-700">{partner.pnt_name}</span>
+                      )}
                     </div>
                   );
-                }
-              })}
+                })}
             </div>
           </div>
         </section>

@@ -1,10 +1,20 @@
 // src/app/admin/products/create/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+
+interface Partner {
+  _id: string;
+  pnt_name: string; // แก้จาก partner_name เป็น pnt_name
+}
+
+interface Category {
+  _id: string;
+  cgt_name: string; // แก้จาก category_name เป็น cgt_name
+}
 
 export default function CreateProductPage() {
   const router = useRouter();
@@ -24,11 +34,52 @@ export default function CreateProductPage() {
       pdd_sectionsContent: [],
     },
   });
-  const [productImage, setProductImage] = useState<File | null>(null); // สถานะสำหรับไฟล์รูปภาพ
-  const [imagePreview, setImagePreview] = useState<string | null>(null); // สถานะสำหรับแสดงรูปภาพ
+  const [productImage, setProductImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const res = await fetch(`${apiBaseUrl}/api/partners`);
+        if (res.ok) {
+          const data: Partner[] = await res.json();
+          console.log('Fetched partners:', data);
+          setPartners(data);
+        } else {
+          console.error('Failed to fetch partners:', res.statusText);
+          setError('Failed to load partners data.');
+        }
+      } catch (err) {
+        console.error('Error fetching partners:', err);
+        setError('An unexpected error occurred while fetching partners.');
+      }
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${apiBaseUrl}/api/categories`);
+        if (res.ok) {
+          const data: Category[] = await res.json();
+          console.log('Fetched categories:', data);
+          setCategories(data);
+        } else {
+          console.error('Failed to fetch categories:', res.statusText);
+          setError('Failed to load categories data.');
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        setError('An unexpected error occurred while fetching categories.');
+      }
+    };
+
+    fetchPartners();
+    fetchCategories();
+  }, [apiBaseUrl]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -49,7 +100,7 @@ export default function CreateProductPage() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setProductImage(file);
-      setImagePreview(URL.createObjectURL(file)); // สร้าง URL สำหรับแสดง Preview
+      setImagePreview(URL.createObjectURL(file));
     } else {
       setProductImage(null);
       setImagePreview(null);
@@ -69,23 +120,22 @@ export default function CreateProductPage() {
     data.append('pdt_partnerId', formData.pdt_partnerId);
     data.append('pdt_categoryId', formData.pdt_categoryId);
     
-    data.append('pdt_details', JSON.stringify(formData.pdt_details)); // แปลง pdt_details ให้เป็น JSON string
+    data.append('pdt_details', JSON.stringify(formData.pdt_details));
 
     if (productImage) {
-      data.append('productImage', productImage); // 'productImage' คือชื่อ field ที่ Backend จะรับไฟล์
+      data.append('productImage', productImage);
     }
 
     try {
-      const res = await fetch(`${apiBaseUrl}/api/products`, { // Backend API: POST /api/products
+      const res = await fetch(`${apiBaseUrl}/api/products`, {
         method: 'POST',
-        // ไม่ต้องระบุ 'Content-Type': 'multipart/form-data' เพราะ Browser จะจัดการให้เองเมื่อใช้ FormData
         credentials: 'include',
-        body: data, // ส่ง FormData object
+        body: data,
       });
 
       if (res.ok) {
         setSuccess('Product created successfully!');
-        setFormData({ // Clear form
+        setFormData({
           pdt_id: '', pdt_name: '', pdt_description: '', pdt_link: '',
           pdt_partnerId: '', pdt_categoryId: '', pdt_details: { pdd_category: '', pdd_client: '', pdd_projectDate: '', pdd_projectUrl: '', pdd_longDescription: '', pdd_sectionsContent: [] }
         });
@@ -128,7 +178,7 @@ export default function CreateProductPage() {
             type="file" 
             name="productImage" 
             id="productImage" 
-            accept="image/*" // รับเฉพาะไฟล์รูปภาพ
+            accept="image/*"
             onChange={handleImageChange} 
             className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
           />
@@ -148,13 +198,45 @@ export default function CreateProductPage() {
           <label htmlFor="pdt_link" className="block text-sm font-medium text-gray-700">Product Link</label>
           <input type="text" name="pdt_link" id="pdt_link" value={formData.pdt_link} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
         </div>
+        
+        {/* Dropdown for Partner */}
         <div>
-          <label htmlFor="pdt_partnerId" className="block text-sm font-medium text-gray-700">Partner ID</label>
-          <input type="text" name="pdt_partnerId" id="pdt_partnerId" value={formData.pdt_partnerId} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          <label htmlFor="pdt_partnerId" className="block text-sm font-medium text-gray-700">Partner</label>
+          <select
+            name="pdt_partnerId"
+            id="pdt_partnerId"
+            value={formData.pdt_partnerId}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+          >
+            <option value="">Select a Partner</option>
+            {partners.map(partner => (
+              <option key={partner._id} value={partner._id}>
+                {partner.pnt_name} {/* แก้จาก partner.partner_name เป็น partner.pnt_name */}
+              </option>
+            ))}
+          </select>
         </div>
+
+        {/* Dropdown for Category */}
         <div>
-          <label htmlFor="pdt_categoryId" className="block text-sm font-medium text-gray-700">Category ID</label>
-          <input type="text" name="pdt_categoryId" id="pdt_categoryId" value={formData.pdt_categoryId} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          <label htmlFor="pdt_categoryId" className="block text-sm font-medium text-gray-700">Category</label>
+          <select
+            name="pdt_categoryId"
+            id="pdt_categoryId"
+            value={formData.pdt_categoryId}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+          >
+            <option value="">Select a Category</option>
+            {categories.map(category => (
+              <option key={category._id} value={category._id}>
+                {category.cgt_name} {/* แก้จาก category.category_name เป็น category.cgt_name */}
+              </option>
+            ))}
+          </select>
         </div>
 
         <h2 className="text-xl font-semibold mt-6 mb-2">Product Details</h2>
