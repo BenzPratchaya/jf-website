@@ -6,10 +6,10 @@ import mongoose from 'mongoose'; // ใช้ mongoose สำหรับกา�
 // ใช้สำหรับเก็บข้อมูลส่วนต่างๆ ของรายละเอียดสินค้า เช่น ย่อหน้า รายการ
 const ProductDetailSectionSchema = new mongoose.Schema({
   pds_title: { type: String, required: false },
-  pds_type: { type: String, enum: ['paragraph', 'list', 'image', 'grid', 'heading'], required: true },
+  pds_type: { type: String, enum: ['paragraph', 'list', 'image', 'heading'], required: true },
   pds_content: { type: String, required: false },
+  pds_image: { type: String, required: false }, // สำหรับ type 'image' (Path ของรูปภาพ)
   pds_items: { type: [String], required: false },
-  pds_grid: { type: [{ title: String, items: [String] }], required: false },
   pds_level: { type: String, enum: ['h2', 'h3'], required: false },
 });
 
