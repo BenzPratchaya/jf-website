@@ -3,7 +3,8 @@
 
 import React from 'react';
 import Navbar from '@/components/Navbar/Navbar';
-import About from '@/components/About/About';
+import History from '@/components/About/History';
+import MissionVision from '@/components/About/MissionVision';
 import Leader from '@/components/Leader/Leader';
 import { Footer } from '@/components/Footer/Footer';
 
@@ -11,7 +12,8 @@ const AboutPage = () => {
   return (
     <>
         <Navbar />
-        <About />
+        <History />
+        <MissionVision />
         <Leader />
         <Footer />
     </>

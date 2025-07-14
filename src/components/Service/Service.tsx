@@ -25,20 +25,23 @@ const services = [
 
 const Service = () => {
   return (
-    <section className="py-20">
+    <section 
+      className="py-20 bg-cover bg-center" // Add bg-cover and bg-center for background image
+      style={{ backgroundImage: "url('/images/hero/cta_bg.jpg')" }} // Add your image path here
+    >
       <div className="max-w-5xl mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="text-center text-3xl sm:text-4xl uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
+          className="text-center text-3xl sm:text-4xl uppercase text-white font-bold tracking-widest drop-shadow-lg" // Changed text color to white for better contrast
         >
           Service
         </motion.h2>
         <div className="flex justify-center mt-2 mb-8">
-        <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
-      </div>
+          <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((s, i) => (
             <motion.div
@@ -47,13 +50,11 @@ const Service = () => {
               transition={{ duration: 1 }}
               viewport={{ once: true }}
               key={i}
-              // เพิ่ม class 'group' และปรับ className ให้มีการ hover effect
               className="group rounded-2xl shadow-md p-8 flex flex-col items-center text-center transition-all duration-300 bg-gray-100 text-blue-900 hover:bg-blue-900 hover:text-white hover:shadow-xl"
             >
               <div>
-                {/* Clone the element to add dynamic classes */}
                 {React.cloneElement(s.icon, {
-                    className: `${s.icon.props.className || ''} ${ "text-blue-900 group-hover:text-white"}`
+                  className: `${s.icon.props.className || ''} ${ "text-blue-900 group-hover:text-white"}`
                 })}
               </div>
               <h3 className="font-bold text-lg mb-2 text-blue-900 group-hover:text-white">{s.title}</h3>
