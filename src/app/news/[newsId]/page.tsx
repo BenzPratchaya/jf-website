@@ -88,7 +88,7 @@ const NewsDetailPage = async ( props : { params: Params }) => {
   return (
     <>
       <Navbar />
-      <main className="bg-gray-50 py-8 md:py-12 max-w-5xl mx-auto">
+      <main className="bg-gray-50 py-8 md:py-12 max-w-5xl mx-auto md:pt-20 pt-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* การนำทางแบบ Breadcrumb */}
           <nav className="text-sm mb-8">
