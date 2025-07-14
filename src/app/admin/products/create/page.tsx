@@ -1,4 +1,3 @@
-// src/app/admin/products/create/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,12 +7,14 @@ import Image from 'next/image';
 
 interface Partner {
   _id: string;
-  pnt_name: string; // แก้จาก partner_name เป็น pnt_name
+  pnt_id: string;
+  pnt_name: string;
 }
 
 interface Category {
   _id: string;
-  cgt_name: string; // แก้จาก category_name เป็น cgt_name
+  cgt_id: string;
+  cgt_name: string;
 }
 
 export default function CreateProductPage() {
@@ -22,7 +23,7 @@ export default function CreateProductPage() {
     pdt_id: '',
     pdt_name: '',
     pdt_description: '',
-    pdt_link: '',
+    pdt_link: '', // จะถูก auto-generate
     pdt_partnerId: '',
     pdt_categoryId: '',
     pdt_details: {
@@ -92,6 +93,7 @@ export default function CreateProductPage() {
         },
       }));
     } else {
+      // Logic for auto-generating pdt_id and pdt_link is handled directly in the pdt_name input's onChange
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
@@ -116,7 +118,7 @@ export default function CreateProductPage() {
     data.append('pdt_id', formData.pdt_id);
     data.append('pdt_name', formData.pdt_name);
     data.append('pdt_description', formData.pdt_description);
-    data.append('pdt_link', formData.pdt_link);
+    data.append('pdt_link', formData.pdt_link); // ใช้ค่า pdt_link ที่ถูก auto-generate
     data.append('pdt_partnerId', formData.pdt_partnerId);
     data.append('pdt_categoryId', formData.pdt_categoryId);
     
@@ -162,103 +164,150 @@ export default function CreateProductPage() {
       </Link>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-4">
-        <div>
-          <label htmlFor="pdt_id" className="block text-sm font-medium text-gray-700">Product ID</label>
-          <input type="text" name="pdt_id" id="pdt_id" value={formData.pdt_id} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-        </div>
-        <div>
-          <label htmlFor="pdt_name" className="block text-sm font-medium text-gray-700">Product Name</label>
-          <input type="text" name="pdt_name" id="pdt_name" value={formData.pdt_name} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-        </div>
-        
-        {/* ช่องอัปโหลดไฟล์รูปภาพ */}
-        <div>
-          <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image File</label>
-          <input 
-            type="file" 
-            name="productImage" 
-            id="productImage" 
-            accept="image/*"
-            onChange={handleImageChange} 
-            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-          />
-          {imagePreview && (
-            <Image
-              width={96} 
-              height={96}
-              src={imagePreview} alt="Image Preview" className="mt-2 w-24 h-24 object-cover rounded" />
-          )}
+        {/* Main form grid for two columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Column 1: Basic Product Info */}
+            <div className="md:col-span-1 space-y-4"> {/* space-y-4 เพื่อรักษาระยะห่างแนวตั้งภายในคอลัมน์ */}
+              <div>
+                <label htmlFor="pdt_name" className="block text-sm font-medium text-gray-700">Product Name</label>
+                <input
+                  type="text"
+                  name="pdt_name"
+                  id="pdt_name"
+                  value={formData.pdt_name}
+                  onChange={e => {
+                    const newName = e.target.value;
+                    const generatedId = newName.toLowerCase().replace(/ /g, '-');
+                    const generatedLink = `/products/${generatedId}`;
+                    setFormData(prev => ({
+                      ...prev,
+                      pdt_name: newName,
+                      pdt_id: generatedId,
+                      pdt_link: generatedLink,
+                    }));
+                  }}
+                  required
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                />
+              </div>   
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-1 space-y-4">
+                  {/* Dropdown for Partner */}
+                  <div>
+                    <label htmlFor="pdt_partnerId" className="block text-sm font-medium text-gray-700">Partner</label>
+                    <select
+                      name="pdt_partnerId"
+                      id="pdt_partnerId"
+                      value={formData.pdt_partnerId}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    >
+                      <option value="">Select a Partner</option>
+                      {partners.map(partner => (
+                        <option key={partner._id} value={partner.pnt_id}>
+                          {partner.pnt_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>  
+                </div> 
+                <div className="md:col-span-1 space-y-4">
+                  {/* Dropdown for Category */}
+                  <div>
+                    <label htmlFor="pdt_categoryId" className="block text-sm font-medium text-gray-700">Category</label>
+                    <select
+                      name="pdt_categoryId"
+                      id="pdt_categoryId"
+                      value={formData.pdt_categoryId}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    >
+                      <option value="">Select a Category</option>
+                      {categories.map(category => (
+                        <option key={category._id} value={category.cgt_id}>
+                          {category.cgt_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>   
+                </div> 
+              </div>                  
+            {/* ช่องอัปโหลดไฟล์รูปภาพ */}
+            <div>
+              <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image File</label>
+              <input 
+                type="file" 
+                name="productImage" 
+                id="productImage" 
+                accept="image/*"
+                onChange={handleImageChange} 
+                className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              />
+              {imagePreview && (
+                <Image
+                  width={96} 
+                  height={96}
+                  src={imagePreview} alt="Image Preview" className="mt-2 w-24 h-24 object-cover rounded" />
+              )}
+            </div>
+          </div>
+
+          {/* Column 2: Description and Relations */}
+          <div className="md:col-span-1 space-y-4"> {/* space-y-4 เพื่อรักษาระยะห่างแนวตั้งภายในคอลัมน์ */}    
+            <div>
+              <label htmlFor="pdt_id" className="block text-sm font-medium text-gray-700">Product ID (Auto Generated)</label>
+              <input
+                type="text"
+                name="pdt_id"
+                id="pdt_id"
+                value={formData.pdt_id}
+                readOnly
+                className="mt-1 block w-full bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 cursor-not-allowed"
+              />
+            </div>   
+            <div>
+              <label htmlFor="pdt_link" className="block text-sm font-medium text-gray-700">Product Link (Auto Generated)</label>
+              <input
+                type="text"
+                name="pdt_link"
+                id="pdt_link"
+                value={formData.pdt_link}
+                readOnly
+                className="mt-1 block w-full bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 cursor-not-allowed"
+              />
+            </div>  
+            <div>
+              <label htmlFor="pdt_description" className="block text-sm font-medium text-gray-700">Short Description</label>
+              <textarea name="pdt_description" id="pdt_description" value={formData.pdt_description} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="pdt_description" className="block text-sm font-medium text-gray-700">Short Description</label>
-          <textarea name="pdt_description" id="pdt_description" value={formData.pdt_description} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
-        </div>
-        <div>
-          <label htmlFor="pdt_link" className="block text-sm font-medium text-gray-700">Product Link</label>
-          <input type="text" name="pdt_link" id="pdt_link" value={formData.pdt_link} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-        </div>
-        
-        {/* Dropdown for Partner */}
-        <div>
-          <label htmlFor="pdt_partnerId" className="block text-sm font-medium text-gray-700">Partner</label>
-          <select
-            name="pdt_partnerId"
-            id="pdt_partnerId"
-            value={formData.pdt_partnerId}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-          >
-            <option value="">Select a Partner</option>
-            {partners.map(partner => (
-              <option key={partner._id} value={partner._id}>
-                {partner.pnt_name} {/* แก้จาก partner.partner_name เป็น partner.pnt_name */}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Dropdown for Category */}
-        <div>
-          <label htmlFor="pdt_categoryId" className="block text-sm font-medium text-gray-700">Category</label>
-          <select
-            name="pdt_categoryId"
-            id="pdt_categoryId"
-            value={formData.pdt_categoryId}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-          >
-            <option value="">Select a Category</option>
-            {categories.map(category => (
-              <option key={category._id} value={category._id}>
-                {category.cgt_name} {/* แก้จาก category.category_name เป็น category.cgt_name */}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">Product Details</h2>
-        <div>
-          <label htmlFor="pdd_category" className="block text-sm font-medium text-gray-700">Detail Category</label>
-          <input type="text" name="pdd_category" id="pdd_category" value={formData.pdt_details.pdd_category} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-        </div>
-        <div>
-          <label htmlFor="pdd_client" className="block text-sm font-medium text-gray-700">Client</label>
-          <input type="text" name="pdd_client" id="pdd_client" value={formData.pdt_details.pdd_client} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-        </div>
-        <div>
-          <label htmlFor="pdd_projectDate" className="block text-sm font-medium text-gray-700">Project Date</label>
-          <input type="text" name="pdd_projectDate" id="pdd_projectDate" value={formData.pdt_details.pdd_projectDate} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="e.g., 2023-01-15"/>
-        </div>
-        <div>
-          <label htmlFor="pdd_projectUrl" className="block text-sm font-medium text-gray-700">Project URL</label>
-          <input type="text" name="pdd_projectUrl" id="pdd_projectUrl" value={formData.pdt_details.pdd_projectUrl} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-        </div>
-        <div>
-          <label htmlFor="pdd_longDescription" className="block text-sm font-medium text-gray-700">Long Description</label>
-          <textarea name="pdd_longDescription" id="pdd_longDescription" value={formData.pdt_details.pdd_longDescription} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+        {/* Product Details Section - Full width within the form, with its own inner grid */}
+        <h2 className="text-xl font-semibold mt-6 mb-2 pt-4 border-t border-gray-200">Product Details</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="pdd_category" className="block text-sm font-medium text-gray-700">Detail Category</label>
+            <input type="text" name="pdd_category" id="pdd_category" value={formData.pdt_details.pdd_category} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          </div>
+          <div>
+            <label htmlFor="pdd_client" className="block text-sm font-medium text-gray-700">Client</label>
+            <input type="text" name="pdd_client" id="pdd_client" value={formData.pdt_details.pdd_client} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          </div>
+          <div>
+            <label htmlFor="pdd_projectDate" className="block text-sm font-medium text-gray-700">Project Date</label>
+            <input type="text" name="pdd_projectDate" id="pdd_projectDate" value={formData.pdt_details.pdd_projectDate} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="e.g., 2023-01-15"/>
+          </div>
+          <div>
+            <label htmlFor="pdd_projectUrl" className="block text-sm font-medium text-gray-700">Project URL</label>
+            <input type="text" name="pdd_projectUrl" id="pdd_projectUrl" value={formData.pdt_details.pdd_projectUrl} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+          </div>
+          <div className="md:col-span-2"> {/* ให้ Long Description ขยายเต็ม 2 คอลัมน์ */}
+            <label htmlFor="pdd_longDescription" className="block text-sm font-medium text-gray-700">Long Description</label>
+            <textarea name="pdd_longDescription" id="pdd_longDescription" value={formData.pdt_details.pdd_longDescription} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+          </div>
         </div>
         <p className="text-sm text-gray-500">Note: pdd_sectionsContent is a complex nested array; additional UI components would be needed to manage its content.</p>
 
