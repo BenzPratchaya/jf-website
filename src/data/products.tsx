@@ -3,7 +3,7 @@
 // --- Definition of ProductDetailSection ---
 export type ProductDetailSection = {
   pds_title?: string;
-  pds_type: 'paragraph' | 'list' | 'image' | 'grid' | 'heading'; 
+  pds_type: 'paragraph' | 'list' | 'image' | 'heading'; 
   pds_content?: string; // สำหรับ type 'paragraph' หรือ 'heading'
 };
 
