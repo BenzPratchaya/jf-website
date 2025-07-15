@@ -126,60 +126,65 @@ const createProduct = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Update a product by ID (pdt_id)
+// @desc    Update a product
 // @route   PUT /api/products/:id
-const updateProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findOne({ pdt_id: req.params.id }); 
+// @access  Private/Admin
+const updateProduct = async (req, res) => {
+    try {
+        let productDataToUpdate = { ...req.body }; // Create a mutable copy of req.body, contains all text fields from FormData
 
-  if (product) {
-    let newImageUrl = product.pdt_image; 
-
-    if (req.file) {
-        if (product.pdt_image) {
-            await deleteImageFromCloudinary(product.pdt_image); 
-        }
-        // *** แก้ไข: ใช้ req.file.buffer โดยตรง ***
-        const result = await cloudinary.uploader.upload(
-            `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-            {
-                folder: 'uploads/products',
-                public_id: req.body.pdt_id,
-                overwrite: true
+        // 1. Manually parse pdt_details from string to object
+        //    This is crucial because FormData sends complex objects as stringified JSON.
+        if (productDataToUpdate.pdt_details && typeof productDataToUpdate.pdt_details === 'string') {
+            try {
+                productDataToUpdate.pdt_details = JSON.parse(productDataToUpdate.pdt_details);
+            } catch (parseError) {
+                console.error('Error parsing pdt_details JSON in updateProduct:', parseError);
+                return res.status(400).json({ message: 'Invalid pdt_details format.', error: parseError.message });
             }
-        );
-        newImageUrl = result.secure_url;
-    } else if (req.body.pdt_image !== undefined && req.body.pdt_image === '') { 
-        if (product.pdt_image) {
-            await deleteImageFromCloudinary(product.pdt_image); 
         }
-        newImageUrl = ''; 
-    }
-    // ... (ส่วนที่เหลือของโค้ด updateProduct เหมือนเดิม) ...
-    
-    product.pdt_id = req.body.pdt_id || product.pdt_id;
-    product.pdt_name = req.body.pdt_name || product.pdt_name;
-    product.pdt_image = newImageUrl; 
-    product.pdt_description = req.body.pdt_description || product.pdt_description;
-    product.pdt_link = req.body.pdt_link || product.pdt_link;
-    product.pdt_partnerId = req.body.pdt_partnerId || product.pdt_partnerId;
-    product.pdt_categoryId = req.body.pdt_categoryId || product.pdt_categoryId;
 
-    if (req.body.pdt_details) {
-        const pdt_details_parsed = typeof req.body.pdt_details === 'string' ? JSON.parse(req.body.pdt_details) : req.body.pdt_details;
-        product.pdt_details.pdd_category = pdt_details_parsed.pdd_category || product.pdt_details.pdd_category;
-        product.pdt_details.pdd_client = pdt_details_parsed.pdd_client || product.pdt_details.pdd_client;
-        product.pdt_details.pdd_projectDate = pdt_details_parsed.pdd_projectDate || product.pdt_details.pdd_projectDate;
-        product.pdt_details.pdd_projectUrl = pdt_details_parsed.pdd_projectUrl || product.pdt_details.pdd_projectUrl;
-        product.pdt_details.pdd_longDescription = pdt_details_parsed.pdd_longDescription || product.pdt_details.pdd_longDescription;
+        // 2. Handle pdt_image:
+        if (req.file) {
+            // Case A: อัปโหลดไฟล์รูปภาพใหม่แล้ว อัปโหลดไปยัง Cloudinary
+            const result = await cloudinary.uploader.upload(
+                `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
+                { folder: 'jf-website-products' } // ตัวเลือก: ระบุโฟลเดอร์
+            );
+            productDataToUpdate.pdt_image = result.secure_url; // Save the new Cloudinary URL
+        } else if (productDataToUpdate.pdt_image === '') {
+            // Case B: ไม่มีไฟล์ใหม่ และส่วนหน้าส่งสตริงว่างอย่างชัดเจน (ผู้ใช้ล้างรูปภาพที่มีอยู่)
+            // `productDataToUpdate` (from `req.body`) จะมี `pdt_image: ''` อยู่แล้ว ไม่ต้องเปลี่ยนแปลงอะไร
+            // กรณีนี้จัดการการลบภาพที่มีอยู่จาก DB
+        } else {
+            // Case C: ไม่มีไฟล์ใหม่ และรูปภาพไม่ได้ถูกล้างอย่างชัดเจน
+            // `productDataToUpdate.pdt_image` is `undefined` (เพราะว่า frontend จะไม่ส่งมันมาถ้าไม่มีการเปลี่ยนแปลง)
+            // เราตรวจสอบให้แน่ใจว่าไม่ได้ตั้งค่าเป็น 'undefined' เพื่อรักษาค่าที่มีอยู่ใน DB
+            delete productDataToUpdate.pdt_image;
+        }
+
+        const updatedProduct = await Product.findOneAndUpdate(
+            { pdt_id: req.params.id }, // Find by our custom 'pdt_id' slug
+            productDataToUpdate, // Use the parsed and image-handled data
+            { new: true, runValidators: true } // `new` returns updated doc, `runValidators` ensures validation on update
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.json(updatedProduct); // Send updated product data
+    } catch (error) {
+        console.error('Error in updateProduct:', error);
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(val => val.message);
+            return res.status(400).json({ message: messages.join(', ') });
+        }
+        if (error.code === 11000) { // Duplicate key error
+            return res.status(400).json({ message: 'Product with this ID already exists.' });
+        }
+        res.status(500).json({ message: 'Error updating product', error: error.message });
     }
-    
-    const updatedProduct = await product.save();
-    res.json(updatedProduct);
-  } else {
-    res.status(404);
-    throw new Error('Product not found');
-  }
-});
+};
 
 // @desc    Delete a product by ID (pdt_id)
 // @route   DELETE /api/products/:id
