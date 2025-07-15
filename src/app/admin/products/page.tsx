@@ -5,6 +5,10 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FaEye, FaTrash, FaPen, FaTimes } from 'react-icons/fa'; // Import FaTimes if not already
+
+// Import the new ProductDetailsModal component
+import ProductDetailsModal from '@/components/Product/ProductDetailsModal';// Adjust path if necessary
 
 interface Product {
   _id: string;
@@ -16,7 +20,15 @@ interface Product {
   pdt_partnerId: string;
   pdt_categoryId: string;
   pdt_details: {
-    pdd_sectionsContent?: unknown[];
+    // Ensuring pdd_sectionsContent type is consistent with ProductDetailsModalProps
+    pdd_sectionsContent?: {
+        pds_title?: string;
+        pds_type: 'paragraph' | 'list' | 'image' | 'grid' | 'heading';
+        pds_content?: string;
+        pds_items?: string[];
+        pds_grid?: { title: string; items: string[] }[];
+        pds_level?: 'h2' | 'h3';
+    }[];
     pdd_category: string;
     pdd_client: string;
     pdd_projectDate: string;
@@ -29,6 +41,8 @@ export default function AdminProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showProductDetailsModal, setShowProductDetailsModal] = useState(false);
+  const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
   const router = useRouter();
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
@@ -57,7 +71,7 @@ export default function AdminProductPage() {
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, [router, apiBaseUrl]);
 
   useEffect(() => {
     fetchProducts();
@@ -87,6 +101,19 @@ export default function AdminProductPage() {
       setError('An unexpected error occurred while deleting product.');
     }
   };
+
+  // Function to open the modal
+  const handleViewDetailsClick = (product: Product) => {
+    setSelectedProductForModal(product);
+    setShowProductDetailsModal(true);
+  };
+
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setShowProductDetailsModal(false);
+    setSelectedProductForModal(null); // Clear selected product data
+  };
+
 
   if (loading) {
     return <div className="text-center mt-10">Loading products...</div>;
@@ -133,7 +160,7 @@ export default function AdminProductPage() {
                       <Image
                         width={64}
                         height={64}
-                        src={product.pdt_image} // ต้องใส่ base URL ของ backend
+                        src={product.pdt_image}
                         alt={product.pdt_name}
                         className="w-16 h-16 object-cover rounded"
                         onError={(e) => {
@@ -148,18 +175,30 @@ export default function AdminProductPage() {
                   </td>
                   <td className="py-2 px-4 text-sm text-gray-800">{product.pdt_partnerId}</td>
                   <td className="py-2 px-4 text-sm text-gray-800">{product.pdt_categoryId}</td>
-                  <td className="py-2 px-4 text-sm">
-                    <Link 
+                  <td className="py-2 px-4 text-sm whitespace-nowrap">
+                    {/* View Details Button - now opens modal */}
+                    <button
+                      onClick={() => handleViewDetailsClick(product)}
+                      className="inline-flex items-center justify-center p-2 rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 mr-2"
+                      title="View Details"
+                    >
+                      <FaEye className="text-lg" />
+                    </button>
+                    {/* Edit Button */}
+                    <Link
                       href={`/admin/products/${product.pdt_id}/edit`} // ใช้ pdt_id ใน URL
-                      className="text-yellow-600 hover:text-yellow-800 mr-3"
+                      className="inline-flex items-center justify-center p-2 rounded-md bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
+                      title="Edit Product"
                     >
-                      Edit
+                      <FaPen className="text-lg" />
                     </Link>
-                    <button 
+                    {/* Delete Button */}
+                    <button
                       onClick={() => handleDelete(product.pdt_id)} // ใช้ pdt_id ในการลบ
-                      className="text-red-600 hover:text-red-800"
+                      className="inline-flex items-center justify-center p-2 rounded-md bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 ml-2"
+                      title="Delete Product"
                     >
-                      Delete
+                      <FaTrash className="text-lg" />
                     </button>
                   </td>
                 </tr>
@@ -167,6 +206,15 @@ export default function AdminProductPage() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {/* Product Details Modal */}
+      {showProductDetailsModal && selectedProductForModal && (
+        <ProductDetailsModal
+          product={selectedProductForModal}
+          onClose={handleCloseModal}
+          // apiBaseUrl={apiBaseUrl} // No longer needed if Cloudinary URLs are full
+        />
       )}
     </div>
   );

@@ -6,14 +6,14 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
-import { ProductType, ProductDetails, ProductDetailSection } from '@/data/products';
+import { ProductType, ProductDetails, ProductDetailSection } from '@/data/products'; // Import types
 // Client Component
 import RelatedProductsSlider from '@/components/Product/RelatedProductsSlider';
 
-type Params = Promise<{ productId: string }>
+type Params = { productId: string }
 
 const ProductDetailPage = async ( props : { params: Params }) => {
-  const params = await props.params;
+  const params = props.params;
   const productId = params.productId;
 
   let product: ProductType | undefined; // สำหรับข้อมูลสินค้าชิ้นเดียว
@@ -21,12 +21,12 @@ const ProductDetailPage = async ( props : { params: Params }) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   try {
-    const productRes = await fetch(`${apiBaseUrl}/api/products/${productId}`, { cache: 'no-store' });  // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
+    const productRes = await fetch(`${apiBaseUrl}/api/products/${productId}`, { cache: 'no-store' }); // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
     // ตรวจสอบว่า productRes.ok หรือไม่
     if (!productRes.ok) {
       if (productRes.status === 404) {
         console.error(`Product not found with ID: ${productId}`);
-        notFound(); 
+        notFound();
       }
       throw new Error(`Failed to fetch product ${productId}: ${productRes.statusText}`);
     }
@@ -47,20 +47,79 @@ const ProductDetailPage = async ( props : { params: Params }) => {
   }
 
   // ตรวจสอบความถูกต้องของข้อมูลที่ดึงมา
-  if (!product || !product.pdt_details) { 
-    notFound(); 
+  if (!product || !product.pdt_details) {
+    notFound();
   }
 
   const productDetails: ProductDetails = product.pdt_details; // ดึงข้อมูลรายละเอียดของสินค้าจาก product.pdt_details
 
-  // ตรวจสอบว่ามี sectionsContent หรือไม่
+  // Function to render ProductDetailSection dynamically
   const renderDetailSection = (section: ProductDetailSection, index: number) => {
-   switch (section.pds_type) {
+    switch (section.pds_type) {
       case 'paragraph':
         return (
-          <p key={index} className={`text-gray-700 leading-relaxed mb-4`}>
+          <p key={index} className="text-gray-700 leading-relaxed mb-4">
             {section.pds_content && <span dangerouslySetInnerHTML={{ __html: section.pds_content }} />}
           </p>
+        );
+      case 'list':
+        return (
+          <div key={index} className="mb-4">
+            {section.pds_title && <h4 className="text-lg font-semibold text-gray-800 mb-2">{section.pds_title}</h4>}
+            {section.pds_items && section.pds_items.length > 0 && (
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                {section.pds_items.map((item, itemIndex) => (
+                  <li key={itemIndex} dangerouslySetInnerHTML={{ __html: item }}></li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      case 'image':
+        return (
+          <div key={index} className="mb-6 text-center">
+            {section.pds_title && <h4 className="text-lg font-semibold text-gray-800 mb-2">{section.pds_title}</h4>}
+            {section.pds_content && ( // pds_content is used for image URL
+              <Image
+                src={section.pds_content}
+                alt={section.pds_title || `Product image ${index}`}
+                width={1000} // Adjust based on your design needs
+                height={750} // Adjust based on your design needs
+                className="mx-auto rounded-lg shadow-md object-contain"
+                style={{ maxHeight: '600px' }}
+              />
+            )}
+          </div>
+        );
+      case 'grid':
+        return (
+          <div key={index} className="mb-6">
+            {section.pds_title && <h3 className="text-xl font-bold text-gray-900 mb-4">{section.pds_title}</h3>}
+            {section.pds_grid && section.pds_grid.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {section.pds_grid.map((gridItem, gridItemIndex) => (
+                  <div key={gridItemIndex} className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-2">{gridItem.title}</h4>
+                    {gridItem.items && gridItem.items.length > 0 && (
+                      <ul className="list-disc list-inside text-gray-600 space-y-1">
+                        {gridItem.items.map((item, subItemIndex) => (
+                          <li key={subItemIndex} dangerouslySetInnerHTML={{ __html: item }}></li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      case 'heading':
+        const HeadingTag = section.pds_level === 'h2' ? 'h2' : 'h3';
+        const headingClass = section.pds_level === 'h2' ? 'text-2xl font-bold text-gray-900 mb-4' : 'text-xl font-semibold text-gray-800 mb-3';
+        return (
+          <HeadingTag key={index} className={`${headingClass}`}>
+            {section.pds_title}
+          </HeadingTag>
         );
       default:
         return null;
@@ -128,13 +187,13 @@ const ProductDetailPage = async ( props : { params: Params }) => {
                   renderDetailSection(block, index)
                 ))}
               </div>
-            </div>   
+            </div>
           </div>
         </div>
 
         {/* กล่อง Related Products Slider Component */}
-        <div className="container mx-auto px-4"> {/* Ensure container matches general page container */}
-             <RelatedProductsSlider products={relatedProducts} />
+        <div className="container mx-auto px-4">
+              <RelatedProductsSlider products={relatedProducts} />
         </div>
       </section>
       <Footer />

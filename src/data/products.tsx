@@ -3,8 +3,11 @@
 // --- Definition of ProductDetailSection ---
 export type ProductDetailSection = {
   pds_title?: string;
-  pds_type: 'paragraph' | 'list' | 'image' | 'heading'; 
+  pds_type: 'paragraph' | 'list' | 'image' | 'grid' | 'heading'; 
   pds_content?: string; // สำหรับ type 'paragraph' หรือ 'heading'
+  pds_items?: string[]; // สำหรับ type 'list' or list inside gridItems
+  pds_grid?: { title: string; items: string[] }[]; // สำหรับ type 'grid'
+  pds_level?: 'h2' | 'h3'; // สำหรับ type 'heading' (ระดับของหัวข้อ)
 };
 
 // --- Definition of ProductDetails ---
