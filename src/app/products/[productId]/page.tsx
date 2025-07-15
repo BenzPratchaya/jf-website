@@ -10,10 +10,10 @@ import { ProductType, ProductDetails, ProductDetailSection } from '@/data/produc
 // Client Component
 import RelatedProductsSlider from '@/components/Product/RelatedProductsSlider';
 
-type Params = { productId: string }
+type Params = Promise<{ productId: string }>
 
 const ProductDetailPage = async ( props : { params: Params }) => {
-  const params = props.params;
+  const params = await props.params;
   const productId = params.productId;
 
   let product: ProductType | undefined; // สำหรับข้อมูลสินค้าชิ้นเดียว
