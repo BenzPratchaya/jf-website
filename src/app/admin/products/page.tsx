@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaEye, FaTrash, FaPen, FaPlus } from 'react-icons/fa'; // Import FaTimes if not already
+import { FaEye, FaTrash, FaPen } from 'react-icons/fa'; // Import FaTimes if not already
 
 // Import the new ProductDetailsModal component
 import ProductDetailsModal from '@/components/Product/ProductDetailsModal';// Adjust path if necessary

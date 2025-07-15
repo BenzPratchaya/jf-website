@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ProductDetailSection, ProductDetails } from '@/data/products'; // Import types
+import { ProductDetailSection } from '@/data/products'; // Import types
 
 // Define Partner and Category interfaces (assuming they exist in your data types or can be defined here)
 interface Partner {

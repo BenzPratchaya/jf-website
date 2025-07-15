@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ProductDetailSection, ProductDetails } from '@/data/products'; // Import types
+import { ProductDetailSection } from '@/data/products'; // Import types
 
 interface Partner {
   _id: string;
