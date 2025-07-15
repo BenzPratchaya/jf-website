@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaEye, FaTrash, FaPen, FaTimes } from 'react-icons/fa'; // Import FaTimes if not already
+import { FaEye, FaTrash, FaPen, FaPlus } from 'react-icons/fa'; // Import FaTimes if not already
 
 // Import the new ProductDetailsModal component
 import ProductDetailsModal from '@/components/Product/ProductDetailsModal';// Adjust path if necessary
@@ -126,12 +126,12 @@ export default function AdminProductPage() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Product Management</h1>
+        <h1 className="text-3xl">Product Management</h1>
         <Link 
           href="/admin/products/create" 
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
         >
-          Add New Product
+          + Add Product
         </Link>
       </div>
 
@@ -179,7 +179,7 @@ export default function AdminProductPage() {
                     {/* View Details Button - now opens modal */}
                     <button
                       onClick={() => handleViewDetailsClick(product)}
-                      className="inline-flex items-center justify-center p-2 rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 mr-2"
+                      className="inline-flex items-center justify-center p-2 rounded-md bg-gray-600 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 mr-2"
                       title="View Details"
                     >
                       <FaEye className="text-lg" />
@@ -187,7 +187,7 @@ export default function AdminProductPage() {
                     {/* Edit Button */}
                     <Link
                       href={`/admin/products/${product.pdt_id}/edit`} // ใช้ pdt_id ใน URL
-                      className="inline-flex items-center justify-center p-2 rounded-md bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
+                      className="inline-flex items-center justify-center p-2 rounded-md bg-yellow-600 text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
                       title="Edit Product"
                     >
                       <FaPen className="text-lg" />
@@ -195,7 +195,7 @@ export default function AdminProductPage() {
                     {/* Delete Button */}
                     <button
                       onClick={() => handleDelete(product.pdt_id)} // ใช้ pdt_id ในการลบ
-                      className="inline-flex items-center justify-center p-2 rounded-md bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 ml-2"
+                      className="inline-flex items-center justify-center p-2 rounded-md bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 ml-2"
                       title="Delete Product"
                     >
                       <FaTrash className="text-lg" />
