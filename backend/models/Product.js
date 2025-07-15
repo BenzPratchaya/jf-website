@@ -8,9 +8,6 @@ const ProductDetailSectionSchema = new mongoose.Schema({
   pds_title: { type: String, required: false },
   pds_type: { type: String, enum: ['paragraph', 'list', 'image', 'heading'], required: true },
   pds_content: { type: String, required: false },
-  pds_image: { type: String, required: false }, // สำหรับ type 'image' (Path ของรูปภาพ)
-  pds_items: { type: [String], required: false },
-  pds_level: { type: String, enum: ['h2', 'h3'], required: false },
 });
 
 

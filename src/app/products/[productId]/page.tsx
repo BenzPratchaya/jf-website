@@ -62,42 +62,6 @@ const ProductDetailPage = async ( props : { params: Params }) => {
             {section.pds_content && <span dangerouslySetInnerHTML={{ __html: section.pds_content }} />}
           </p>
         );
-      case 'list':
-        return (
-          <div key={index} className="mb-4">
-            {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
-            <ul className="list-disc list-inside space-y-2 text-gray-700">
-              {section.pds_items?.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        );
-      case 'grid':
-        return (
-          <div key={index} className={`mb-6`}>
-            {section.pds_title && <h3 className="text-2xl font-semibold mt-6 mb-2 text-gray-800">{section.pds_title}</h3>}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              {section.pds_grid?.map((gridItem, i) => (
-                <div key={i} className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                  <h4 className="text-xl font-semibold mb-2 text-gray-800">{gridItem.title}</h4>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    {gridItem.items.map((item, j) => (
-                      <li key={j}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      case 'heading':
-        if (section.pds_level === 'h2') {
-          return <h2 key={index} className={`text-2xl md:text-3xl font-bold text-gray-900 mt-8 mb-4`}>{section.pds_content}</h2>; 
-        } else if (section.pds_level === 'h3') {
-          return <h3 key={index} className={`text-xl md:text-2xl font-semibold text-gray-900 mt-6 mb-3`}>{section.pds_content}</h3>; 
-        }
-        return null;
       default:
         return null;
     }

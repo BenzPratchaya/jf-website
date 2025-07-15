@@ -4,9 +4,6 @@ export type ProductDetailSection = {
   pds_title?: string;
   pds_type: 'paragraph' | 'image' | 'heading' | 'list'; // ประเภทของบล็อกเนื้อหา
   pds_content?: string; // สำหรับ type 'paragraph' หรือ 'heading'
-  pds_image?: string; // สำหรับ type 'image' (Path ของรูปภาพ)
-  pds_items?: string[]; // สำหรับ type 'list' or list inside gridItems
-  pds_level?: 'h2' | 'h3'; // สำหรับ type 'heading' (ระดับของหัวข้อ)
 };
 
 export type ProductDetails = {
