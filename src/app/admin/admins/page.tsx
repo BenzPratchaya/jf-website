@@ -48,7 +48,7 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, [router, apiBaseUrl]);
 
   useEffect(() => {
     fetchAdmins();

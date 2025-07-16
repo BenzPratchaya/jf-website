@@ -55,7 +55,7 @@ export default function AdminNewsPage() {
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, [router, apiBaseUrl]);
 
   useEffect(() => {
     fetchNews();

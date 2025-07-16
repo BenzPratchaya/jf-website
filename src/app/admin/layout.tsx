@@ -50,7 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     };
 
     fetchAdmin();
-  }, [router]);
+  }, [router, apiBaseUrl]);
 
   const handleLogout = async () => {
     try {

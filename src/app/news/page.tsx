@@ -41,7 +41,7 @@ export default function NewsPage() {
     };
 
     fetchNews();
-  }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
+  }, [apiBaseUrl]); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
 
 
   // คำนวณ Index ของข่าวที่จะแสดงในหน้าปัจจุบัน (ใช้ allNewsItems)

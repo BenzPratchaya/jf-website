@@ -66,7 +66,7 @@ export default function EditNewsForm({ nit_id }: { nit_id: string }) {
     if (nit_id) {
       fetchNewsItem();
     }
-  }, [nit_id, router]);
+  }, [nit_id, router, apiBaseUrl]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

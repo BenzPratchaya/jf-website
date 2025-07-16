@@ -34,7 +34,7 @@ const LatestProduct = () => {
     };
 
     fetchProducts();
-  }, []); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
+  }, [apiBaseUrl]); // Effect นี้จะทำงานแค่ครั้งเดียวเมื่อ Component Mount
 
   // กรองเอาแค่ 6 รายการหลังสุดจาก allProducts ที่ดึงมา
   const startIndex = Math.max(0, allProducts.length - 6);

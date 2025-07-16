@@ -49,7 +49,7 @@ export default function EditAdminForm({ adminId }: { adminId: string }) {
     if (adminId) {
       fetchAdminUser();
     }
-  }, [adminId, router]); // adminId เป็น dependency
+  }, [adminId, router, apiBaseUrl]); // adminId เป็น dependency
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
