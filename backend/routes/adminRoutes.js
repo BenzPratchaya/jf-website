@@ -7,6 +7,7 @@ import {
   logoutAdmin,
   getAdminProfile,
   getAdmins,
+  getAdminsPublic,
   getAdminById,
   updateAdmin,
   deleteAdmin
@@ -30,6 +31,7 @@ router.get('/profile', protect, getAdminProfile); // ดึงข้อมูล
 // Admin Management Routes (ต้องเป็น Superadmin เท่านั้น)
 // สำหรับจัดการ Admin Users
 router.route('/all').get(protect, authorizeRoles('superadmin'), getAdmins); // GET all admins
+router.get('/all/public', getAdminsPublic); // GET all admins (Public, ไม่ต้องการ JWT)
 router.route('/:id') // ใช้ _id เป็น parameter
   .get(protect, authorizeRoles('superadmin'), getAdminById) // GET single admin by _id
   .put(protect, authorizeRoles('superadmin'), updateAdmin)    // UPDATE admin by _id

@@ -97,6 +97,14 @@ const getAdmins = asyncHandler(async (req, res) => {
   res.json(admins);
 });
 
+// @desc    Get all admin users (Public)
+// @route   GET /api/admin/all/public
+// @access  Public
+const getAdminsPublic = asyncHandler(async (req, res) => {
+  const admins = await Admin.find({}).select('-password'); // ไม่ส่ง password กลับไปด้วย
+  res.json(admins);
+});
+
 // @desc    Get admin user by ID
 // @route   GET /api/admin/:id
 // @access  Private/Superadmin
@@ -159,8 +167,9 @@ export {
   authAdmin, 
   registerAdmin, 
   logoutAdmin,
-  getAdminProfile, // Export เพิ่มเติม
+  getAdminProfile, 
   getAdmins,
+  getAdminsPublic,
   getAdminById,
   updateAdmin,
   deleteAdmin
