@@ -24,6 +24,7 @@ const nextConfig = {
             },
         ],
     },
+    //output: 'export', // ใช้สำหรับการสร้าง static export
 };
 
 export default nextConfig;
