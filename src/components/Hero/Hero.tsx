@@ -21,7 +21,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative w-full min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex items-center bg-blue-950"
+      className="relative w-full min-h-[480px] md:min-h-[580px] lg:min-h-[680px] flex items-center bg-blue-950"
     >
       {/* พื้นหลังภาพฝั่งขวา */}
       <div

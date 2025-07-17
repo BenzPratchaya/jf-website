@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Kanit } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
 
-const kanit = Kanit({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-kanit",
+  variable: "--font-inter",
   display: "swap",
   weight: ["100", "200", "300", "400", "500", "600", "700"]
 });
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${kanit.variable} antialiased`}
+        className={`${inter.variable} antialiased`}
       >
         {children}
         <ScrollToTopButton />

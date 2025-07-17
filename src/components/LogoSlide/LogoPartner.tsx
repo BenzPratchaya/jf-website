@@ -117,13 +117,13 @@ const LogoPartner = () => {
 
   return (
     <>
-      <div className="py-12 bg-gradient-to-b from-gray-100 via-white to-gray-50">
+      <div className="py-12 mt-4 bg-gradient-to-b from-gray-100 via-white to-gray-50">
         <motion.h2
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
           viewport={{ once: true }}
-          className="text-center text-3xl sm:text-4xl pt-12 uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
+          className="text-center text-3xl sm:text-4xl uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
         >
           Partnership
         </motion.h2>

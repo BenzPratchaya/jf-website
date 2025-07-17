@@ -9,8 +9,8 @@ const About = () => {
   const aboutImage = "/images/about/about.jpg"
 
   return (
-    <>
-      <section id="about" className="container py-20 mt-10">
+    <div className="bg-gray-100 min-h-[300px] md:min-h-[400px] lg:min-h-[500px] flex items-center justify-center mt-4">
+      <section id="about" className="py-8">
         <motion.h2
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -23,7 +23,7 @@ const About = () => {
         <div className="flex justify-center mt-2 mb-8">
           <span className="inline-block w-24 h-1 rounded bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-70"></span>
         </div>
-        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 p-4 bg-gradient-to-br from-gray-200 via-white to-gray-200 rounded-3xl shadow-xl">
+        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 p-4 ">
           {/* ฝั่งซ้าย: Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }} 
@@ -43,7 +43,7 @@ const About = () => {
             </p>
             <a
               href="/about"
-              className="inline-block mt-2 px-6 py-2 rounded-lg bg-blue-900 text-white font-semibold shadow hover:bg-blue-700 transition-all duration-300"
+              className="inline-block mt-2 px-6 py-2 rounded-full border-2 border-blue-900 text-blue-900 hover:bg-blue-900 hover:text-white font-semibold shadow transition-all duration-300"
             >
               Read More
             </a>
@@ -62,18 +62,18 @@ const About = () => {
           >
             <div className="relative group">
               <Image
-                width={500}
+                width={600}
                 height={500}
                 src={aboutImage}
                 alt="aboutImage"
-                className="max-w-full h-auto rounded-2xl shadow-2xl border-4 border-blue-100 group-hover:scale-105 transition-transform duration-300"
+                className="max-w-full h-auto group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-blue-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
 

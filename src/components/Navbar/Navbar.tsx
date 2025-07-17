@@ -9,8 +9,8 @@ import React from "react"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const jfLogo = "/images/LOGO-JF.png" //ดดด
-  const navMenu = "whitespace-nowrap hover:underline text-base md:text-lg lg:text-xl p-2 font-light";
+  const jfLogo = "/images/LOGO-JF.png"
+  const navMenu = "whitespace-nowrap hover:underline text-base md:text-sm lg:text-md p-2";
 
   // รูปแบบแอนิเมชั่นสำหรับเมนู (การเลื่อนจากขวาไปซ้าย) ใช้สำหรับเมนูในมือถือ
   const menuVariants = {
@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full h-16 sm:h-18 md:h-20 flex items-center justify-center z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+    <nav className="fixed top-0 left-0 w-full h-7 sm:h-9 md:h-11 flex items-center justify-center z-50 bg-white bg-opacity-90 backdrop-blur-sm">
       <div className="container flex items-center justify-between w-full h-full px-2 sm:px-4">
         {/* Logo Section (ฝั่งซ้าย) */}
         <motion.div
@@ -57,7 +57,8 @@ const Navbar = () => {
 
         {/* Navigation Menu (ฝั่งขวา) */}
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-3 lg:gap-6 text-gray-800">
+        {/* เปลี่ยนจาก justify-between เป็น justify-center สำหรับ container และลบ justify-between ออกจาก div ที่ครอบเมนูหลัก */}
+        <div className="hidden md:flex flex-grow justify-center items-center gap-3 lg:gap-6 text-gray-800">
           <motion.div initial="hidden" animate="visible" whileHover={{ scale: 1.1, transition: { duration: 0.3, ease: "easeInOut" } }} className={navMenu}>
             <Link href={"/"}>Home</Link>
           </motion.div>
@@ -75,9 +76,9 @@ const Navbar = () => {
           </motion.div>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button - ย้ายไปอยู่ขวาสุดเสมอ */}
         <div className="md:hidden z-50">
-          <button onClick={toggleMenu} className={`text-3xl focus:outline-none ${isOpen ? 'text-white' : 'text-gray-800'}`}>
+          <button onClick={toggleMenu} className={`text-sm focus:outline-none ${isOpen ? 'text-white' : 'text-gray-800'}`}>
             {isOpen ? <FaTimes /> : <FaBars />}
           </button>
         </div>

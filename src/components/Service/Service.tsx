@@ -26,7 +26,7 @@ const services = [
 const Service = () => {
   return (
     <section 
-      className="py-20 bg-cover bg-center" // Add bg-cover and bg-center for background image
+      className="py-14 mt-4 bg-cover bg-center" // Add bg-cover and bg-center for background image
       style={{ backgroundImage: "url('/images/hero/cta_bg.jpg')" }} // Add your image path here
     >
       <div className="max-w-5xl mx-auto px-4">
