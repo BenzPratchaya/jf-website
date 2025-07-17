@@ -87,11 +87,11 @@ const History = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
                 viewport={{ once: true, amount: 0.6 }}
-                className={`flex-grow w-full md:w-1/2 bg-white bg-opacity-95 p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 ease-in-out cursor-pointer hover:bg-blue-700 hover:bg-opacity-95 group transform hover:-translate-y-2 hover:scale-[1.02] ${
+                className={`flex-grow w-full md:w-1/2 bg-white bg-opacity-95 p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 ease-in-out cursor-pointer hover:bg-blue-950/90 hover:bg-opacity-95 group transform hover:-translate-y-2 hover:scale-[1.02] ${
                   index % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto'
                 }`}
               >
-                <p className="text-2xl sm:text-3xl font-bold text-blue-700 mb-3 group-hover:text-white transition-colors duration-300">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-950/90 mb-3 group-hover:text-white transition-colors duration-300">
                   {event.title}
                 </p>
                 <p className="text-gray-700 text-base sm:text-lg leading-relaxed group-hover:text-blue-100 transition-colors duration-300">

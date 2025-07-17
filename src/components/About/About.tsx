@@ -16,7 +16,7 @@ const About = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="text-center text-3xl sm:text-4xl uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
+          className="text-center text-3xl sm:text-4xl uppercase text-blue-950/80 font-bold tracking-widest drop-shadow-lg"
         >
           About Us
         </motion.h2>
@@ -35,7 +35,7 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center md:text-left md:w-1/2 space-y-6 mb-8 md:mb-0"
           >
-            <h1 className="text-2xl md:text-4xl font-bold text-blue-900 mb-4 tracking-wide drop-shadow">
+            <h1 className="text-2xl md:text-4xl font-bold text-blue-950/80 mb-4 tracking-wide drop-shadow">
               WHY JF ADVANCE MED
             </h1>
             <p className="text-gray-700 text-base md:text-lg leading-relaxed">
@@ -43,7 +43,7 @@ const About = () => {
             </p>
             <a
               href="/about"
-              className="inline-block mt-2 px-6 py-2 rounded-full border-2 border-blue-900 text-blue-900 hover:bg-blue-900 hover:text-white font-semibold shadow transition-all duration-300"
+              className="inline-block mt-2 px-6 py-2 rounded-full border-2 border-blue-950/80 text-blue-950/80 hover:bg-blue-950/90 hover:text-white font-semibold shadow transition-all duration-300"
             >
               Read More
             </a>
@@ -68,7 +68,7 @@ const About = () => {
                 alt="aboutImage"
                 className="max-w-full h-auto group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-950/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
           </motion.div>
         </div>

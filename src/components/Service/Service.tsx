@@ -50,14 +50,14 @@ const Service = () => {
               transition={{ duration: 1 }}
               viewport={{ once: true }}
               key={i}
-              className="group rounded-2xl shadow-md p-8 flex flex-col items-center text-center transition-all duration-300 bg-gray-100 text-blue-900 hover:bg-blue-900 hover:text-white hover:shadow-xl"
+              className="group rounded-2xl shadow-md p-8 flex flex-col items-center text-center transition-all duration-300 bg-gray-100 text-blue-950/90 hover:bg-blue-950/90 hover:text-white hover:shadow-xl"
             >
               <div>
                 {React.cloneElement(s.icon, {
-                  className: `${s.icon.props.className || ''} ${ "text-blue-900 group-hover:text-white"}`
+                  className: `${s.icon.props.className || ''} ${ "text-blue-950/90 group-hover:text-white"}`
                 })}
               </div>
-              <h3 className="font-bold text-lg mb-2 text-blue-900 group-hover:text-white">{s.title}</h3>
+              <h3 className="font-bold text-lg mb-2 text-blue-950/90 group-hover:text-white">{s.title}</h3>
               <p className="mb-6 text-gray-500 group-hover:text-blue-100">{s.desc}</p>
             </motion.div>
           ))}

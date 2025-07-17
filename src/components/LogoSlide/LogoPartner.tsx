@@ -123,7 +123,7 @@ const LogoPartner = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
           viewport={{ once: true }}
-          className="text-center text-3xl sm:text-4xl uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
+          className="text-center text-3xl sm:text-4xl uppercase text-blue-950/80 font-bold tracking-widest drop-shadow-lg"
         >
           Partnership
         </motion.h2>

@@ -21,7 +21,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative w-full min-h-[480px] md:min-h-[580px] lg:min-h-[680px] flex items-center bg-blue-950"
+      className="relative w-full min-h-[480px] md:min-h-[580px] lg:min-h-[680px] flex items-center bg-blue-950/90"
     >
       {/* พื้นหลังภาพฝั่งขวา */}
       <div
@@ -34,7 +34,7 @@ const Hero = () => {
           transition: "background-image 1s ease-in-out",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-l from-blue-950/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-l from-blue-950/90 to-transparent" />
       </div>
       {/* พื้นหลังภาพเต็มจอบนมือถือ */}
       <div
@@ -66,7 +66,7 @@ const Hero = () => {
         </p>
         <a
           href="/contact"
-          className="inline-flex items-center justify-center bg-blue-300 hover:bg-blue-800 text-blue-900 hover:text-blue-300 font-semibold text-base px-6 py-3 rounded-md shadow-md transition-all duration-300 w-auto max-w-xs"
+          className="inline-flex items-center justify-center bg-blue-300 hover:bg-blue-950/90 text-blue-950/90 hover:text-blue-300 font-semibold text-base px-6 py-3 rounded-md shadow-md transition-all duration-300 w-auto max-w-xs"
         >
           Contact Us
         </a>

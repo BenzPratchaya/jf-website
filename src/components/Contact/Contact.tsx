@@ -13,7 +13,7 @@ const Contact = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2 }}
         viewport={{ once: true }}
-        className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-blue-900 font-bold tracking-widest drop-shadow-lg"
+        className="text-center text-3xl sm:text-4xl mt-12 pt-12 uppercase text-blue-950/80 font-bold tracking-widest drop-shadow-lg"
       >
         Contact Us
       </motion.h2>
@@ -32,10 +32,10 @@ const Contact = () => {
             viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-xl border border-blue-100 flex flex-col items-center text-center hover:shadow-2xl hover:border-blue-300 transition-all duration-300"
           >
-            <div className="text-blue-900 text-5xl mb-4 drop-shadow-lg">
+            <div className="text-blue-950/90 text-5xl mb-4 drop-shadow-lg">
               <FaMapMarkerAlt />
             </div>
-            <h3 className="text-lg font-bold mb-2 text-blue-900 uppercase tracking-wide">Our Address</h3>
+            <h3 className="text-lg font-bold mb-2 text-blue-950/90 uppercase tracking-wide">Our Address</h3>
             <p className="text-sm text-gray-700">
               2521/33-26 Ladprao Road,<br />
               Khlongchaokhunsing, Wangthonglang,<br />
@@ -50,10 +50,10 @@ const Contact = () => {
             viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-xl border border-blue-100 flex flex-col items-center text-center hover:shadow-2xl hover:border-blue-300 transition-all duration-300"
           >
-            <div className="text-blue-900 text-5xl mb-4 drop-shadow-lg">
+            <div className="text-blue-950/90 text-5xl mb-4 drop-shadow-lg">
               <FaPhoneAlt />
             </div>
-            <h3 className="text-lg font-bold mb-2 text-blue-900 uppercase tracking-wide">Phone</h3>
+            <h3 className="text-lg font-bold mb-2 text-blue-950/90 uppercase tracking-wide">Phone</h3>
             <p className="text-sm text-gray-700">
               +66 2514-0314-7
             </p>
@@ -66,10 +66,10 @@ const Contact = () => {
             viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-xl border border-blue-100 flex flex-col items-center text-center hover:shadow-2xl hover:border-blue-300 transition-all duration-300"
           >
-            <div className="text-blue-900 text-5xl mb-4 drop-shadow-lg">
+            <div className="text-blue-950/90 text-5xl mb-4 drop-shadow-lg">
               <FaFax />
             </div>
-            <h3 className="text-lg font-bold mb-2 text-blue-900 uppercase tracking-wide">Fax</h3>
+            <h3 className="text-lg font-bold mb-2 text-blue-950/90 uppercase tracking-wide">Fax</h3>
             <p className="text-sm text-gray-700">
               +66 2514-0328
             </p>
@@ -82,10 +82,10 @@ const Contact = () => {
             viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-xl border border-blue-100 flex flex-col items-center text-center hover:shadow-2xl hover:border-blue-300 transition-all duration-300"
           >
-            <div className="text-blue-900 text-5xl mb-4 drop-shadow-lg">
+            <div className="text-blue-950/90 text-5xl mb-4 drop-shadow-lg">
               <FaEnvelope />
             </div>
-            <h3 className="text-lg font-bold mb-2 text-blue-900 uppercase tracking-wide">Email</h3>
+            <h3 className="text-lg font-bold mb-2 text-blue-950/90 uppercase tracking-wide">Email</h3>
             <p className="text-sm text-blue-900">
               <a href="mailto:sales@jfav.co.th" className="hover:underline">sales@jfav.co.th</a>
             </p>
@@ -153,7 +153,7 @@ const Contact = () => {
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="bg-blue-950 hover:bg-blue-900 text-white font-semibold px-10 py-3 rounded-lg shadow transition-all duration-300 hover:scale-105"
+                  className="bg-blue-950/90 hover:bg-blue-950 text-white font-semibold px-10 py-3 rounded-lg shadow transition-all duration-300 hover:scale-105"
                 >
                   Send Message
                 </button>
