@@ -1,6 +1,6 @@
 // src/data/news.ts
 
-export type NewsContentBlock = { // Type สำหรับ Content Block
+export type NewsContentBlock = {
   ncb_title?: string; // ชื่อหัวข้อ (สำหรับ type 'heading')
   ncb_type: 'paragraph' | 'image' | 'heading' | 'list'; // ประเภทของบล็อกเนื้อหา
   ncb_content?: string; // สำหรับ type 'paragraph' หรือ 'heading'
@@ -14,7 +14,7 @@ export type NewsItemDetails = {
   nid_author?: string; // ชื่อผู้เขียนข่าว
 };
 
-export type NewsItemType = { // Type สำหรับข่าวแต่ละรายการ
+export type NewsItemType = {
   nit_id: string; // รหัสข่าว (เช่น 'news1', 'news2', ...)
   nit_image: string; // รูปภาพหลักของข่าว (สำหรับหน้า List)
   nit_category: string; // เช่น 'JF', 'Event', 'Upnit_date'

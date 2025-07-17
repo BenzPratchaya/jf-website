@@ -1,28 +1,24 @@
 // src/data/products.ts
 
-// --- Definition of ProductDetailSection ---
 export type ProductDetailSection = {
-  pds_title?: string;
-  pds_type: 'paragraph' | 'list' | 'image' | 'grid' | 'heading'; 
+  pds_title?: string; // ชื่อของส่วน (ถ้ามี)
+  pds_type: 'paragraph' | 'image' | 'heading' | 'grid' | 'list'; // ประเภทของบล็อกเนื้อหา
   pds_content?: string; // สำหรับ type 'paragraph' หรือ 'heading'
   pds_items?: string[]; // สำหรับ type 'list' or list inside gridItems
   pds_grid?: { title: string; items: string[] }[]; // สำหรับ type 'grid'
   pds_level?: 'h2' | 'h3'; // สำหรับ type 'heading' (ระดับของหัวข้อ)
 };
 
-// --- Definition of ProductDetails ---
 export type ProductDetails = {
   pdd_sectionsContent?: ProductDetailSection[]; // ส่วนรายละเอียดเพิ่มเติมแบบยืดหยุ่น
-  pdd_category: string;
-  pdd_client: string;
-  pdd_projectDate: string;
-  pdd_projectUrl: string;
-  pdd_longDescription: string;
+  pdd_category: string; // หมวดหมู่ของสินค้า
+  pdd_client: string; // ชื่อของลูกค้า (โรงพยาบาล, บริษัท, ฯลฯ)
+  pdd_projectDate: string; // วันที่ของโครงการ
+  pdd_projectUrl: string; // URL ของโครงการ (ถ้ามี)
+  pdd_longDescription: string; // คำอธิบายยาวของสินค้า
 };
 
-// --- Definition of ProductType ---
 export type ProductType = {
-  filter(arg0: (p: unknown) => unknown): unknown;
   pdt_id: string; // The URL slug (e.g., 'ge-oec-c-arm')
   pdt_name: string;
   pdt_image: string; // รูปภาพหลักของสินค้า (สำหรับหน้า Products List)
@@ -33,15 +29,13 @@ export type ProductType = {
   pdt_categoryId: string; // Category ID
 };
 
-// --- Definition of PartnerType ---
 export type PartnerType = {
-    pnt_id: string;
-    pnt_name: string; 
-    pnt_logo: string;
+    pnt_id: string; // Partner ID
+    pnt_name: string; // ชื่อของ Partner
+    pnt_logo: string; // URL ของโลโก้ Partner
 };
 
-// --- Definition of CategoryType ---
 export type CategoryType = {
-    cgt_id: string;
-    cgt_name: string; 
+    cgt_id: string; // Category ID
+    cgt_name: string; // ชื่อของ Category
 };

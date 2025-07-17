@@ -1,4 +1,4 @@
-// src/data/news.ts
+// backend/data/news.ts
 
 export type NewsContentBlock = {
   ncb_title?: string; // ชื่อหัวข้อ (สำหรับ type 'heading')

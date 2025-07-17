@@ -1,8 +1,8 @@
-// src/data/products.ts
+// backend/data/products.ts
 
 export type ProductDetailSection = {
-  pds_title?: string;
-  pds_type: 'paragraph' | 'image' | 'heading' | 'list'; // ประเภทของบล็อกเนื้อหา
+  pds_title?: string; // ชื่อของส่วน (ถ้ามี)
+  pds_type: 'paragraph' | 'image' | 'heading' | 'grid' | 'list'; // ประเภทของบล็อกเนื้อหา
   pds_content?: string; // สำหรับ type 'paragraph' หรือ 'heading'
   pds_items?: string[]; // สำหรับ type 'list' or list inside gridItems
   pds_grid?: { title: string; items: string[] }[]; // สำหรับ type 'grid'
@@ -11,11 +11,11 @@ export type ProductDetailSection = {
 
 export type ProductDetails = {
   pdd_sectionsContent?: ProductDetailSection[]; // ส่วนรายละเอียดเพิ่มเติมแบบยืดหยุ่น
-  pdd_category: string;
-  pdd_client: string;
-  pdd_projectDate: string;
-  pdd_projectUrl: string;
-  pdd_longDescription: string;
+  pdd_category: string; // หมวดหมู่ของสินค้า
+  pdd_client: string; // ชื่อของลูกค้า (โรงพยาบาล, บริษัท, ฯลฯ)
+  pdd_projectDate: string; // วันที่ของโครงการ
+  pdd_projectUrl: string; // URL ของโครงการ (ถ้ามี)
+  pdd_longDescription: string; // คำอธิบายยาวของสินค้า
 };
 
 export type ProductType = {
@@ -30,14 +30,14 @@ export type ProductType = {
 };
 
 export type PartnerType = {
-    pnt_id: string;
-    pnt_name: string; 
-    pnt_logo: string;
+    pnt_id: string; // Partner ID
+    pnt_name: string; // ชื่อของ Partner
+    pnt_logo: string; // URL ของโลโก้ Partner
 };
 
 export type CategoryType = {
-    cgt_id: string;
-    cgt_name: string; 
+    cgt_id: string; // Category ID
+    cgt_name: string; // ชื่อของ Category
 };
 
 export const products: ProductType[] = [
