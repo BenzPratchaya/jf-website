@@ -8,10 +8,24 @@ import Navbar from '@/components/Navbar/Navbar';
 import { Footer } from '@/components/Footer/Footer';
 import { NewsItemType, NewsItemDetails, NewsContentBlock } from '@/data/news'; 
 
-const jfLogo = "/images/LOGO-JF.png";
-type Params = Promise<{ newsId: string }>
+const jfLogo = "/images/LOGO-JF.png"; 
 
-const NewsDetailPage = async ( props : { params: Params }) => {
+const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
+export async function generateStaticParams() {
+   const res = await fetch(`${apiBaseUrl}/api/news` , {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+    const newsItems = await res.json();
+  // สร้างพารามิเตอร์สำหรับแต่ละ news item 
+  return newsItems.map((newsItem: { nit_id: string }) => ({
+    newsId: newsItem.nit_id,
+  }));
+}
+
+const NewsDetailPage = async ( props : { params: Promise<{ newsId: string }> }) => {
   const params = await props.params;
   const newsId = params.newsId;
   let newsItem: NewsItemType | undefined; // สำหรับข้อมูลข่าวสารชิ้นเดียว
@@ -19,7 +33,7 @@ const NewsDetailPage = async ( props : { params: Params }) => {
 
   try {
     // ดึงข้อมูลข่าวสารชิ้นเดียวจาก Backend**
-    const newsRes = await fetch(`${apiBaseUrl}/api/news/${newsId}`, { cache: 'no-store' }); // cache: 'no-store' สำหรับ dev
+    const newsRes = await fetch(`${apiBaseUrl}/api/news/${newsId}`);
     if (!newsRes.ok) {
       if (newsRes.status === 404) {
         console.error(`News item not found with ID: ${newsId}`);

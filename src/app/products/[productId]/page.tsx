@@ -10,9 +10,22 @@ import { ProductType, ProductDetails, ProductDetailSection } from '@/data/produc
 // Client Component
 import RelatedProductsSlider from '@/components/Product/RelatedProductsSlider';
 
-type Params = Promise<{ productId: string }>
+const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
-const ProductDetailPage = async ( props : { params: Params }) => {
+export async function generateStaticParams() {
+   const res = await fetch(`${apiBaseUrl}/api/products` , {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+    const products = await res.json();
+  // สร้างพารามิเตอร์สำหรับแต่ละ product
+  return products.map((product: { pdt_id: string }) => ({
+    productId: product.pdt_id,
+  }));
+}
+
+const ProductDetailPage = async ( props : { params: Promise<{ productId: string }> }) => {
   const params = await props.params;
   const productId = params.productId;
 
@@ -21,7 +34,7 @@ const ProductDetailPage = async ( props : { params: Params }) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   try {
-    const productRes = await fetch(`${apiBaseUrl}/api/products/${productId}`, { cache: 'no-store' }); // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
+    const productRes = await fetch(`${apiBaseUrl}/api/products/${productId}`); // ดึงข้อมูลสินค้าชิ้นเดียวจาก Backend
     // ตรวจสอบว่า productRes.ok หรือไม่
     if (!productRes.ok) {
       if (productRes.status === 404) {
@@ -33,7 +46,7 @@ const ProductDetailPage = async ( props : { params: Params }) => {
     // ดึงข้อมูลสินค้าชิ้นเดียว ใช้ await เพื่อรอผลลัพธ์จาก fetch
     product = await productRes.json();
 
-    const allProductsRes = await fetch(`${apiBaseUrl}/api/products`, { cache: 'no-store' }); // ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)
+    const allProductsRes = await fetch(`${apiBaseUrl}/api/products`); // ดึงข้อมูลสินค้าทั้งหมดจาก Backend (สำหรับ Related Products)
     // ตรวจสอบว่า allProductsRes.ok หรือไม่
     if (!allProductsRes.ok) {
       throw new Error(`Failed to fetch all products for related section: ${allProductsRes.statusText}`);

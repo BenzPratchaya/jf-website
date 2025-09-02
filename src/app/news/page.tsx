@@ -26,7 +26,7 @@ export default function NewsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`${apiBaseUrl}/api/news`, { cache: 'no-store' }); // ดึงข้อมูลข่าวสารจาก Backend
+        const res = await fetch(`${apiBaseUrl}/api/news`); // const res = await fetch(`${apiBaseUrl}/api/news`, { cache: 'no-store' }); 
         if (!res.ok) {
           throw new Error(`Failed to fetch news: ${res.statusText}`);
         }
